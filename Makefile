@@ -1,9 +1,12 @@
-BIN = $(CURDIR)/bin
+# disable default rules
+.SUFFIXES:
+MAKEFLAGS+=-r -R
 
-export GOBIN=$(BIN)
+default: build
 
 .PHONY: build
-build:
+build: GOBIN=$(CURDIR)/bin
+build: test
 	go install -v ./...
 
 .PHONY: test
