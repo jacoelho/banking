@@ -12,9 +12,9 @@ test:
 
 .PHONY: vendor
 vendor:
-	go mod tidy && go mod vendor
+	go mod tidy && go mod vendor && go mod verify
 
+.PHONY: ci-tidy
 ci-tidy:
 	go mod tidy
-	go list all > /dev/null
-	git diff --exit-code --quiet || (echo "Please run 'go mod tidy' to clean up the 'go.mod' and 'go.sum' files."; false)
+	git status --porcelain go.mod go.sum || { echo "Please run 'go mod tidy'."; exit 1; }
