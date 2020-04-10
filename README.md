@@ -1,0 +1,1 @@
+https://www.swift.com/sites/default/files/resources/iban_registry.txt
