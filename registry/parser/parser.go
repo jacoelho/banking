@@ -99,7 +99,7 @@ func (p *Parser) parseRange() *rule.RangeRule {
 		return nil
 	}
 
-	var rangeType rule.RangeType
+	var rangeType rule.RangeRuleType
 	switch p.currentToken.Literal {
 	case "a":
 		rangeType = rule.UpperCaseLetters

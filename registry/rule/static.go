@@ -21,8 +21,8 @@ func (s *StaticRule) EndPos() int {
 	return s.StartPosition + len(s.Value)
 }
 
-func (s *StaticRule) Type() RuleType {
-	return RuleStatic
+func (s *StaticRule) Type() string {
+	return "Static"
 }
 
 func (s *StaticRule) String() string {
