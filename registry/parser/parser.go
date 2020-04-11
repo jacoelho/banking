@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/jacoelho/iban/registry/token"
+
 	"github.com/jacoelho/iban/registry/lexer"
 	"github.com/jacoelho/iban/registry/rule"
-	"github.com/jacoelho/iban/registry/token"
 )
 
 type Parser struct {
@@ -32,17 +33,17 @@ func (p *Parser) nextToken() {
 	p.peekToken = p.lexer.Scan()
 }
 
-func (p *Parser) isCurrentTokenType(t token.TokenType) bool {
+func (p *Parser) isCurrentTokenType(t token.ItemType) bool {
 	return p.currentToken.Type == t
 }
 
-func (p *Parser) isPeekTokenType(t token.TokenType) bool {
+func (p *Parser) isPeekTokenType(t token.ItemType) bool {
 	return p.peekToken.Type == t
 }
 
-func (p *Parser) expectPeek(t token.TokenType) bool {
+func (p *Parser) expectPeek(t token.ItemType) bool {
 	if !p.isPeekTokenType(t) {
-		p.errors = append(p.errors, fmt.Errorf("expect next token to be '%s', got '%s'", t, p.peekToken.Type))
+		p.errors = append(p.errors, fmt.Errorf("expect next token to be '%v', got '%s'", t, p.peekToken.String()))
 		return false
 	}
 
@@ -66,7 +67,7 @@ func (p *Parser) Parse() ([]rule.Rule, []error) {
 
 func (p *Parser) parseRule() rule.Rule {
 	switch p.currentToken.Type {
-	case token.WORD:
+	case token.STRING:
 		return p.parseStatic()
 	case token.INTEGER:
 		return p.parseRange()
@@ -113,6 +114,6 @@ func (p *Parser) parseRange() *rule.RangeRule {
 	return &rule.RangeRule{
 		StartPosition: pos,
 		Length:        length,
-		Type:          rangeType,
+		Format:        rangeType,
 	}
 }

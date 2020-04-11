@@ -15,7 +15,7 @@ func TestLexer_Scan(t *testing.T) {
 		"GB": {
 			input: "GB2!n4!a6!n8!n",
 			want: []token.Token{
-				{Type: token.WORD, Literal: "GB", Position: 0},
+				{Type: token.STRING, Literal: "GB", Position: 0},
 				{Type: token.INTEGER, Literal: "2", Position: 2},
 				{Type: token.BANG, Literal: "!"},
 				{Type: token.SYMBOL, Literal: "n"},

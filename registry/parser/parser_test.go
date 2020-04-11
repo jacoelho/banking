@@ -25,22 +25,22 @@ func TestParser_Parse(t *testing.T) {
 				&rule.RangeRule{
 					StartPosition: 2,
 					Length:        2,
-					Type:          rule.Digit,
+					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
 					StartPosition: 5,
 					Length:        4,
-					Type:          rule.UpperCaseLetters,
+					Format:        rule.UpperCaseLetters,
 				},
 				&rule.RangeRule{
 					StartPosition: 8,
 					Length:        6,
-					Type:          rule.Digit,
+					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
 					StartPosition: 11,
 					Length:        8,
-					Type:          rule.Digit,
+					Format:        rule.Digit,
 				},
 			},
 		},

@@ -35,7 +35,7 @@ func (l *Lexer) unread() {
 	l.position--
 }
 
-func (l *Lexer) scanWord() token.Token {
+func (l *Lexer) scanUpperCaseLetters() token.Token {
 	var (
 		b   strings.Builder
 		pos = l.position
@@ -57,7 +57,7 @@ func (l *Lexer) scanWord() token.Token {
 	}
 
 	return token.Token{
-		Type:     token.WORD,
+		Type:     token.STRING,
 		Literal:  b.String(),
 		Position: pos,
 	}
@@ -107,7 +107,7 @@ func (l *Lexer) Scan() token.Token {
 		return l.scanDigit()
 	case isUpperCaseLetter(ch):
 		l.unread()
-		return l.scanWord()
+		return l.scanUpperCaseLetters()
 	case isLowerCase(ch):
 		l.unread()
 		return l.scanSymbol()
