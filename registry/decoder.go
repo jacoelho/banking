@@ -6,15 +6,15 @@ import (
 	"io"
 )
 
-type ParseError string
+type DecodeError string
 
-func (p ParseError) Error() string {
+func (p DecodeError) Error() string {
 	return string(p)
 }
 
 const (
-	ErrLineParse   = ParseError("failed to parse line")
-	ErrInvalidFile = ParseError("invalid file")
+	ErrLineParse   = DecodeError("failed to parse line")
+	ErrInvalidFile = DecodeError("invalid file")
 )
 
 func Decode(r io.Reader) ([]Entry, error) {

@@ -6,6 +6,8 @@ import (
 	"sync"
 	"text/template"
 
+	"github.com/jacoelho/iban/registry/parser"
+
 	"github.com/jacoelho/iban/registry/rule"
 )
 
@@ -15,22 +17,19 @@ var validationTemplate *template.Template
 func Generate() (string, error) {
 	sb := new(strings.Builder)
 
+	rules, err := parser.New("AL2!n8!n16!c").Parse()
+	if err != nil {
+		return "", nil
+	}
+
 	var bla = struct {
 		CountryName string
+		PackageName string
 		Rules       []rule.Rule
 	}{
 		CountryName: "Albania",
-		Rules: []rule.Rule{
-			&rule.StaticRule{
-				StartPosition: 0,
-				Value:         "GB",
-			},
-			&rule.RangeRule{
-				StartPosition: 5,
-				Length:        10,
-				Format:        rule.AlphaNumeric,
-			},
-		},
+		PackageName: "test",
+		Rules:       rules,
 	}
 
 	funcs := template.FuncMap{

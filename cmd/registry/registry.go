@@ -1,14 +1,21 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 
 	"github.com/jacoelho/iban/registry"
 	"golang.org/x/text/encoding/charmap"
+	yaml "gopkg.in/yaml.v2"
 )
+
+type Country struct {
+	Code string `yaml:"code"`
+	Name string `yaml:"name"`
+	IBAN string `yaml:"IBAN"`
+	BBAN string ` yaml:"BBAN"`
+}
 
 func main() {
 	fileName := flag.String("filename", "", "registry file")
@@ -28,5 +35,22 @@ func main() {
 		os.Exit(1)
 	}
 
-	_ = json.NewEncoder(os.Stdout).Encode(&entries)
+	var countries []Country
+	for _, c := range entries {
+		c := Country{
+			Code: c.CountryCode,
+			Name: c.CountryName,
+			IBAN: c.IBAN.Structure,
+			BBAN: c.BBAN.Structure,
+		}
+
+		countries = append(countries, c)
+	}
+
+	wrap := struct {
+		Countries []Country `yaml:"countries"`
+	}{
+		Countries: countries,
+	}
+	yaml.NewEncoder(os.Stdout).Encode(&wrap)
 }

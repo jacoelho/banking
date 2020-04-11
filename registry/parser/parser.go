@@ -17,9 +17,9 @@ type Parser struct {
 	peekToken    token.Token
 }
 
-func NewParser(l *lexer.Lexer) *Parser {
+func New(input string) *Parser {
 	p := &Parser{
-		lexer: l,
+		lexer: lexer.New(input),
 	}
 
 	p.nextToken()
@@ -78,7 +78,7 @@ func (p *Parser) parseRule() rule.Rule {
 
 func (p *Parser) parseStatic() *rule.StaticRule {
 	return &rule.StaticRule{
-		startPosition: p.currentToken.Position,
+		StartPosition: p.currentToken.Position,
 		Value:         p.currentToken.Literal,
 	}
 }
@@ -112,8 +112,8 @@ func (p *Parser) parseRange() *rule.RangeRule {
 	}
 
 	return &rule.RangeRule{
-		startPosition: pos,
-		length:        length,
+		StartPosition: pos,
+		Length:        length,
 		Format:        rangeType,
 	}
 }

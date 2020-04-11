@@ -5,7 +5,6 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/jacoelho/iban/registry/lexer"
 	"github.com/jacoelho/iban/registry/rule"
 )
 
@@ -19,27 +18,27 @@ func TestParser_Parse(t *testing.T) {
 			input: "GB2!n4!a6!n8!n",
 			want: []rule.Rule{
 				&rule.StaticRule{
-					startPosition: 0,
+					StartPosition: 0,
 					Value:         "GB",
 				},
 				&rule.RangeRule{
-					startPosition: 2,
-					length:        2,
+					StartPosition: 2,
+					Length:        2,
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					startPosition: 5,
-					length:        4,
+					StartPosition: 5,
+					Length:        4,
 					Format:        rule.UpperCaseLetters,
 				},
 				&rule.RangeRule{
-					startPosition: 8,
-					length:        6,
+					StartPosition: 8,
+					Length:        6,
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					startPosition: 11,
-					length:        8,
+					StartPosition: 11,
+					Length:        8,
 					Format:        rule.Digit,
 				},
 			},
@@ -56,7 +55,7 @@ func TestParser_Parse(t *testing.T) {
 
 	for tc, tt := range tests {
 		t.Run(tc, func(t *testing.T) {
-			p := NewParser(lexer.New(tt.input))
+			p := New(tt.input)
 			got, err := p.Parse()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)

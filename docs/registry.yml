@@ -1,0 +1,411 @@
+# hand edited to fix issues
+countries:
+  - code: AL
+    name: Albania
+    IBAN: AL2!n8!n16!c
+    BBAN: 8!n16!c
+
+  - code: AD
+    name: Andorra
+    IBAN: AD2!n4!n4!n12!c
+    BBAN: 4!n4!n12!c
+
+  - code: AT
+    name: Austria
+    IBAN: AT2!n5!n11!n
+    BBAN: 5!n11!n
+
+  - code: AZ
+    name: Republic Of Azerbaijan
+    IBAN: AZ2!n4!a20!c
+    BBAN: 4!a20!c
+
+  - code: BH
+    name: Kingdom Of Bahrain
+    IBAN: BH2!n4!a14!c
+    BBAN: 4!a14!c
+
+  - code: BE
+    name: Belgium
+    IBAN: BE2!n3!n7!n2!n
+    BBAN: 3!n7!n2!n
+
+  - code: BA
+    name: Bosnia And Herzegovina
+    IBAN: BA2!n3!n3!n8!n2!n
+    BBAN: 3!n3!n8!n2!n
+
+  - code: BR
+    name: Brazil
+    IBAN: BR2!n8!n5!n10!n1!a1!c
+    BBAN: 8!n5!n10!n1!a1!c
+
+  - code: BG
+    name: Bulgaria
+    IBAN: BG2!n4!a4!n2!n8!c
+    BBAN: 4!a4!n2!n8!c
+
+  - code: CR
+    name: Costa Rica
+    IBAN: CR2!n3!n14!n
+    BBAN: 3!n14!n
+
+  - code: HR
+    name: Croatia
+    IBAN: HR2!n7!n10!n
+    BBAN: 7!n10!n
+
+  - code: CY
+    name: Cyprus
+    IBAN: CY2!n3!n5!n16!c
+    BBAN: 3!n5!n16!c
+
+  - code: CZ
+    name: Czech Republic
+    IBAN: CZ2!n4!n6!n10!n
+    BBAN: 4!n6!n10!n
+
+  - code: DK
+    name: Denmark
+    IBAN: DK2!n4!n9!n1!n
+    BBAN: 4!n9!n1!n
+
+  - code: FO
+    name: Faroe Islands
+    IBAN: FO2!n4!n9!n1!n
+    BBAN: 4!n9!n1!n
+
+  - code: GL
+    name: Greenland
+    IBAN: GL2!n4!n9!n1!n
+    BBAN: 4!n9!n1!n
+
+  - code: DO
+    name: Dominican Republic
+    IBAN: DO2!n4!c20!n
+    BBAN: 4!c20!n
+
+  - code: EE
+    name: Estonia
+    IBAN: EE2!n2!n2!n11!n1!n
+    BBAN: 2!n2!n11!n1!n
+
+  - code: FI
+    name: Finland
+    IBAN: FI2!n6!n7!n1!n
+    BBAN:
+
+  - code: FR
+    name: France
+    IBAN: FR2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: GF
+    name: French Guyana
+    IBAN: GF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: GP
+    name: Guadeloupe
+    IBAN: GP2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: MQ
+    name: Martinique
+    IBAN: MQ2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: RE
+    name: Reunion
+    IBAN: RE2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: FP
+    name: French Polynesia
+    IBAN: FP2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: TF
+    name: French Southern Territories
+    IBAN: TF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: YT
+    name: Mayotte
+    IBAN: YT2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: NC
+    name: New Caledonia
+    IBAN: NC2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: BL
+    name: Saint Barthelemy
+    IBAN: BL2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: MF
+    name: Saint Martin
+    IBAN: MF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: PM
+    name: Saint Pierre Et Miquelon
+    IBAN: PM2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: WF
+    name: Wallis And Futuna Islands
+    IBAN: WF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: GE
+    name: Georgia
+    IBAN: GE2!n2!a16!n
+    BBAN: 2!a16!n
+
+  - code: DE
+    name: Germany
+    IBAN: DE2!n8!n10!n
+    BBAN: 8!n10!n
+
+  - code: GI
+    name: Gibraltar
+    IBAN: GI2!n4!a15!c
+    BBAN: 4!a15!c
+
+  - code: GR
+    name: Greece
+    IBAN: GR2!n3!n4!n16!c
+    BBAN: 3!n4!n16!c
+
+  - code: GT
+    name: Guatemala
+    IBAN: GT2!n4!c20!c
+    BBAN: 4!c20!c
+
+  - code: HU
+    name: Hungary
+    IBAN: HU2!n3!n4!n1!n15!n1!n
+    BBAN: 3!n4!n1!n15!n1!n
+
+  - code: IS
+    name: Iceland
+    IBAN: IS2!n4!n2!n6!n10!n
+    BBAN: 4!n2!n6!n10!n
+
+  - code: IE
+    name: Ireland
+    IBAN: IE2!n4!a6!n8!n
+    BBAN: 4!a6!n8!n
+
+  - code: IL
+    name: Israel
+    IBAN: IL2!n3!n3!n13!n
+    BBAN: 3!n3!n13!n
+
+  - code: IT
+    name: Italy
+    IBAN: IT2!n1!a5!n5!n12!c
+    BBAN: 1!a5!n5!n12!c
+
+  - code: JO
+    name: Jordan
+    IBAN: 2!a2!n4!a4!n18!c
+    BBAN: 4!a4!n18!c
+
+  - code: KZ
+    name: Kazakhstan
+    IBAN: 2!a2!n3!n13!c
+    BBAN: 3!n13!c
+
+  - code: XK
+    name: Republic of Kosovo
+    IBAN: XK2!n4!n10!n2!n
+    BBAN: 4!n10!n2!n
+
+  - code: KW
+    name: Kuwait
+    IBAN: KW2!n4!a22!c
+    BBAN: 4!a22!c
+
+  - code: LV
+    name: Latvia
+    IBAN: LV2!n4!a13!c
+    BBAN: 4!a13!c
+
+  - code: LB
+    name: Lebanon
+    IBAN: LB2!n4!n20!c
+    BBAN: 4!n20!c
+
+  - code: LI
+    name: Principality Of Liechtenstein
+    IBAN: LI2!n5!n12!c
+    BBAN: 5!n12!c
+
+  - code: LT
+    name: Lithuania
+    IBAN: LT2!n5!n11!n
+    BBAN: 5!n11!n
+
+  - code: LU
+    name: Luxembourg
+    IBAN: LU2!n3!n13!c
+    BBAN: 3!n13!c
+
+  - code: MK
+    name: Macedonia
+    IBAN: MK2!n3!n10!c2!n
+    BBAN: 3!n10!c2!n
+
+  - code: MT
+    name: Malta
+    IBAN: MT2!n4!a5!n18!c
+    BBAN: 4!a5!n18!c
+
+  - code: MR
+    name: Mauritania
+    IBAN: MR135!n5!n11!n2!n
+    BBAN: 5!n5!n11!n2!n
+
+  - code: MU
+    name: Mauritius
+    IBAN: MU2!n4!a2!n2!n12!n3!n3!a
+    BBAN: 4!a2!n2!n12!n3!n3!a
+
+  - code: MD
+    name: Moldova
+    IBAN: MD2!n20!c
+    BBAN: 2!c18!c
+
+  - code: MC
+    name: Monaco
+    IBAN: MC2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+
+  - code: ME
+    name: Montenegro
+    IBAN: ME2!n3!n13!n2!n
+    BBAN: 3!n13!n2!n
+
+  - code: NL
+    name: The Netherlands
+    IBAN: NL2!n4!a10!n
+    BBAN: 4!a10!n
+
+  - code: NO
+    name: Norway
+    IBAN: NO2!n4!n6!n1!n
+    BBAN: 4!n6!n1!n
+
+  - code: PK
+    name: Pakistan
+    IBAN: PK2!n4!a16!c
+    BBAN: 4!a16!c
+
+  - code: PS
+    name: State Of Palestine
+    IBAN: PS2!n4!a21!c
+    BBAN: 4!a21!c
+
+  - code: PL
+    name: Poland
+    IBAN: PL2!n8!n16n
+    BBAN: 8!n16!n
+
+  - code: PT
+    name: Portugal
+    IBAN: PT2!n4!n4!n11!n2!n
+    BBAN: 4!n4!n11!n2!n
+
+  - code: QA
+    name: Qatar
+    IBAN: QA2!n4!a21!c
+    BBAN: 4!a21!c
+
+  - code: RO
+    name: Romania
+    IBAN: RO2!n4!a16!c
+    BBAN: 4!a16!c
+
+  - code: LC
+    name: Saint Lucia
+    IBAN: LC2!n4!a24n
+    BBAN: 4!a24n
+
+  - code: SM
+    name: San Marino
+    IBAN: SM2!n1!a5!n5!n12!c
+    BBAN: 1!a5!n5!n12!c
+
+  - code: ST
+    name: Sao Tome And Principe
+    IBAN: ST2!n8!n11!n2!n
+    BBAN: 8!n11!n2!n
+
+  - code: SA
+    name: Saudi Arabia
+    IBAN: SA2!n2!n18!c
+    BBAN: 2!n18!c
+
+  - code: RS
+    name: Serbia
+    IBAN: RS2!n3!n13!n2!n
+    BBAN: 3!n13!n2!n
+
+  - code: SK
+    name: Slovak Republic
+    IBAN: SK2!n4!n6!n10!n
+    BBAN: 4!n6!n10!n
+
+  - code: SI
+    name: Slovenia
+    IBAN: SI2!n5!n8!n2!n
+    BBAN: 5!n8!n2!n
+
+  - code: ES
+    name: Spain
+    IBAN: ES2!n4!n4!n1!n1!n10!n
+    BBAN: 4!n4!n1!n1!n10!n
+
+  - code: SE
+    name: Sweden
+    IBAN: SE2!n3!n16!n1!n
+    BBAN: 3!n16!n1!n
+
+  - code: CH
+    name: Switzerland
+    IBAN: CH2!n5!n12!c
+    BBAN: 5!n12!c
+
+  - code: TL
+    name: Timor-Leste
+    IBAN: TL2!n3!n14!n2!n
+    BBAN: 3!n 14!n 2!n
+
+  - code: TN
+    name: Tunisia
+    IBAN: TN592!n3!n13!n2!n
+    BBAN: 2!n3!n13!n2!n
+
+  - code: TR
+    name: Turkey
+    IBAN: TR2!n5!n1!n16!c
+    BBAN: 5!n1!n16!c
+
+  - code: AE
+    name: United Arab Emirates
+    IBAN: AE2!n3!n16!n
+    BBAN: 3!n16!n
+
+  - code: GB
+    name: United Kingdom
+    IBAN: GB2!n4!a6!n8!n
+    BBAN: 4!a6!n8!n
+
+  - code: VG
+    name: Virgin Islands, British
+    IBAN: VG2!n4!a16!n
+    BBAN: 4!a16!n

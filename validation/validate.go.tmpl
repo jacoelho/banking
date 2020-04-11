@@ -1,6 +1,10 @@
 // code generation
 
-package validation
+package {{ .PackageName }}
+
+import (
+    "github.com/jacoelho/iban/ascii"
+)
 
 func Validate{{ .CountryName }}IBAN(iban string) error {
     {{- range .Rules }}
