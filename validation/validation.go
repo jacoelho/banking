@@ -45,8 +45,6 @@ func Generate() (string, error) {
 	}
 
 	for _, v := range countries.Countries {
-		fmt.Println(v.Name)
-
 		sb, err := os.OpenFile("../samples/validator_"+strings.ReplaceAll(strings.ToLower(v.Name), " ", "_")+".go", os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
 		if err != nil {
 			return "", err
@@ -68,6 +66,8 @@ func Generate() (string, error) {
 			Length:      rules[len(rules)-1].EndPos(),
 			Rules:       rules,
 		}
+
+		fmt.Println(bla.Length, v.Name)
 
 		if err := validationTemplate.ExecuteTemplate(sb, "validate.go.tmpl", bla); err != nil {
 			return "", err

@@ -47,7 +47,7 @@ countries:
 
   - code: CR
     name: Costa Rica
-    IBAN: CR2!n3!n14!n
+    IBAN: CR2!n4!n14!n
     BBAN: 3!n14!n
 
   - code: HR
@@ -387,7 +387,7 @@ countries:
 
   - code: TN
     name: Tunisia
-    IBAN: TN592!n3!n13!n2!n
+    IBAN: TN2!n2!n3!n13!n2!n
     BBAN: 2!n3!n13!n2!n
 
   - code: TR
@@ -409,3 +409,13 @@ countries:
     name: British Virgin Islands
     IBAN: VG2!n4!a16!n
     BBAN: 4!a16!n
+
+  - code: SC
+    name: Seychelles
+    IBAN: SC2!n4!a2!n2!n16!n3!a
+    BBAN: 4!a2!n2!n16!n3!a
+
+  - code: UA
+    name: Ukraine
+    IBAN: UA2!n6!n19!c
+    BBAN: 6!n19!c
