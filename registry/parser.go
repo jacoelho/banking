@@ -21,7 +21,6 @@ func Parse(r io.Reader) ([]Entry, error) {
 	if r == nil {
 		return nil, ErrInvalidFile
 	}
-	var entries []Entry
 
 	reader := csv.NewReader(r)
 	reader.Comma = '\t'
@@ -32,6 +31,7 @@ func Parse(r io.Reader) ([]Entry, error) {
 		return nil, fmt.Errorf("%s: %w", err, ErrInvalidFile)
 	}
 
+	var entries []Entry
 	for {
 		line, err := reader.Read()
 		if err == io.EOF {
@@ -48,8 +48,8 @@ func Parse(r io.Reader) ([]Entry, error) {
 		}
 
 		entries = append(entries, entry)
-
 	}
+
 	return entries, nil
 }
 

@@ -2,12 +2,17 @@
 .SUFFIXES:
 MAKEFLAGS+=-r -R
 
+export GOBIN=$(CURDIR)/bin
+
 default: build
 
 .PHONY: build
-build: GOBIN=$(CURDIR)/bin
-build: test
+build: generate test
 	go install -v ./...
+
+.PHONY: generate
+generate:
+	go generate -v ./...
 
 .PHONY: test
 test:
@@ -21,3 +26,7 @@ vendor:
 ci-tidy:
 	go mod tidy
 	git status --porcelain go.mod go.sum || { echo "Please run 'go mod tidy'."; exit 1; }
+
+.PHONY: tools
+tools:
+	go get -tags tools ./...

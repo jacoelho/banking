@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
@@ -22,6 +23,10 @@ func main() {
 	defer fileReader.Close()
 
 	entries, err := registry.Parse(charmap.Windows1252.NewDecoder().Reader(fileReader))
+	if err != nil {
+		fmt.Printf("failed to parse file: %s", err)
+		os.Exit(1)
+	}
 
-	fmt.Printf("%+v %v", entries[0], err)
+	_ = json.NewEncoder(os.Stdout).Encode(&entries)
 }
