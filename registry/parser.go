@@ -17,7 +17,7 @@ const (
 	ErrInvalidFile = ParseError("invalid file")
 )
 
-func Parse(r io.Reader) ([]Entry, error) {
+func Decode(r io.Reader) ([]Entry, error) {
 	if r == nil {
 		return nil, ErrInvalidFile
 	}

@@ -22,7 +22,7 @@ func main() {
 	}
 	defer fileReader.Close()
 
-	entries, err := registry.Parse(charmap.Windows1252.NewDecoder().Reader(fileReader))
+	entries, err := registry.Decode(charmap.Windows1252.NewDecoder().Reader(fileReader))
 	if err != nil {
 		fmt.Printf("failed to parse file: %s", err)
 		os.Exit(1)

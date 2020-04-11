@@ -50,7 +50,7 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 	return true
 }
 
-func (p *Parser) Parse() ([]rule.Rule, error) {
+func (p *Parser) Parse() ([]rule.Rule, []error) {
 	var rules []rule.Rule
 	for !p.isCurrentTokenType(token.EOF) {
 		r := p.parseRule()
@@ -61,7 +61,7 @@ func (p *Parser) Parse() ([]rule.Rule, error) {
 		p.nextToken()
 	}
 
-	return rules, nil
+	return rules, p.errors
 }
 
 func (p *Parser) parseRule() rule.Rule {

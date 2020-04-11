@@ -3,10 +3,10 @@ package parser
 import (
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
+
 	"github.com/jacoelho/iban/registry/lexer"
 	"github.com/jacoelho/iban/registry/rule"
-
-	"github.com/google/go-cmp/cmp"
 )
 
 func TestParser_Parse(t *testing.T) {
@@ -44,6 +44,14 @@ func TestParser_Parse(t *testing.T) {
 				},
 			},
 		},
+		"no symbol": {
+			input:   "!2!",
+			wantErr: true,
+		},
+		"only digits": {
+			input:   "222",
+			wantErr: true,
+		},
 	}
 
 	for tc, tt := range tests {
@@ -54,8 +62,11 @@ func TestParser_Parse(t *testing.T) {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
-			if diff := cmp.Diff(tt.want, got); diff != "" {
-				t.Errorf("Parse() mismatch (-want +got):\n%s", diff)
+
+			if tt.want != nil {
+				if diff := cmp.Diff(tt.want, got); diff != "" {
+					t.Errorf("Parse() mismatch (-want +got):\n%s", diff)
+				}
 			}
 		})
 	}

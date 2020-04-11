@@ -52,13 +52,13 @@ Albania	AL	0000000235698741	0	8!n16!c	24	"Bank Identifier 1-3, Branch Identifier
 	}
 	for tC, tt := range tests {
 		t.Run(tC, func(t *testing.T) {
-			got, err := Parse(tt.source)
+			got, err := Decode(tt.source)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("Decode() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Parse() got = %v, want %v", got, tt.want)
+				t.Errorf("Decode() got = %v, want %v", got, tt.want)
 			}
 		})
 	}
