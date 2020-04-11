@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/jacoelho/iban/registry/ast"
 	"github.com/jacoelho/iban/registry/lexer"
+	"github.com/jacoelho/iban/registry/rule"
 	"github.com/jacoelho/iban/registry/token"
 )
 
@@ -50,12 +50,12 @@ func (p *Parser) expectPeek(t token.TokenType) bool {
 	return true
 }
 
-func (p *Parser) Parse() ([]ast.Rule, error) {
-	var rules []ast.Rule
+func (p *Parser) Parse() ([]rule.Rule, error) {
+	var rules []rule.Rule
 	for !p.isCurrentTokenType(token.EOF) {
-		rule := p.parseRule()
-		if rule != nil {
-			rules = append(rules, rule)
+		r := p.parseRule()
+		if r != nil {
+			rules = append(rules, r)
 		}
 
 		p.nextToken()
@@ -64,7 +64,7 @@ func (p *Parser) Parse() ([]ast.Rule, error) {
 	return rules, nil
 }
 
-func (p *Parser) parseRule() ast.Rule {
+func (p *Parser) parseRule() rule.Rule {
 	switch p.currentToken.Type {
 	case token.WORD:
 		return p.parseStatic()
@@ -75,14 +75,14 @@ func (p *Parser) parseRule() ast.Rule {
 	}
 }
 
-func (p *Parser) parseStatic() *ast.Static {
-	return &ast.Static{
+func (p *Parser) parseStatic() *rule.Static {
+	return &rule.Static{
 		StartPosition: p.currentToken.Position,
 		Value:         p.currentToken.Literal,
 	}
 }
 
-func (p *Parser) parseRange() *ast.RangeRule {
+func (p *Parser) parseRange() *rule.RangeRule {
 	pos := p.currentToken.Position
 
 	length, err := strconv.Atoi(p.currentToken.Literal)
@@ -98,19 +98,19 @@ func (p *Parser) parseRange() *ast.RangeRule {
 		return nil
 	}
 
-	var rangeType ast.RangeType
+	var rangeType rule.RangeType
 	switch p.currentToken.Literal {
 	case "a":
-		rangeType = ast.UpperCaseLetters
+		rangeType = rule.UpperCaseLetters
 	case "n":
-		rangeType = ast.Digit
+		rangeType = rule.Digit
 	case "c":
-		rangeType = ast.AlphaNumeric
+		rangeType = rule.AlphaNumeric
 	default:
 		return nil
 	}
 
-	return &ast.RangeRule{
+	return &rule.RangeRule{
 		StartPosition: pos,
 		Length:        length,
 		Type:          rangeType,

@@ -3,8 +3,8 @@ package parser
 import (
 	"testing"
 
-	"github.com/jacoelho/iban/registry/ast"
 	"github.com/jacoelho/iban/registry/lexer"
+	"github.com/jacoelho/iban/registry/rule"
 
 	"github.com/google/go-cmp/cmp"
 )
@@ -12,35 +12,35 @@ import (
 func TestParser_Parse(t *testing.T) {
 	tests := map[string]struct {
 		input   string
-		want    []ast.Rule
+		want    []rule.Rule
 		wantErr bool
 	}{
 		"GB": {
 			input: "GB2!n4!a6!n8!n",
-			want: []ast.Rule{
-				&ast.Static{
+			want: []rule.Rule{
+				&rule.Static{
 					StartPosition: 0,
 					Value:         "GB",
 				},
-				&ast.RangeRule{
+				&rule.RangeRule{
 					StartPosition: 2,
 					Length:        2,
-					Type:          ast.Digit,
+					Type:          rule.Digit,
 				},
-				&ast.RangeRule{
+				&rule.RangeRule{
 					StartPosition: 5,
 					Length:        4,
-					Type:          ast.UpperCaseLetters,
+					Type:          rule.UpperCaseLetters,
 				},
-				&ast.RangeRule{
+				&rule.RangeRule{
 					StartPosition: 8,
 					Length:        6,
-					Type:          ast.Digit,
+					Type:          rule.Digit,
 				},
-				&ast.RangeRule{
+				&rule.RangeRule{
 					StartPosition: 11,
 					Length:        8,
-					Type:          ast.Digit,
+					Type:          rule.Digit,
 				},
 			},
 		},

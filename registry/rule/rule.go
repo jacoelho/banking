@@ -1,4 +1,4 @@
-package ast
+package rule
 
 import "fmt"
 
