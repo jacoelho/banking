@@ -18,28 +18,28 @@ func TestParser_Parse(t *testing.T) {
 		"GB": {
 			input: "GB2!n4!a6!n8!n",
 			want: []rule.Rule{
-				&rule.Static{
-					StartPosition: 0,
+				&rule.StaticRule{
+					startPosition: 0,
 					Value:         "GB",
 				},
 				&rule.RangeRule{
-					StartPosition: 2,
-					Length:        2,
+					startPosition: 2,
+					length:        2,
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					StartPosition: 5,
-					Length:        4,
+					startPosition: 5,
+					length:        4,
 					Format:        rule.UpperCaseLetters,
 				},
 				&rule.RangeRule{
-					StartPosition: 8,
-					Length:        6,
+					startPosition: 8,
+					length:        6,
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					StartPosition: 11,
-					Length:        8,
+					startPosition: 11,
+					length:        8,
 					Format:        rule.Digit,
 				},
 			},

@@ -1,0 +1,12 @@
+// code generation
+
+package validation
+
+func Validate{{ .CountryName }}IBAN(iban string) error {
+    {{- range .Rules }}
+    if subject := iban[{{ .StartPos }}:{{ .EndPos }}]; {{ rule . "subject" }} {
+        return errors.New("validation error")
+    }
+    {{ end }}
+    return nil
+}

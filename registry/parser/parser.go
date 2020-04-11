@@ -76,9 +76,9 @@ func (p *Parser) parseRule() rule.Rule {
 	}
 }
 
-func (p *Parser) parseStatic() *rule.Static {
-	return &rule.Static{
-		StartPosition: p.currentToken.Position,
+func (p *Parser) parseStatic() *rule.StaticRule {
+	return &rule.StaticRule{
+		startPosition: p.currentToken.Position,
 		Value:         p.currentToken.Literal,
 	}
 }
@@ -112,8 +112,8 @@ func (p *Parser) parseRange() *rule.RangeRule {
 	}
 
 	return &rule.RangeRule{
-		StartPosition: pos,
-		Length:        length,
+		startPosition: pos,
+		length:        length,
 		Format:        rangeType,
 	}
 }
