@@ -22,8 +22,7 @@ func TestGenerate(t *testing.T) {
 				return
 			}
 			if got != tt.want {
-				t.Skip()
-				//t.Errorf("Generate() got = %v, want %v", got, tt.want)
+				t.Errorf("Generate() got = %v, want %v", got, tt.want)
 			}
 		})
 	}

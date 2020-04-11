@@ -26,7 +26,7 @@ func (s *StaticRule) Type() string {
 }
 
 func (s *StaticRule) String() string {
-	return fmt.Sprintf("%s'%s' on position %d", s.Type(), s.Value, s.StartPosition)
+	return fmt.Sprintf("static value rule, pos: %d, expected value: %s", s.StartPosition, s.Value)
 }
 
 func (s *StaticRule) WriteTo(sb *strings.Builder) {

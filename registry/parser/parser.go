@@ -12,6 +12,7 @@ import (
 
 type Parser struct {
 	lexer        *lexer.Lexer
+	pos          int
 	errors       []error
 	currentToken token.Token
 	peekToken    token.Token
@@ -77,15 +78,16 @@ func (p *Parser) parseRule() rule.Rule {
 }
 
 func (p *Parser) parseStatic() *rule.StaticRule {
+	currentPost := p.pos
+
+	p.pos += len(p.currentToken.Literal)
 	return &rule.StaticRule{
-		StartPosition: p.currentToken.Position,
+		StartPosition: currentPost,
 		Value:         p.currentToken.Literal,
 	}
 }
 
 func (p *Parser) parseRange() *rule.RangeRule {
-	pos := p.currentToken.Position
-
 	length, err := strconv.Atoi(p.currentToken.Literal)
 	if err != nil {
 		return nil
@@ -111,8 +113,11 @@ func (p *Parser) parseRange() *rule.RangeRule {
 		return nil
 	}
 
+	currentPost := p.pos
+	p.pos += length
+
 	return &rule.RangeRule{
-		StartPosition: pos,
+		StartPosition: currentPost,
 		Length:        length,
 		Format:        rangeType,
 	}

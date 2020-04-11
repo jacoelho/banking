@@ -221,7 +221,7 @@ countries:
     BBAN: 3!n13!c
 
   - code: XK
-    name: Republic of Kosovo
+    name: Republic Of Kosovo
     IBAN: XK2!n4!n10!n2!n
     BBAN: 4!n10!n2!n
 
@@ -267,7 +267,7 @@ countries:
 
   - code: MR
     name: Mauritania
-    IBAN: MR135!n5!n11!n2!n
+    IBAN: MR2!n5!n5!n11!n2!n
     BBAN: 5!n5!n11!n2!n
 
   - code: MU
@@ -312,7 +312,7 @@ countries:
 
   - code: PL
     name: Poland
-    IBAN: PL2!n8!n16n
+    IBAN: PL2!n8!n16!n
     BBAN: 8!n16!n
 
   - code: PT
@@ -332,8 +332,8 @@ countries:
 
   - code: LC
     name: Saint Lucia
-    IBAN: LC2!n4!a24n
-    BBAN: 4!a24n
+    IBAN: LC2!n4!a24!c
+    BBAN: 4!a24!c
 
   - code: SM
     name: San Marino
@@ -381,7 +381,7 @@ countries:
     BBAN: 5!n12!c
 
   - code: TL
-    name: Timor-Leste
+    name: Timor Leste
     IBAN: TL2!n3!n14!n2!n
     BBAN: 3!n 14!n 2!n
 
@@ -406,6 +406,6 @@ countries:
     BBAN: 4!a6!n8!n
 
   - code: VG
-    name: Virgin Islands, British
+    name: British Virgin Islands
     IBAN: VG2!n4!a16!n
     BBAN: 4!a16!n

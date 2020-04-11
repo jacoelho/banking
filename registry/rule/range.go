@@ -45,5 +45,5 @@ func (r *RangeRule) Type() string {
 }
 
 func (r *RangeRule) String() string {
-	return fmt.Sprintf("%s: start position: %d Length: %d, type: %s", r.Type(), r.StartPosition, r.Length, r.Format)
+	return fmt.Sprintf("range rule, start pos: %d, length: %d, expected type %s", r.StartPosition, r.Length, r.Format)
 }

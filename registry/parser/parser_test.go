@@ -27,7 +27,7 @@ func TestParser_Parse(t *testing.T) {
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					StartPosition: 5,
+					StartPosition: 4,
 					Length:        4,
 					Format:        rule.UpperCaseLetters,
 				},
@@ -37,7 +37,7 @@ func TestParser_Parse(t *testing.T) {
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					StartPosition: 11,
+					StartPosition: 14,
 					Length:        8,
 					Format:        rule.Digit,
 				},
@@ -50,6 +50,41 @@ func TestParser_Parse(t *testing.T) {
 		"only digits": {
 			input:   "222",
 			wantErr: true,
+		},
+		"pt": {
+			input: "PT2!n4!n4!n11!n2!n",
+			want: []rule.Rule{
+				&rule.StaticRule{
+					StartPosition: 0,
+					Value:         "PT",
+				},
+				&rule.RangeRule{
+					StartPosition: 2,
+					Length:        2,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 4,
+					Length:        4,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 8,
+					Length:        4,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 12,
+					Length:        11,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 23,
+					Length:        2,
+					Format:        rule.Digit,
+				},
+			},
+			wantErr: false,
 		},
 	}
 
