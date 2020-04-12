@@ -4,5 +4,5 @@ import (
 	"errors"
 )
 
-// ErrValidation represents an IBAN generator error
-var ErrValidation = errors.New("generator error")
+// ErrValidation represents an IBAN validation error
+var ErrValidation = errors.New("validation error")
