@@ -47,6 +47,6 @@ func (g *Generator) AlphaNumeric(sb RuneWriter, length int) {
 
 func (g *Generator) stringWithCharset(sb RuneWriter, charset string, length int) {
 	for i := 0; i < length; i++ {
-		sb.WriteRune(rune(charset[g.rand.Intn(len(charset))]))
+		_, _ = sb.WriteRune(rune(charset[g.rand.Intn(len(charset))]))
 	}
 }
