@@ -9,6 +9,6 @@ jobs:
         with:
           go-version: 1.14.x
       - run: make ci-tidy
-      - run: make build
-      - run: make validation
+      - run: make lint
       - run: cd registry && make -f Makefile
+      - run: make validation
