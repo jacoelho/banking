@@ -14,6 +14,7 @@ Supports IBAN validation based on [swift rules](https://www.swift.com/sites/defa
 
 ### Usage
 
+#### Validation
 ```go
 err := iban.Validate("SOME IBAN")
 
@@ -21,18 +22,21 @@ err := iban.Validate("SOME IBAN")
 err := iban.ValidateUnitedKingdomIBAN("SOME GB IBAN")
 ```
 
+#### Generation
+```go
+account := iban.Generate("GB")
+
+// Or a specific iban directly
+account := iban.GenerateUnitedKingdomIBAN()
+```
+
 ## ISO-7064
 
 Mod-97-10 implemented.
 
-## Performance
-
-One library goal is to be performant, any reflection, allocations must be careful measured.
-
 ## Roadmap
 
-* generators
-  * generator with specific values
+* generator with specific values
 * country bban verifier
 
 ## License

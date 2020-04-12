@@ -212,12 +212,12 @@ countries:
 
   - code: JO
     name: Jordan
-    IBAN: 2!a2!n4!a4!n18!c
+    IBAN: JO2!n4!a4!n18!c
     BBAN: 4!a4!n18!c
 
   - code: KZ
     name: Kazakhstan
-    IBAN: 2!a2!n3!n13!c
+    IBAN: KZ2!n3!n13!c
     BBAN: 3!n13!c
 
   - code: XK

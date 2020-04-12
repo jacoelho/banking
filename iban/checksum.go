@@ -19,3 +19,13 @@ func Checksum(iban string) string {
 
 	return checkString
 }
+
+func ReplaceChecksum(iban string) string {
+	raw := []byte(iban)
+
+	check := Checksum(iban)
+
+	raw[2], raw[3] = check[0], check[1]
+
+	return string(raw)
+}

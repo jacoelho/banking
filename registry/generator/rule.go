@@ -27,5 +27,23 @@ func templateFunctions() template.FuncMap {
 			}
 			return `invalid code fix me`
 		},
+		"generator": func(r rule.Rule, builderName string) string {
+			switch v := r.(type) {
+			case *rule.StaticRule:
+				return fmt.Sprintf(`%s.WriteString("%s")`, builderName, v.Value)
+			case *rule.RangeRule:
+				var fn string
+				switch v.Format {
+				case rule.Digit:
+					fn = "Digits"
+				case rule.AlphaNumeric:
+					fn = "AlphaNumeric"
+				case rule.UpperCaseLetters:
+					fn = "UpperCaseLetters"
+				}
+				return fmt.Sprintf(`generator.%s(%s, %d)`, fn, builderName, v.Length)
+			}
+			return `invalid code fix me`
+		},
 	}
 }
