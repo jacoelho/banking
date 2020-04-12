@@ -10,3 +10,4 @@ jobs:
           go-version: 1.14.x
       - run: make ci-tidy
       - run: make build
+      - run: make validation
