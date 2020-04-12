@@ -1,7 +1,7 @@
 # disable default rules
 .SUFFIXES:
 MAKEFLAGS+=-r -R
-GOLINT_VERSION = v1.23.8
+GOLINT_VERSION = v1.24.0
 
 export GOBIN=$(CURDIR)/bin
 
