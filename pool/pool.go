@@ -27,10 +27,8 @@ func NewBufferPool() Pool {
 	return Pool{
 		p: &sync.Pool{
 			New: func() interface{} {
-				sb := new(bytes.Buffer)
-				sb.Grow(20)
 				return &Buffer{
-					Buffer: sb,
+					Buffer: new(bytes.Buffer),
 				}
 			},
 		}}
