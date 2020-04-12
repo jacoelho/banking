@@ -1,13 +1,14 @@
 # disable default rules
 .SUFFIXES:
 MAKEFLAGS+=-r -R
+GOLINT_VERSION = v1.24.0
 
 export GOBIN=$(CURDIR)/bin
 
 default: build
 
 .PHONY: build
-build: generate test
+build: generate lint test
 	go install -v ./...
 
 .PHONY: generate
@@ -30,6 +31,11 @@ vendor:
 ci-tidy:
 	go mod tidy
 	git status --porcelain go.mod go.sum || { echo "Please run 'go mod tidy'."; exit 1; }
+
+.PHONY: lint
+lint:
+	docker run -t --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:$(GOLINT_VERSION) golangci-lint run
+
 
 .PHONY: tools
 tools:
