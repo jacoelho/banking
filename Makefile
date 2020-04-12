@@ -18,6 +18,10 @@ generate:
 test:
 	go test -race -v ./...
 
+.PHONY: fmt
+fmt:
+	go fmt ./...
+
 .PHONY: vendor
 vendor:
 	go mod tidy && go mod vendor && go mod verify
