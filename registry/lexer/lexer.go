@@ -12,8 +12,7 @@ const (
 )
 
 type Lexer struct {
-	input    *strings.Reader
-	position int
+	input *strings.Reader
 }
 
 func New(input string) *Lexer {
@@ -27,19 +26,16 @@ func (l *Lexer) read() rune {
 	if err != nil {
 		return eof
 	}
-	l.position++
 	return ch
 }
 
 func (l *Lexer) unread() {
 	_ = l.input.UnreadRune()
-	l.position--
 }
 
 func (l *Lexer) scanUpperCaseLetters() token.Token {
 	var (
-		b   strings.Builder
-		pos = l.position
+		b strings.Builder
 	)
 
 	for {
@@ -58,16 +54,14 @@ func (l *Lexer) scanUpperCaseLetters() token.Token {
 	}
 
 	return token.Token{
-		Type:     token.STRING,
-		Literal:  b.String(),
-		Position: pos,
+		Type:    token.STRING,
+		Literal: b.String(),
 	}
 }
 
 func (l *Lexer) scanDigit() token.Token {
 	var (
-		b   strings.Builder
-		pos = l.position
+		b strings.Builder
 	)
 
 	for {
@@ -86,9 +80,8 @@ func (l *Lexer) scanDigit() token.Token {
 	}
 
 	return token.Token{
-		Type:     token.INTEGER,
-		Literal:  b.String(),
-		Position: pos,
+		Type:    token.INTEGER,
+		Literal: b.String(),
 	}
 }
 

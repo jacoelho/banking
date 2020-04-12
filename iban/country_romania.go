@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateRomaniaIBAN validates Romania IBAN
 func ValidateRomaniaIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateRomaniaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateRomaniaIBAN generates Romania IBAN
 func GenerateRomaniaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("RO")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

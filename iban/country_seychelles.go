@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateSeychellesIBAN validates Seychelles IBAN
 func ValidateSeychellesIBAN(iban string) error {
 	if len(iban) != 31 {
 		return fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
@@ -26,16 +27,8 @@ func ValidateSeychellesIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[8:10]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[10:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 10, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[12:28]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 12, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[8:28]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 8, length: 20, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[28:31]; !ascii.Every(subject, ascii.IsUpperCaseLetter) {
@@ -49,14 +42,14 @@ func ValidateSeychellesIBAN(iban string) error {
 	return nil
 }
 
+// GenerateSeychellesIBAN generates Seychelles IBAN
 func GenerateSeychellesIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("SC")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 16)
+	generator.Digits(sb, 20)
 	generator.UpperCaseLetters(sb, 3)
 
 	return ReplaceChecksum(sb.String())

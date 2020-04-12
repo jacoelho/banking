@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateMacedoniaIBAN validates Macedonia IBAN
 func ValidateMacedoniaIBAN(iban string) error {
 	if len(iban) != 19 {
 		return fmt.Errorf("unexpected length, want: 19: %w", ErrValidation)
@@ -18,12 +19,8 @@ func ValidateMacedoniaIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: MK, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:7]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 3, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:7]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[7:17]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -41,11 +38,12 @@ func ValidateMacedoniaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateMacedoniaIBAN generates Macedonia IBAN
 func GenerateMacedoniaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("MK")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 3)
+	generator.Digits(sb, 5)
 	generator.AlphaNumeric(sb, 10)
 	generator.Digits(sb, 2)
 

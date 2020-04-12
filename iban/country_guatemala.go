@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateGuatemalaIBAN validates Guatemala IBAN
 func ValidateGuatemalaIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
@@ -22,12 +23,8 @@ func ValidateGuatemalaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[8:28]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
-		return fmt.Errorf("range rule, start pos: 8, length: 20, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+	if subject := iban[4:28]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+		return fmt.Errorf("range rule, start pos: 4, length: 24, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -37,12 +34,13 @@ func ValidateGuatemalaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateGuatemalaIBAN generates Guatemala IBAN
 func GenerateGuatemalaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("GT")
 	generator.Digits(sb, 2)
-	generator.AlphaNumeric(sb, 4)
-	generator.AlphaNumeric(sb, 20)
+	generator.AlphaNumeric(sb, 24)
 
 	return ReplaceChecksum(sb.String())
 }

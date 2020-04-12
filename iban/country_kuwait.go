@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateKuwaitIBAN validates Kuwait IBAN
 func ValidateKuwaitIBAN(iban string) error {
 	if len(iban) != 30 {
 		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateKuwaitIBAN(iban string) error {
 	return nil
 }
 
+// GenerateKuwaitIBAN generates Kuwait IBAN
 func GenerateKuwaitIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("KW")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

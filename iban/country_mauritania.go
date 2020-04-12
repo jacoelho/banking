@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateMauritaniaIBAN validates Mauritania IBAN
 func ValidateMauritaniaIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
@@ -18,24 +19,8 @@ func ValidateMauritaniaIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: MR, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:9]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[9:14]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 9, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[14:25]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 14, length: 11, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[25:27]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 25, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:27]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 25, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -45,14 +30,12 @@ func ValidateMauritaniaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateMauritaniaIBAN generates Mauritania IBAN
 func GenerateMauritaniaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("MR")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 5)
-	generator.Digits(sb, 5)
-	generator.Digits(sb, 11)
-	generator.Digits(sb, 2)
+	generator.Digits(sb, 25)
 
 	return ReplaceChecksum(sb.String())
 }

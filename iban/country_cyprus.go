@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateCyprusIBAN validates Cyprus IBAN
 func ValidateCyprusIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
@@ -18,16 +19,8 @@ func ValidateCyprusIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: CY, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:7]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 3, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[7:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 7, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:12]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[12:28]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -41,12 +34,12 @@ func ValidateCyprusIBAN(iban string) error {
 	return nil
 }
 
+// GenerateCyprusIBAN generates Cyprus IBAN
 func GenerateCyprusIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("CY")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 3)
-	generator.Digits(sb, 5)
+	generator.Digits(sb, 10)
 	generator.AlphaNumeric(sb, 16)
 
 	return ReplaceChecksum(sb.String())

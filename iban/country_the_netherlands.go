@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateTheNetherlandsIBAN validates The Netherlands IBAN
 func ValidateTheNetherlandsIBAN(iban string) error {
 	if len(iban) != 18 {
 		return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateTheNetherlandsIBAN(iban string) error {
 	return nil
 }
 
+// GenerateTheNetherlandsIBAN generates The Netherlands IBAN
 func GenerateTheNetherlandsIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("NL")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

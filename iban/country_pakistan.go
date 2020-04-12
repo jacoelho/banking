@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidatePakistanIBAN validates Pakistan IBAN
 func ValidatePakistanIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidatePakistanIBAN(iban string) error {
 	return nil
 }
 
+// GeneratePakistanIBAN generates Pakistan IBAN
 func GeneratePakistanIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("PK")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

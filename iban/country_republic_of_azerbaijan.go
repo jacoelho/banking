@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateRepublicOfAzerbaijanIBAN validates Republic Of Azerbaijan IBAN
 func ValidateRepublicOfAzerbaijanIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateRepublicOfAzerbaijanIBAN(iban string) error {
 	return nil
 }
 
+// GenerateRepublicOfAzerbaijanIBAN generates Republic Of Azerbaijan IBAN
 func GenerateRepublicOfAzerbaijanIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("AZ")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateBritishVirginIslandsIBAN validates British Virgin Islands IBAN
 func ValidateBritishVirginIslandsIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateBritishVirginIslandsIBAN(iban string) error {
 	return nil
 }
 
+// GenerateBritishVirginIslandsIBAN generates British Virgin Islands IBAN
 func GenerateBritishVirginIslandsIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("VG")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

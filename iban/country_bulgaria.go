@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateBulgariaIBAN validates Bulgaria IBAN
 func ValidateBulgariaIBAN(iban string) error {
 	if len(iban) != 22 {
 		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
@@ -26,12 +27,8 @@ func ValidateBulgariaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[8:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[12:14]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 12, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[8:14]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 8, length: 6, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[14:22]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -45,13 +42,14 @@ func ValidateBulgariaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateBulgariaIBAN generates Bulgaria IBAN
 func GenerateBulgariaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("BG")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 2)
+	generator.Digits(sb, 6)
 	generator.AlphaNumeric(sb, 8)
 
 	return ReplaceChecksum(sb.String())

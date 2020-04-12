@@ -6,6 +6,7 @@ import (
 	"fmt"
 )
 
+// Generate IBAN based on ISO 3166-1 country code
 func Generate(countryCode string) (string, error) {
 	var result string
 

@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateQatarIBAN validates Qatar IBAN
 func ValidateQatarIBAN(iban string) error {
 	if len(iban) != 29 {
 		return fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateQatarIBAN(iban string) error {
 	return nil
 }
 
+// GenerateQatarIBAN generates Qatar IBAN
 func GenerateQatarIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("QA")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

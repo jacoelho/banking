@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateSaintLuciaIBAN validates Saint Lucia IBAN
 func ValidateSaintLuciaIBAN(iban string) error {
 	if len(iban) != 32 {
 		return fmt.Errorf("unexpected length, want: 32: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateSaintLuciaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateSaintLuciaIBAN generates Saint Lucia IBAN
 func GenerateSaintLuciaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("LC")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

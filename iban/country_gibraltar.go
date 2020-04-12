@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateGibraltarIBAN validates Gibraltar IBAN
 func ValidateGibraltarIBAN(iban string) error {
 	if len(iban) != 23 {
 		return fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateGibraltarIBAN(iban string) error {
 	return nil
 }
 
+// GenerateGibraltarIBAN generates Gibraltar IBAN
 func GenerateGibraltarIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("GI")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

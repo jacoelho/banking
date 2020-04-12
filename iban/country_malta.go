@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateMaltaIBAN validates Malta IBAN
 func ValidateMaltaIBAN(iban string) error {
 	if len(iban) != 31 {
 		return fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
@@ -41,8 +42,10 @@ func ValidateMaltaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateMaltaIBAN generates Malta IBAN
 func GenerateMaltaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("MT")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

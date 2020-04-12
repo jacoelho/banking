@@ -6,9 +6,10 @@ import (
 	"fmt"
 )
 
+// Validate an IBAN
 func Validate(iban string) error {
 	if len(iban) < 2 {
-		return fmt.Errorf("unexpected length: %w", ErrValidation)
+		return fmt.Errorf("unexpected iban length: %w", ErrValidation)
 	}
 
 	code := iban[0:2]

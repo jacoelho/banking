@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateGermanyIBAN validates Germany IBAN
 func ValidateGermanyIBAN(iban string) error {
 	if len(iban) != 22 {
 		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
@@ -18,16 +19,8 @@ func ValidateGermanyIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: DE, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 8, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[12:22]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 12, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:22]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 20, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -37,12 +30,12 @@ func ValidateGermanyIBAN(iban string) error {
 	return nil
 }
 
+// GenerateGermanyIBAN generates Germany IBAN
 func GenerateGermanyIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("DE")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 8)
-	generator.Digits(sb, 10)
+	generator.Digits(sb, 20)
 
 	return ReplaceChecksum(sb.String())
 }

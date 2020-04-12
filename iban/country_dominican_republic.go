@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateDominicanRepublicIBAN validates Dominican Republic IBAN
 func ValidateDominicanRepublicIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateDominicanRepublicIBAN(iban string) error {
 	return nil
 }
 
+// GenerateDominicanRepublicIBAN generates Dominican Republic IBAN
 func GenerateDominicanRepublicIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("DO")
 	generator.Digits(sb, 2)
 	generator.AlphaNumeric(sb, 4)

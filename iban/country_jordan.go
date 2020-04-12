@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateJordanIBAN validates Jordan IBAN
 func ValidateJordanIBAN(iban string) error {
 	if len(iban) != 30 {
 		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
@@ -41,8 +42,10 @@ func ValidateJordanIBAN(iban string) error {
 	return nil
 }
 
+// GenerateJordanIBAN generates Jordan IBAN
 func GenerateJordanIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("JO")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

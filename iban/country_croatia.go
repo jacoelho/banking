@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateCroatiaIBAN validates Croatia IBAN
 func ValidateCroatiaIBAN(iban string) error {
 	if len(iban) != 21 {
 		return fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
@@ -18,16 +19,8 @@ func ValidateCroatiaIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: HR, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:11]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 7, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[11:21]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 11, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:21]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 19, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -37,12 +30,12 @@ func ValidateCroatiaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateCroatiaIBAN generates Croatia IBAN
 func GenerateCroatiaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("HR")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 7)
-	generator.Digits(sb, 10)
+	generator.Digits(sb, 19)
 
 	return ReplaceChecksum(sb.String())
 }

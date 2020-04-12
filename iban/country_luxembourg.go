@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateLuxembourgIBAN validates Luxembourg IBAN
 func ValidateLuxembourgIBAN(iban string) error {
 	if len(iban) != 20 {
 		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
@@ -18,12 +19,8 @@ func ValidateLuxembourgIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: LU, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:7]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 3, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:7]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[7:20]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -37,11 +34,12 @@ func ValidateLuxembourgIBAN(iban string) error {
 	return nil
 }
 
+// GenerateLuxembourgIBAN generates Luxembourg IBAN
 func GenerateLuxembourgIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("LU")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 3)
+	generator.Digits(sb, 5)
 	generator.AlphaNumeric(sb, 13)
 
 	return ReplaceChecksum(sb.String())

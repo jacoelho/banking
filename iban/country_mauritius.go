@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateMauritiusIBAN validates Mauritius IBAN
 func ValidateMauritiusIBAN(iban string) error {
 	if len(iban) != 30 {
 		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
@@ -26,20 +27,8 @@ func ValidateMauritiusIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[8:10]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[10:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 10, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[12:24]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 12, length: 12, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[24:27]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 24, length: 3, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[8:27]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 8, length: 19, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[27:30]; !ascii.Every(subject, ascii.IsUpperCaseLetter) {
@@ -53,15 +42,14 @@ func ValidateMauritiusIBAN(iban string) error {
 	return nil
 }
 
+// GenerateMauritiusIBAN generates Mauritius IBAN
 func GenerateMauritiusIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("MU")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 12)
-	generator.Digits(sb, 3)
+	generator.Digits(sb, 19)
 	generator.UpperCaseLetters(sb, 3)
 
 	return ReplaceChecksum(sb.String())

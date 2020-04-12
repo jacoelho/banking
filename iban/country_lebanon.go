@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateLebanonIBAN validates Lebanon IBAN
 func ValidateLebanonIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
@@ -18,12 +19,8 @@ func ValidateLebanonIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: LB, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:8]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 6, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[8:28]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -37,11 +34,12 @@ func ValidateLebanonIBAN(iban string) error {
 	return nil
 }
 
+// GenerateLebanonIBAN generates Lebanon IBAN
 func GenerateLebanonIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("LB")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 4)
+	generator.Digits(sb, 6)
 	generator.AlphaNumeric(sb, 20)
 
 	return ReplaceChecksum(sb.String())

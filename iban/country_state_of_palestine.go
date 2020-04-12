@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateStateOfPalestineIBAN validates State Of Palestine IBAN
 func ValidateStateOfPalestineIBAN(iban string) error {
 	if len(iban) != 29 {
 		return fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateStateOfPalestineIBAN(iban string) error {
 	return nil
 }
 
+// GenerateStateOfPalestineIBAN generates State Of Palestine IBAN
 func GenerateStateOfPalestineIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("PS")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

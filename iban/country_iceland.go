@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateIcelandIBAN validates Iceland IBAN
 func ValidateIcelandIBAN(iban string) error {
 	if len(iban) != 26 {
 		return fmt.Errorf("unexpected length, want: 26: %w", ErrValidation)
@@ -18,24 +19,8 @@ func ValidateIcelandIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: IS, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[8:10]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[10:16]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 10, length: 6, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[16:26]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 16, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:26]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 24, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -45,14 +30,12 @@ func ValidateIcelandIBAN(iban string) error {
 	return nil
 }
 
+// GenerateIcelandIBAN generates Iceland IBAN
 func GenerateIcelandIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("IS")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 6)
-	generator.Digits(sb, 10)
+	generator.Digits(sb, 24)
 
 	return ReplaceChecksum(sb.String())
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateFrenchPolynesiaIBAN validates French Polynesia IBAN
 func ValidateFrenchPolynesiaIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
@@ -18,16 +19,8 @@ func ValidateFrenchPolynesiaIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: FP, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:9]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[9:14]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 9, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:14]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 12, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[14:25]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -45,12 +38,12 @@ func ValidateFrenchPolynesiaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateFrenchPolynesiaIBAN generates French Polynesia IBAN
 func GenerateFrenchPolynesiaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("FP")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 5)
-	generator.Digits(sb, 5)
+	generator.Digits(sb, 12)
 	generator.AlphaNumeric(sb, 11)
 	generator.Digits(sb, 2)
 

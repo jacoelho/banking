@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateAndorraIBAN validates Andorra IBAN
 func ValidateAndorraIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
@@ -18,16 +19,8 @@ func ValidateAndorraIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: AD, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[8:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:12]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[12:24]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -41,12 +34,12 @@ func ValidateAndorraIBAN(iban string) error {
 	return nil
 }
 
+// GenerateAndorraIBAN generates Andorra IBAN
 func GenerateAndorraIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("AD")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 4)
+	generator.Digits(sb, 10)
 	generator.AlphaNumeric(sb, 12)
 
 	return ReplaceChecksum(sb.String())
