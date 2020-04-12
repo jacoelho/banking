@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateSpainIBAN validates Spain IBAN
@@ -32,7 +32,8 @@ func ValidateSpainIBAN(iban string) error {
 
 // GenerateSpainIBAN generates Spain IBAN
 func GenerateSpainIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("ES")
 	generator.Digits(sb, 22)

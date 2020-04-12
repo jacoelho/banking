@@ -1,10 +1,12 @@
 package iso7064
 
-import "strings"
+import (
+	"github.com/jacoelho/banking/pool"
+)
 
 func Normalize(s string) string {
-	sb := new(strings.Builder)
-	sb.Grow(len(s) * 2)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	for _, r := range s {
 		switch r {

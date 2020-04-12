@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateJordanIBAN validates Jordan IBAN
@@ -44,7 +44,8 @@ func ValidateJordanIBAN(iban string) error {
 
 // GenerateJordanIBAN generates Jordan IBAN
 func GenerateJordanIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("JO")
 	generator.Digits(sb, 2)

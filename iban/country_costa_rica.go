@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateCostaRicaIBAN validates Costa Rica IBAN
@@ -32,7 +32,8 @@ func ValidateCostaRicaIBAN(iban string) error {
 
 // GenerateCostaRicaIBAN generates Costa Rica IBAN
 func GenerateCostaRicaIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("CR")
 	generator.Digits(sb, 20)

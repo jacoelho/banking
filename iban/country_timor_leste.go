@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateTimorLesteIBAN validates Timor Leste IBAN
@@ -32,7 +32,8 @@ func ValidateTimorLesteIBAN(iban string) error {
 
 // GenerateTimorLesteIBAN generates Timor Leste IBAN
 func GenerateTimorLesteIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("TL")
 	generator.Digits(sb, 21)

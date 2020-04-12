@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateKuwaitIBAN validates Kuwait IBAN
@@ -40,7 +40,8 @@ func ValidateKuwaitIBAN(iban string) error {
 
 // GenerateKuwaitIBAN generates Kuwait IBAN
 func GenerateKuwaitIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("KW")
 	generator.Digits(sb, 2)

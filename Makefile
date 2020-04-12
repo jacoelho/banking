@@ -2,6 +2,7 @@
 .SUFFIXES:
 MAKEFLAGS+=-r -R
 GOLINT_VERSION = v1.24.0
+DATE = $(shell date +%Y%m%d%H%M%S)
 
 export GOBIN=$(CURDIR)/bin
 
@@ -18,6 +19,10 @@ generate:
 .PHONY: test
 test:
 	go test -race -v ./...
+
+.PHONY: bench
+bench:
+	go test -bench=. -benchmem ./... | tee benchmarks/$(DATE).bench
 
 .PHONY: validation
 validation:

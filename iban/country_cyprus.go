@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateCyprusIBAN validates Cyprus IBAN
@@ -36,7 +36,8 @@ func ValidateCyprusIBAN(iban string) error {
 
 // GenerateCyprusIBAN generates Cyprus IBAN
 func GenerateCyprusIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("CY")
 	generator.Digits(sb, 10)

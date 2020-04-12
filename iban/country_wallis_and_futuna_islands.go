@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateWallisAndFutunaIslandsIBAN validates Wallis And Futuna Islands IBAN
@@ -40,7 +40,8 @@ func ValidateWallisAndFutunaIslandsIBAN(iban string) error {
 
 // GenerateWallisAndFutunaIslandsIBAN generates Wallis And Futuna Islands IBAN
 func GenerateWallisAndFutunaIslandsIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("WF")
 	generator.Digits(sb, 12)

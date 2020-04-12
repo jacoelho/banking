@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateMayotteIBAN validates Mayotte IBAN
@@ -40,7 +40,8 @@ func ValidateMayotteIBAN(iban string) error {
 
 // GenerateMayotteIBAN generates Mayotte IBAN
 func GenerateMayotteIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("YT")
 	generator.Digits(sb, 12)

@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateDominicanRepublicIBAN validates Dominican Republic IBAN
@@ -40,7 +40,8 @@ func ValidateDominicanRepublicIBAN(iban string) error {
 
 // GenerateDominicanRepublicIBAN generates Dominican Republic IBAN
 func GenerateDominicanRepublicIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("DO")
 	generator.Digits(sb, 2)

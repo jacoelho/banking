@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateMauritiusIBAN validates Mauritius IBAN
@@ -44,7 +44,8 @@ func ValidateMauritiusIBAN(iban string) error {
 
 // GenerateMauritiusIBAN generates Mauritius IBAN
 func GenerateMauritiusIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("MU")
 	generator.Digits(sb, 2)
