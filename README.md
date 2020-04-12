@@ -17,7 +17,7 @@ Supports IBAN validation based on [swift rules](https://www.swift.com/sites/defa
 ```go
 err := iban.Validate("SOME IBAN")
 
-# Or a specific iban directly
+// Or a specific iban directly
 err := iban.ValidateUnitedKingdomIBAN("SOME GB IBAN")
 ```
 
