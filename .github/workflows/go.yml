@@ -11,3 +11,4 @@ jobs:
       - run: make ci-tidy
       - run: make build
       - run: make validation
+      - run: cd registry && make -f Makefile

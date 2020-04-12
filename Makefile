@@ -8,7 +8,7 @@ export GOBIN=$(CURDIR)/bin
 default: build
 
 .PHONY: build
-build: generate lint test
+build: test
 	go install -v ./...
 
 .PHONY: generate
@@ -39,8 +39,5 @@ ci-tidy:
 .PHONY: lint
 lint:
 	docker run -t --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:$(GOLINT_VERSION) golangci-lint run
+	docker run -t --rm -v $(CURDIR):/app -w /app/registry golangci/golangci-lint:$(GOLINT_VERSION) golangci-lint run
 
-
-.PHONY: tools
-tools:
-	go get -tags tools ./...
