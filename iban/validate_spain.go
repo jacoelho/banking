@@ -40,5 +40,9 @@ func ValidateSpainIBAN(iban string) error {
         return fmt.Errorf("range rule, start pos: 14, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
     }
     
+	if c := Checksum(iban); c != iban[2:4] {
+		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+	}
+
     return nil
 }

@@ -28,5 +28,9 @@ func ValidateSaudiArabiaIBAN(iban string) error {
         return fmt.Errorf("range rule, start pos: 6, length: 18, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
     }
     
+	if c := Checksum(iban); c != iban[2:4] {
+		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+	}
+
     return nil
 }

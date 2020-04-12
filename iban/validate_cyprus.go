@@ -32,5 +32,9 @@ func ValidateCyprusIBAN(iban string) error {
         return fmt.Errorf("range rule, start pos: 12, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
     }
     
+	if c := Checksum(iban); c != iban[2:4] {
+		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+	}
+
     return nil
 }

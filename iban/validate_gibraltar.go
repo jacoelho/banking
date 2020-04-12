@@ -28,5 +28,9 @@ func ValidateGibraltarIBAN(iban string) error {
         return fmt.Errorf("range rule, start pos: 8, length: 15, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
     }
     
+	if c := Checksum(iban); c != iban[2:4] {
+		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+	}
+
     return nil
 }

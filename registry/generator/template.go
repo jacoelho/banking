@@ -18,6 +18,10 @@ func Validate{{ .CountryName }}IBAN(iban string) error {
         return fmt.Errorf("{{ .String }}, found %s: %w", subject, ErrValidation)
     }
     {{ end }}
+	if c := Checksum(iban); c != iban[2:4] {
+		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+	}
+
     return nil
 }
 `

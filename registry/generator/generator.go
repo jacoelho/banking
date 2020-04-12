@@ -15,8 +15,10 @@ import (
 
 const generatedPackage = "iban"
 
-var once sync.Once
-var validationTemplate *template.Template
+var (
+	once               sync.Once
+	validationTemplate *template.Template
+)
 
 func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
 	once.Do(func() {
