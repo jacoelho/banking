@@ -19,6 +19,10 @@ generate:
 test:
 	go test -race -v ./...
 
+.PHONY: validation
+validation:
+	go test -race -v -tags validation ./...
+
 .PHONY: fmt
 fmt:
 	go fmt ./...

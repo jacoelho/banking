@@ -4,6 +4,7 @@ package iban
 
 import (
 	"fmt"
+
 	"github.com/jacoelho/banking/ascii"
 )
 
