@@ -3,46 +3,46 @@
 package iban
 
 import (
-    "fmt"
+	"fmt"
 	"strings"
 
-    "github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/ascii"
 )
 
 func ValidateGeorgiaIBAN(iban string) error {
-    if len(iban) != 22 {
-        return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
-    }
-    
-    if subject := iban[0:2]; subject != "GE" {
-        return fmt.Errorf("static value rule, pos: 0, expected value: GE, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[4:6]; !ascii.Every(subject, ascii.IsUpperCaseLetter) {
-        return fmt.Errorf("range rule, start pos: 4, length: 2, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[6:22]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 6, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
+	if len(iban) != 22 {
+		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	if subject := iban[0:2]; subject != "GE" {
+		return fmt.Errorf("static value rule, pos: 0, expected value: GE, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[4:6]; !ascii.Every(subject, ascii.IsUpperCaseLetter) {
+		return fmt.Errorf("range rule, start pos: 4, length: 2, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[6:22]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 6, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
 	if c := Checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
-    return nil
+	return nil
 }
 
 func GenerateGeorgiaIBAN() string {
 	var sb = new(strings.Builder)
-    sb.WriteString("GE")
-    generator.Digits(sb, 2)
-    generator.UpperCaseLetters(sb, 2)
-    generator.Digits(sb, 16)
+	sb.WriteString("GE")
+	generator.Digits(sb, 2)
+	generator.UpperCaseLetters(sb, 2)
+	generator.Digits(sb, 16)
 
 	return ReplaceChecksum(sb.String())
 }

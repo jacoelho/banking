@@ -3,51 +3,51 @@
 package iban
 
 import (
-    "fmt"
+	"fmt"
 	"strings"
 
-    "github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/ascii"
 )
 
 func ValidateCyprusIBAN(iban string) error {
-    if len(iban) != 28 {
-        return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
-    }
-    
-    if subject := iban[0:2]; subject != "CY" {
-        return fmt.Errorf("static value rule, pos: 0, expected value: CY, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[4:7]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 4, length: 3, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[7:12]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 7, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[12:28]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
-        return fmt.Errorf("range rule, start pos: 12, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
-    }
-    
+	if len(iban) != 28 {
+		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
+	}
+
+	if subject := iban[0:2]; subject != "CY" {
+		return fmt.Errorf("static value rule, pos: 0, expected value: CY, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[4:7]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 4, length: 3, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[7:12]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 7, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[12:28]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+		return fmt.Errorf("range rule, start pos: 12, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+	}
+
 	if c := Checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
-    return nil
+	return nil
 }
 
 func GenerateCyprusIBAN() string {
 	var sb = new(strings.Builder)
-    sb.WriteString("CY")
-    generator.Digits(sb, 2)
-    generator.Digits(sb, 3)
-    generator.Digits(sb, 5)
-    generator.AlphaNumeric(sb, 16)
+	sb.WriteString("CY")
+	generator.Digits(sb, 2)
+	generator.Digits(sb, 3)
+	generator.Digits(sb, 5)
+	generator.AlphaNumeric(sb, 16)
 
 	return ReplaceChecksum(sb.String())
 }

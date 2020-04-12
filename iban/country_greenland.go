@@ -3,51 +3,51 @@
 package iban
 
 import (
-    "fmt"
+	"fmt"
 	"strings"
 
-    "github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/ascii"
 )
 
 func ValidateGreenlandIBAN(iban string) error {
-    if len(iban) != 18 {
-        return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
-    }
-    
-    if subject := iban[0:2]; subject != "GL" {
-        return fmt.Errorf("static value rule, pos: 0, expected value: GL, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[8:17]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 8, length: 9, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
-    if subject := iban[17:18]; !ascii.Every(subject, ascii.IsDigit) {
-        return fmt.Errorf("range rule, start pos: 17, length: 1, expected type Digit, found %s: %w", subject, ErrValidation)
-    }
-    
+	if len(iban) != 18 {
+		return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+	}
+
+	if subject := iban[0:2]; subject != "GL" {
+		return fmt.Errorf("static value rule, pos: 0, expected value: GL, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[8:17]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 8, length: 9, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
+	if subject := iban[17:18]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 17, length: 1, expected type Digit, found %s: %w", subject, ErrValidation)
+	}
+
 	if c := Checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
-    return nil
+	return nil
 }
 
 func GenerateGreenlandIBAN() string {
 	var sb = new(strings.Builder)
-    sb.WriteString("GL")
-    generator.Digits(sb, 2)
-    generator.Digits(sb, 4)
-    generator.Digits(sb, 9)
-    generator.Digits(sb, 1)
+	sb.WriteString("GL")
+	generator.Digits(sb, 2)
+	generator.Digits(sb, 4)
+	generator.Digits(sb, 9)
+	generator.Digits(sb, 1)
 
 	return ReplaceChecksum(sb.String())
 }
