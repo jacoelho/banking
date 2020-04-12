@@ -12,6 +12,15 @@ go get -u github.com/jacoelho/banking
 
 Supports IBAN validation based on [swift rules](https://www.swift.com/sites/default/files/resources/iban_registry.txt).
 
+### Usage
+
+```go
+err := iban.Validate("SOME IBAN")
+
+# Or a specific iban directly
+err := iban.ValidateUnitedKingdomIBAN("SOME GB IBAN")
+```
+
 ## ISO-7064
 
 Mod-97-10 implemented.
