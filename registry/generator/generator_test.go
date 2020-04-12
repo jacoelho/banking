@@ -1,29 +1,42 @@
 package generator
 
-import "testing"
+import (
+	"bytes"
+	"testing"
 
-func TestGenerate(t *testing.T) {
-	//tests := []struct {
-	//	name    string
-	//	want    string
-	//	wantErr bool
-	//}{
-	//	{
-	//		name:    "test",
-	//		want:    "adada",
-	//		wantErr: false,
-	//	},
-	//}
-	//for _, tt := range tests {
-	//	t.Run(tt.name, func(t *testing.T) {
-	//		got, err := Generate()
-	//		if (err != nil) != tt.wantErr {
-	//			t.Errorf("Generate() error = %v, wantErr %v", err, tt.wantErr)
-	//			return
-	//		}
-	//		if got != tt.want {
-	//			t.Errorf("Generate() got = %v, want %v", got, tt.want)
-	//		}
-	//	})
-	//}
+	"github.com/jacoelho/banking/registry"
+)
+
+func TestGenerateValidationForCountry(t *testing.T) {
+	tests := []struct {
+		name    string
+		country registry.Country
+		result  string
+		wantErr bool
+	}{
+		{
+			name: "test",
+			country: registry.Country{
+				Code: "AL",
+				Name: "Albania",
+				IBAN: "AL2!n8!n16!c",
+			},
+			result:  "",
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Skip()
+			w := &bytes.Buffer{}
+			err := GenerateValidationForCountry(w, tt.country)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("GenerateValidationForCountry() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if gotW := w.String(); gotW != tt.result {
+				t.Errorf("GenerateValidationForCountry() gotW = %v, want %v", gotW, tt.result)
+			}
+		})
+	}
 }

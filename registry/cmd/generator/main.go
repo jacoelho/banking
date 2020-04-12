@@ -56,7 +56,7 @@ func main() {
 	}
 
 	for _, country := range countries.Countries {
-		targetFileName := "validate_" + strings.ReplaceAll(strings.ToLower(country.Name), " ", "_") + ".go"
+		targetFileName := "country_" + strings.ReplaceAll(strings.ToLower(country.Name), " ", "_") + ".go"
 		targetFile := path.Join(*destinationDirectory, targetFileName)
 
 		writer, err := os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
@@ -83,6 +83,23 @@ func main() {
 		log.Fatal(err)
 	}
 	if err := generator.GenerateValidate(writer, countries.Countries); err != nil {
+		writer.Close()
+		if errRemove := os.Remove(targetFile); errRemove != nil {
+			log.Fatalf("while handling %s, got %s", err, errRemove)
+		}
+		log.Fatal(err)
+	}
+
+	writer.Close()
+
+	// single generate file
+	targetFile = path.Join(*destinationDirectory, "generate.go")
+
+	writer, err = os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := generator.GenerateGenerate(writer, countries.Countries); err != nil {
 		writer.Close()
 		if errRemove := os.Remove(targetFile); errRemove != nil {
 			log.Fatalf("while handling %s, got %s", err, errRemove)

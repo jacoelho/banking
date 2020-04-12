@@ -31,15 +31,17 @@ func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
 	}
 
 	var validationData = struct {
-		PackageName  string
-		FunctionName string
-		Length       int
-		Rules        []rule.Rule
+		PackageName      string
+		FunctionValidate string
+		FunctionGenerate string
+		Length           int
+		Rules            []rule.Rule
 	}{
-		FunctionName: validateFunctionName(country.Name),
-		PackageName:  generatedPackage,
-		Length:       rules[len(rules)-1].EndPos(),
-		Rules:        rules,
+		FunctionValidate: validateFunctionName(country.Name),
+		FunctionGenerate: generateFunctionName(country.Name),
+		PackageName:      generatedPackage,
+		Length:           rules[len(rules)-1].EndPos(),
+		Rules:            rules,
 	}
 
 	return validateCountryTemplate.ExecuteTemplate(w, "", validationData)
@@ -47,6 +49,10 @@ func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
 
 func validateFunctionName(s string) string {
 	return fmt.Sprintf("Validate%sIBAN", strings.ReplaceAll(s, " ", ""))
+}
+
+func generateFunctionName(s string) string {
+	return fmt.Sprintf("Generate%sIBAN", strings.ReplaceAll(s, " ", ""))
 }
 
 type validateCountry struct {
@@ -65,6 +71,31 @@ func GenerateValidate(w io.Writer, countries []registry.Country) error {
 		functions = append(functions, validateCountry{
 			Code: country.Code,
 			Fn:   validateFunctionName(country.Name),
+		})
+	}
+
+	var data = struct {
+		PackageName string
+		Functions   []validateCountry
+	}{
+		PackageName: generatedPackage,
+		Functions:   functions,
+	}
+
+	return tmpl.ExecuteTemplate(w, "", data)
+}
+
+func GenerateGenerate(w io.Writer, countries []registry.Country) error {
+	tmpl, err := template.New("").Parse(generateTmpl)
+	if err != nil {
+		return err
+	}
+
+	var functions []validateCountry
+	for _, country := range countries {
+		functions = append(functions, validateCountry{
+			Code: country.Code,
+			Fn:   generateFunctionName(country.Name),
 		})
 	}
 
