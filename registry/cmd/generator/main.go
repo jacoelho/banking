@@ -8,9 +8,10 @@ import (
 	"path"
 	"strings"
 
+	"gopkg.in/yaml.v2"
+
 	"github.com/jacoelho/banking/registry"
 	"github.com/jacoelho/banking/registry/generator"
-	"gopkg.in/yaml.v2"
 )
 
 func createDirectory(dirName string) error {
