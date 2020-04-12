@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidatePrincipalityOfLiechtensteinIBAN validates Principality Of Liechtenstein IBAN
 func ValidatePrincipalityOfLiechtensteinIBAN(iban string) error {
 	if len(iban) != 21 {
 		return fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
@@ -18,12 +19,8 @@ func ValidatePrincipalityOfLiechtensteinIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: LI, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:9]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:9]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 7, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[9:21]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -37,11 +34,12 @@ func ValidatePrincipalityOfLiechtensteinIBAN(iban string) error {
 	return nil
 }
 
+// GeneratePrincipalityOfLiechtensteinIBAN generates Principality Of Liechtenstein IBAN
 func GeneratePrincipalityOfLiechtensteinIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("LI")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 5)
+	generator.Digits(sb, 7)
 	generator.AlphaNumeric(sb, 12)
 
 	return ReplaceChecksum(sb.String())

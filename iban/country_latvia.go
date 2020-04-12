@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateLatviaIBAN validates Latvia IBAN
 func ValidateLatviaIBAN(iban string) error {
 	if len(iban) != 21 {
 		return fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateLatviaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateLatviaIBAN generates Latvia IBAN
 func GenerateLatviaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("LV")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

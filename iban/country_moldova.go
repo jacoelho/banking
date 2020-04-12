@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateMoldovaIBAN validates Moldova IBAN
 func ValidateMoldovaIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
@@ -33,8 +34,10 @@ func ValidateMoldovaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateMoldovaIBAN generates Moldova IBAN
 func GenerateMoldovaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("MD")
 	generator.Digits(sb, 2)
 	generator.AlphaNumeric(sb, 20)

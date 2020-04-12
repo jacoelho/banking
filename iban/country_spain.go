@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateSpainIBAN validates Spain IBAN
 func ValidateSpainIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
@@ -18,28 +19,8 @@ func ValidateSpainIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: ES, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[8:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[12:13]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 12, length: 1, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[13:14]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 13, length: 1, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[14:24]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 14, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:24]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 22, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -49,15 +30,12 @@ func ValidateSpainIBAN(iban string) error {
 	return nil
 }
 
+// GenerateSpainIBAN generates Spain IBAN
 func GenerateSpainIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("ES")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 1)
-	generator.Digits(sb, 1)
-	generator.Digits(sb, 10)
+	generator.Digits(sb, 22)
 
 	return ReplaceChecksum(sb.String())
 }

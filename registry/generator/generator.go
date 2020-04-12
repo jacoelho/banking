@@ -25,7 +25,7 @@ func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
 		validateCountryTemplate = template.Must(template.New("").Funcs(templateFunctions()).Parse(validateCountryTmpl))
 	})
 
-	rules, parseErr := parser.New(country.IBAN).Parse()
+	rules, parseErr := parser.New(country.IBAN).ReducedParse()
 	if parseErr != nil {
 		return fmt.Errorf("%v", parseErr)
 	}
@@ -34,12 +34,14 @@ func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
 		PackageName      string
 		FunctionValidate string
 		FunctionGenerate string
+		CountryName      string
 		Length           int
 		Rules            []rule.Rule
 	}{
 		FunctionValidate: validateFunctionName(country.Name),
 		FunctionGenerate: generateFunctionName(country.Name),
 		PackageName:      generatedPackage,
+		CountryName:      country.Name,
 		Length:           rules[len(rules)-1].EndPos(),
 		Rules:            rules,
 	}

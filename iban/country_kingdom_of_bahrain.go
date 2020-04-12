@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateKingdomOfBahrainIBAN validates Kingdom Of Bahrain IBAN
 func ValidateKingdomOfBahrainIBAN(iban string) error {
 	if len(iban) != 22 {
 		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateKingdomOfBahrainIBAN(iban string) error {
 	return nil
 }
 
+// GenerateKingdomOfBahrainIBAN generates Kingdom Of Bahrain IBAN
 func GenerateKingdomOfBahrainIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("BH")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 4)

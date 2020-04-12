@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateGeorgiaIBAN validates Georgia IBAN
 func ValidateGeorgiaIBAN(iban string) error {
 	if len(iban) != 22 {
 		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
@@ -37,8 +38,10 @@ func ValidateGeorgiaIBAN(iban string) error {
 	return nil
 }
 
+// GenerateGeorgiaIBAN generates Georgia IBAN
 func GenerateGeorgiaIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("GE")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 2)

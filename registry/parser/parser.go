@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/registry/token"
 )
 
+// Parser parses ISO 13616 IBAN grammar into rules
 type Parser struct {
 	lexer        *lexer.Lexer
 	pos          int
@@ -17,6 +18,8 @@ type Parser struct {
 	peekToken    token.Token
 }
 
+// New creates a string Parser
+// input should match ISO 13616 grammer, eg: `3!n3!n8!n2!n`
 func New(input string) *Parser {
 	p := &Parser{
 		lexer: lexer.New(input),
@@ -51,7 +54,40 @@ func (p *Parser) expectPeek(t token.ItemType) bool {
 	return true
 }
 
-func (p *Parser) Parse() ([]rule.Rule, []error) {
+func (p *Parser) ReducedParse() ([]rule.Rule, error) {
+	rules, err := p.Parse()
+	if err != nil {
+		return nil, err
+	}
+
+	i := 0
+	for _, r := range rules {
+		if i == 0 {
+			rules[i] = r
+			i++
+			continue
+		}
+
+		switch cur := r.(type) {
+		case *rule.RangeRule:
+			if prev, ok := rules[i-1].(*rule.RangeRule); ok && cur.Format == prev.Format {
+				prev.Length += cur.Length
+				continue
+			}
+		case *rule.StaticRule:
+			if prev, ok := rules[i-1].(*rule.StaticRule); ok {
+				prev.Value += cur.Value
+				continue
+			}
+		}
+		rules[i] = r
+		i++
+	}
+
+	return rules[:i], nil
+}
+
+func (p *Parser) Parse() ([]rule.Rule, error) {
 	var rules []rule.Rule
 	for !p.isCurrentTokenType(token.EOF) {
 		r := p.parseRule()
@@ -62,7 +98,11 @@ func (p *Parser) Parse() ([]rule.Rule, []error) {
 		p.nextToken()
 	}
 
-	return rules, p.errors
+	if p.errors != nil {
+		return nil, fmt.Errorf("parsing error %v", p.errors)
+	}
+
+	return rules, nil
 }
 
 func (p *Parser) parseRule() rule.Rule {

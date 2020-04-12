@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateSanMarinoIBAN validates San Marino IBAN
 func ValidateSanMarinoIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
@@ -26,12 +27,8 @@ func ValidateSanMarinoIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 4, length: 1, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[5:10]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 5, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[10:15]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 10, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[5:15]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 5, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[15:27]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -45,13 +42,14 @@ func ValidateSanMarinoIBAN(iban string) error {
 	return nil
 }
 
+// GenerateSanMarinoIBAN generates San Marino IBAN
 func GenerateSanMarinoIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("SM")
 	generator.Digits(sb, 2)
 	generator.UpperCaseLetters(sb, 1)
-	generator.Digits(sb, 5)
-	generator.Digits(sb, 5)
+	generator.Digits(sb, 10)
 	generator.AlphaNumeric(sb, 12)
 
 	return ReplaceChecksum(sb.String())

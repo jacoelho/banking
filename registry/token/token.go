@@ -14,9 +14,8 @@ const (
 )
 
 type Token struct {
-	Type     ItemType
-	Literal  string
-	Position int
+	Type    ItemType
+	Literal string
 }
 
 func (t Token) String() string {

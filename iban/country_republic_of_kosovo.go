@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateRepublicOfKosovoIBAN validates Republic Of Kosovo IBAN
 func ValidateRepublicOfKosovoIBAN(iban string) error {
 	if len(iban) != 20 {
 		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
@@ -18,20 +19,8 @@ func ValidateRepublicOfKosovoIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: XK, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[8:18]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[18:20]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 18, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:20]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 18, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -41,13 +30,12 @@ func ValidateRepublicOfKosovoIBAN(iban string) error {
 	return nil
 }
 
+// GenerateRepublicOfKosovoIBAN generates Republic Of Kosovo IBAN
 func GenerateRepublicOfKosovoIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("XK")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 10)
-	generator.Digits(sb, 2)
+	generator.Digits(sb, 18)
 
 	return ReplaceChecksum(sb.String())
 }

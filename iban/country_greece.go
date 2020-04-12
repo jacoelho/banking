@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidateGreeceIBAN validates Greece IBAN
 func ValidateGreeceIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
@@ -18,16 +19,8 @@ func ValidateGreeceIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: GR, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:7]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 3, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[7:11]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 7, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:11]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 9, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if subject := iban[11:27]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
@@ -41,12 +34,12 @@ func ValidateGreeceIBAN(iban string) error {
 	return nil
 }
 
+// GenerateGreeceIBAN generates Greece IBAN
 func GenerateGreeceIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("GR")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 3)
-	generator.Digits(sb, 4)
+	generator.Digits(sb, 9)
 	generator.AlphaNumeric(sb, 16)
 
 	return ReplaceChecksum(sb.String())

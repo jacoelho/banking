@@ -9,6 +9,7 @@ import (
 	"github.com/jacoelho/banking/ascii"
 )
 
+// ValidatePortugalIBAN validates Portugal IBAN
 func ValidatePortugalIBAN(iban string) error {
 	if len(iban) != 25 {
 		return fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
@@ -18,24 +19,8 @@ func ValidatePortugalIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: PT, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[8:12]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 8, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[12:23]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 12, length: 11, expected type Digit, found %s: %w", subject, ErrValidation)
-	}
-
-	if subject := iban[23:25]; !ascii.Every(subject, ascii.IsDigit) {
-		return fmt.Errorf("range rule, start pos: 23, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+	if subject := iban[2:25]; !ascii.Every(subject, ascii.IsDigit) {
+		return fmt.Errorf("range rule, start pos: 2, length: 23, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
 	if c := Checksum(iban); c != iban[2:4] {
@@ -45,14 +30,12 @@ func ValidatePortugalIBAN(iban string) error {
 	return nil
 }
 
+// GeneratePortugalIBAN generates Portugal IBAN
 func GeneratePortugalIBAN() string {
 	var sb = new(strings.Builder)
+
 	sb.WriteString("PT")
-	generator.Digits(sb, 2)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 4)
-	generator.Digits(sb, 11)
-	generator.Digits(sb, 2)
+	generator.Digits(sb, 23)
 
 	return ReplaceChecksum(sb.String())
 }
