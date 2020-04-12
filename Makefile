@@ -8,7 +8,7 @@ export GOBIN=$(CURDIR)/bin
 default: build
 
 .PHONY: build
-build: generate test
+build: generate lint test
 	go install -v ./...
 
 .PHONY: generate
