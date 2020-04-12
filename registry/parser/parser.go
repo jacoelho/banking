@@ -60,14 +60,12 @@ func (p *Parser) ReducedParse() ([]rule.Rule, error) {
 		return nil, err
 	}
 
-	i := 0
-	for _, r := range rules {
-		if i == 0 {
-			rules[i] = r
-			i++
-			continue
-		}
+	if len(rules) == 1 {
+		return rules, nil
+	}
 
+	i := 1
+	for _, r := range rules[1:] {
 		switch cur := r.(type) {
 		case *rule.RangeRule:
 			if prev, ok := rules[i-1].(*rule.RangeRule); ok && cur.Format == prev.Format {
