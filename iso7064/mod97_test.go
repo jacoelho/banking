@@ -5,7 +5,7 @@ import "testing"
 func TestMod97(t *testing.T) {
 	tests := []struct {
 		input string
-		want  int
+		want  uint
 	}{
 		{
 			input: "3214282912345698765432161182",
@@ -22,6 +22,10 @@ func TestMod97(t *testing.T) {
 		{
 			input: "77277287827223785",
 			want:  35,
+		},
+		{
+			input: "2218132140051512345674161100",
+			want:  72,
 		},
 	}
 	for _, tt := range tests {
