@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateNewCaledoniaIBAN validates New Caledonia IBAN
@@ -40,7 +40,8 @@ func ValidateNewCaledoniaIBAN(iban string) error {
 
 // GenerateNewCaledoniaIBAN generates New Caledonia IBAN
 func GenerateNewCaledoniaIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("NC")
 	generator.Digits(sb, 12)

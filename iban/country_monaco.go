@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateMonacoIBAN validates Monaco IBAN
@@ -40,7 +40,8 @@ func ValidateMonacoIBAN(iban string) error {
 
 // GenerateMonacoIBAN generates Monaco IBAN
 func GenerateMonacoIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("MC")
 	generator.Digits(sb, 12)

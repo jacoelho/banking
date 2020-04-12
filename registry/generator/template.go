@@ -6,8 +6,8 @@ package {{ .PackageName }}
 
 import (
     "fmt"
-	"strings"
 
+    "github.com/jacoelho/banking/pool"
     "github.com/jacoelho/banking/ascii"
 )
 
@@ -30,7 +30,8 @@ func {{ .FunctionValidate }}(iban string) error {
 
 // {{ .FunctionGenerate }} generates {{ .CountryName }} IBAN
 func {{ .FunctionGenerate }}() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	{{ range .Rules }}
     {{ generator . "sb" -}}

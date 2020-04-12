@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateSaintLuciaIBAN validates Saint Lucia IBAN
@@ -40,7 +40,8 @@ func ValidateSaintLuciaIBAN(iban string) error {
 
 // GenerateSaintLuciaIBAN generates Saint Lucia IBAN
 func GenerateSaintLuciaIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("LC")
 	generator.Digits(sb, 2)

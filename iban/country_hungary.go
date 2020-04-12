@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateHungaryIBAN validates Hungary IBAN
@@ -32,7 +32,8 @@ func ValidateHungaryIBAN(iban string) error {
 
 // GenerateHungaryIBAN generates Hungary IBAN
 func GenerateHungaryIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("HU")
 	generator.Digits(sb, 26)

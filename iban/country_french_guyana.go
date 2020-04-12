@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateFrenchGuyanaIBAN validates French Guyana IBAN
@@ -40,7 +40,8 @@ func ValidateFrenchGuyanaIBAN(iban string) error {
 
 // GenerateFrenchGuyanaIBAN generates French Guyana IBAN
 func GenerateFrenchGuyanaIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("GF")
 	generator.Digits(sb, 12)

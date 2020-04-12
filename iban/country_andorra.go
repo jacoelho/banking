@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateAndorraIBAN validates Andorra IBAN
@@ -36,7 +36,8 @@ func ValidateAndorraIBAN(iban string) error {
 
 // GenerateAndorraIBAN generates Andorra IBAN
 func GenerateAndorraIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("AD")
 	generator.Digits(sb, 10)

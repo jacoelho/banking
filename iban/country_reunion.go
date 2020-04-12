@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateReunionIBAN validates Reunion IBAN
@@ -40,7 +40,8 @@ func ValidateReunionIBAN(iban string) error {
 
 // GenerateReunionIBAN generates Reunion IBAN
 func GenerateReunionIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("RE")
 	generator.Digits(sb, 12)

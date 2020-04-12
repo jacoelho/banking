@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateSaintMartinIBAN validates Saint Martin IBAN
@@ -40,7 +40,8 @@ func ValidateSaintMartinIBAN(iban string) error {
 
 // GenerateSaintMartinIBAN generates Saint Martin IBAN
 func GenerateSaintMartinIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("MF")
 	generator.Digits(sb, 12)

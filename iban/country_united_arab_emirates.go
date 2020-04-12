@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateUnitedArabEmiratesIBAN validates United Arab Emirates IBAN
@@ -32,7 +32,8 @@ func ValidateUnitedArabEmiratesIBAN(iban string) error {
 
 // GenerateUnitedArabEmiratesIBAN generates United Arab Emirates IBAN
 func GenerateUnitedArabEmiratesIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("AE")
 	generator.Digits(sb, 21)

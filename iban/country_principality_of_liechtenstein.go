@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidatePrincipalityOfLiechtensteinIBAN validates Principality Of Liechtenstein IBAN
@@ -36,7 +36,8 @@ func ValidatePrincipalityOfLiechtensteinIBAN(iban string) error {
 
 // GeneratePrincipalityOfLiechtensteinIBAN generates Principality Of Liechtenstein IBAN
 func GeneratePrincipalityOfLiechtensteinIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("LI")
 	generator.Digits(sb, 7)

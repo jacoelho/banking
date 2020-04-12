@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateLuxembourgIBAN validates Luxembourg IBAN
@@ -36,7 +36,8 @@ func ValidateLuxembourgIBAN(iban string) error {
 
 // GenerateLuxembourgIBAN generates Luxembourg IBAN
 func GenerateLuxembourgIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("LU")
 	generator.Digits(sb, 5)

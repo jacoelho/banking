@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateGibraltarIBAN validates Gibraltar IBAN
@@ -40,7 +40,8 @@ func ValidateGibraltarIBAN(iban string) error {
 
 // GenerateGibraltarIBAN generates Gibraltar IBAN
 func GenerateGibraltarIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("GI")
 	generator.Digits(sb, 2)

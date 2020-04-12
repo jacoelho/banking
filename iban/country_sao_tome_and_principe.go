@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateSaoTomeAndPrincipeIBAN validates Sao Tome And Principe IBAN
@@ -32,7 +32,8 @@ func ValidateSaoTomeAndPrincipeIBAN(iban string) error {
 
 // GenerateSaoTomeAndPrincipeIBAN generates Sao Tome And Principe IBAN
 func GenerateSaoTomeAndPrincipeIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("ST")
 	generator.Digits(sb, 23)

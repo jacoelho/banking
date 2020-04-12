@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateMoldovaIBAN validates Moldova IBAN
@@ -36,7 +36,8 @@ func ValidateMoldovaIBAN(iban string) error {
 
 // GenerateMoldovaIBAN generates Moldova IBAN
 func GenerateMoldovaIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("MD")
 	generator.Digits(sb, 2)

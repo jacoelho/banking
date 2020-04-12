@@ -4,9 +4,9 @@ package iban
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
 
 // ValidateUnitedKingdomIBAN validates United Kingdom IBAN
@@ -40,7 +40,8 @@ func ValidateUnitedKingdomIBAN(iban string) error {
 
 // GenerateUnitedKingdomIBAN generates United Kingdom IBAN
 func GenerateUnitedKingdomIBAN() string {
-	var sb = new(strings.Builder)
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
 	sb.WriteString("GB")
 	generator.Digits(sb, 2)
