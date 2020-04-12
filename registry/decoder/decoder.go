@@ -1,23 +1,25 @@
-package registry
+package decoder
 
 import (
 	"encoding/csv"
 	"fmt"
 	"io"
+
+	"github.com/jacoelho/banking/registry"
 )
 
-type ParseError string
+type DecodeError string
 
-func (p ParseError) Error() string {
+func (p DecodeError) Error() string {
 	return string(p)
 }
 
 const (
-	ErrLineParse   = ParseError("failed to parse line")
-	ErrInvalidFile = ParseError("invalid file")
+	ErrLineParse   = DecodeError("failed to parse line")
+	ErrInvalidFile = DecodeError("invalid file")
 )
 
-func Decode(r io.Reader) ([]Entry, error) {
+func Decode(r io.Reader) ([]registry.Entry, error) {
 	if r == nil {
 		return nil, ErrInvalidFile
 	}
@@ -31,7 +33,7 @@ func Decode(r io.Reader) ([]Entry, error) {
 		return nil, fmt.Errorf("%s: %w", err, ErrInvalidFile)
 	}
 
-	var entries []Entry
+	var entries []registry.Entry
 	for {
 		line, err := reader.Read()
 		if err == io.EOF {
@@ -53,16 +55,16 @@ func Decode(r io.Reader) ([]Entry, error) {
 	return entries, nil
 }
 
-func parseLine(line []string) (Entry, error) {
+func parseLine(line []string) (registry.Entry, error) {
 	if len(line) != 18 {
-		return Entry{}, fmt.Errorf("%s invalid length: %w", line, ErrLineParse)
+		return registry.Entry{}, fmt.Errorf("%s invalid length: %w", line, ErrLineParse)
 	}
 
-	return Entry{
+	return registry.Entry{
 		CountryName:                  line[0],
 		CountryCode:                  line[1],
 		DomesticAccountNumberExample: line[2],
-		BBAN: BBAN{
+		BBAN: registry.BBAN{
 			Structure:              line[4],
 			Length:                 line[5],
 			BankIdentifierPosition: line[6],
@@ -70,7 +72,7 @@ func parseLine(line []string) (Entry, error) {
 			BankIdentifierExample:  line[8],
 			Example:                line[9],
 		},
-		IBAN: IBAN{
+		IBAN: registry.IBAN{
 			Structure:               line[11],
 			Length:                  line[12],
 			ElectronicFormatExample: line[13],

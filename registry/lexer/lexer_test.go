@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/jacoelho/iban/registry/token"
+	"github.com/jacoelho/banking/registry/token"
 )
 
 func TestLexer_Scan(t *testing.T) {

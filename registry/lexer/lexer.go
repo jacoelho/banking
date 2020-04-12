@@ -3,7 +3,8 @@ package lexer
 import (
 	"strings"
 
-	"github.com/jacoelho/iban/registry/token"
+	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/registry/token"
 )
 
 const (
@@ -48,7 +49,7 @@ func (l *Lexer) scanUpperCaseLetters() token.Token {
 			break
 		}
 
-		if !isUpperCaseLetter(r) {
+		if !ascii.IsUpperCaseLetter(r) {
 			l.unread()
 			break
 		}
@@ -76,7 +77,7 @@ func (l *Lexer) scanDigit() token.Token {
 			break
 		}
 
-		if !isDigit(r) {
+		if !ascii.IsDigit(r) {
 			l.unread()
 			break
 		}
@@ -102,13 +103,13 @@ func (l *Lexer) scanSymbol() token.Token {
 
 func (l *Lexer) Scan() token.Token {
 	switch ch := l.read(); {
-	case isDigit(ch):
+	case ascii.IsDigit(ch):
 		l.unread()
 		return l.scanDigit()
-	case isUpperCaseLetter(ch):
+	case ascii.IsUpperCaseLetter(ch):
 		l.unread()
 		return l.scanUpperCaseLetters()
-	case isLowerCase(ch):
+	case ascii.IsLowerCase(ch):
 		l.unread()
 		return l.scanSymbol()
 	case ch == '!':
@@ -127,16 +128,4 @@ func (l *Lexer) Scan() token.Token {
 			Literal: "",
 		}
 	}
-}
-
-func isLowerCase(r rune) bool {
-	return 'a' <= r && r <= 'z'
-}
-
-func isUpperCaseLetter(r rune) bool {
-	return 'A' <= r && r <= 'Z'
-}
-
-func isDigit(r rune) bool {
-	return '0' <= r && r <= '9'
 }

@@ -1,18 +1,42 @@
 package rule
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
 
-var _ Rule = (*Static)(nil)
+var _ Rule = (*StaticRule)(nil)
 
-type Static struct {
+type StaticRule struct {
 	StartPosition int
 	Value         string
 }
 
-func (s *Static) Type() string {
+func (s *StaticRule) StartPos() int {
+	return s.StartPosition
+}
+
+func (s *StaticRule) EndPos() int {
+	return s.StartPosition + len(s.Value)
+}
+
+func (s *StaticRule) Type() string {
 	return "Static"
 }
 
-func (s *Static) String() string {
-	return fmt.Sprintf("%s'%s' on position %d", s.Type(), s.Value, s.StartPosition)
+func (s *StaticRule) String() string {
+	return fmt.Sprintf("static value rule, pos: %d, expected value: %s", s.StartPosition, s.Value)
+}
+
+func (s *StaticRule) WriteTo(sb *strings.Builder) {
+	sb.WriteString("if staticValue := banking[")
+	sb.WriteString(strconv.Itoa(s.StartPosition))
+	sb.WriteString(":")
+	sb.WriteString(strconv.Itoa(s.StartPosition + len(s.Value)))
+	sb.WriteString("]; staticValue != \"")
+	sb.WriteString(s.Value)
+	sb.WriteString("\" {\n")
+	sb.WriteString(`return errors.New("invalid value")`)
+	sb.WriteString("\n}")
 }

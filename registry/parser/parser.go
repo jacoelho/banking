@@ -4,22 +4,22 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/jacoelho/iban/registry/token"
-
-	"github.com/jacoelho/iban/registry/lexer"
-	"github.com/jacoelho/iban/registry/rule"
+	"github.com/jacoelho/banking/registry/lexer"
+	"github.com/jacoelho/banking/registry/rule"
+	"github.com/jacoelho/banking/registry/token"
 )
 
 type Parser struct {
 	lexer        *lexer.Lexer
+	pos          int
 	errors       []error
 	currentToken token.Token
 	peekToken    token.Token
 }
 
-func NewParser(l *lexer.Lexer) *Parser {
+func New(input string) *Parser {
 	p := &Parser{
-		lexer: l,
+		lexer: lexer.New(input),
 	}
 
 	p.nextToken()
@@ -76,16 +76,17 @@ func (p *Parser) parseRule() rule.Rule {
 	}
 }
 
-func (p *Parser) parseStatic() *rule.Static {
-	return &rule.Static{
-		StartPosition: p.currentToken.Position,
+func (p *Parser) parseStatic() *rule.StaticRule {
+	currentPost := p.pos
+
+	p.pos += len(p.currentToken.Literal)
+	return &rule.StaticRule{
+		StartPosition: currentPost,
 		Value:         p.currentToken.Literal,
 	}
 }
 
 func (p *Parser) parseRange() *rule.RangeRule {
-	pos := p.currentToken.Position
-
 	length, err := strconv.Atoi(p.currentToken.Literal)
 	if err != nil {
 		return nil
@@ -99,7 +100,7 @@ func (p *Parser) parseRange() *rule.RangeRule {
 		return nil
 	}
 
-	var rangeType rule.RangeType
+	var rangeType rule.RangeRuleType
 	switch p.currentToken.Literal {
 	case "a":
 		rangeType = rule.UpperCaseLetters
@@ -111,8 +112,11 @@ func (p *Parser) parseRange() *rule.RangeRule {
 		return nil
 	}
 
+	currentPost := p.pos
+	p.pos += length
+
 	return &rule.RangeRule{
-		StartPosition: pos,
+		StartPosition: currentPost,
 		Length:        length,
 		Format:        rangeType,
 	}

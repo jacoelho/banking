@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/jacoelho/iban/registry"
+	"github.com/jacoelho/banking/registry/decoder"
+
 	"golang.org/x/text/encoding/charmap"
 )
 
@@ -15,6 +16,11 @@ func main() {
 
 	flag.Parse()
 
+	if *fileName == "" {
+		flag.Usage()
+		os.Exit(1)
+	}
+
 	fileReader, err := os.Open(*fileName)
 	if err != nil {
 		fmt.Printf("failed to open file: %s", err)
@@ -22,11 +28,11 @@ func main() {
 	}
 	defer fileReader.Close()
 
-	entries, err := registry.Decode(charmap.Windows1252.NewDecoder().Reader(fileReader))
+	entries, err := decoder.Decode(charmap.Windows1252.NewDecoder().Reader(fileReader))
 	if err != nil {
 		fmt.Printf("failed to parse file: %s", err)
 		os.Exit(1)
 	}
 
-	_ = json.NewEncoder(os.Stdout).Encode(&entries)
+	_ = json.NewEncoder(os.Stdout).Encode(entries)
 }

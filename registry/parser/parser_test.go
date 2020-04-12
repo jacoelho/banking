@@ -5,8 +5,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/jacoelho/iban/registry/lexer"
-	"github.com/jacoelho/iban/registry/rule"
+	"github.com/jacoelho/banking/registry/rule"
 )
 
 func TestParser_Parse(t *testing.T) {
@@ -18,7 +17,7 @@ func TestParser_Parse(t *testing.T) {
 		"GB": {
 			input: "GB2!n4!a6!n8!n",
 			want: []rule.Rule{
-				&rule.Static{
+				&rule.StaticRule{
 					StartPosition: 0,
 					Value:         "GB",
 				},
@@ -28,7 +27,7 @@ func TestParser_Parse(t *testing.T) {
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					StartPosition: 5,
+					StartPosition: 4,
 					Length:        4,
 					Format:        rule.UpperCaseLetters,
 				},
@@ -38,7 +37,7 @@ func TestParser_Parse(t *testing.T) {
 					Format:        rule.Digit,
 				},
 				&rule.RangeRule{
-					StartPosition: 11,
+					StartPosition: 14,
 					Length:        8,
 					Format:        rule.Digit,
 				},
@@ -52,11 +51,46 @@ func TestParser_Parse(t *testing.T) {
 			input:   "222",
 			wantErr: true,
 		},
+		"pt": {
+			input: "PT2!n4!n4!n11!n2!n",
+			want: []rule.Rule{
+				&rule.StaticRule{
+					StartPosition: 0,
+					Value:         "PT",
+				},
+				&rule.RangeRule{
+					StartPosition: 2,
+					Length:        2,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 4,
+					Length:        4,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 8,
+					Length:        4,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 12,
+					Length:        11,
+					Format:        rule.Digit,
+				},
+				&rule.RangeRule{
+					StartPosition: 23,
+					Length:        2,
+					Format:        rule.Digit,
+				},
+			},
+			wantErr: false,
+		},
 	}
 
 	for tc, tt := range tests {
 		t.Run(tc, func(t *testing.T) {
-			p := NewParser(lexer.New(tt.input))
+			p := New(tt.input)
 			got, err := p.Parse()
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)

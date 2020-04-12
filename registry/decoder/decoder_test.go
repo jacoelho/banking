@@ -1,16 +1,18 @@
-package registry
+package decoder
 
 import (
 	"io"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/jacoelho/banking/registry"
 )
 
-func TestParse(t *testing.T) {
+func TestDecode(t *testing.T) {
 	tests := map[string]struct {
 		source  io.Reader
-		want    []Entry
+		want    []registry.Entry
 		wantErr bool
 	}{
 		"empty reader": {
@@ -26,12 +28,12 @@ func TestParse(t *testing.T) {
 		"one entry": {
 			source: strings.NewReader(`Name of country	Country code as defined in ISO 3166	Domestic account number example	BBAN	BBAN structure 	BBAN length	Bank identifier position within the BBAN	Bank identifier length	Bank identifier example	BBAN example	IBAN	IBAN structure	IBAN length	IBAN electronic format example	IBAN print format example	SEPA Country	Valid from date	Contact details
 Albania	AL	0000000235698741	0	8!n16!c	24	"Bank Identifier 1-3, Branch Identifier:4-7, Check Digit 8"	8!n	212-1100-9	212110090000000235698741	0	AL2!n8!n16!c	28	AL47212110090000000235698741	AL47 2121 1009 0000 0002 3569 8741	No		"Miho Valer , Deputy Director, Payment Systems Department, BANK OF ALBANIA, Kompleksi Halili, Rruga e Dibres, 1000 TIRANA, ALBANIA, Tel: 355 4 2419301/2/3 ext 3061, Fax: 355 4 2419408 , Email: vmiho@bankofalbania.org"`),
-			want: []Entry{
+			want: []registry.Entry{
 				{
 					CountryName:                  "Albania",
 					CountryCode:                  "AL",
 					DomesticAccountNumberExample: "0000000235698741",
-					BBAN: BBAN{
+					BBAN: registry.BBAN{
 						Structure:              "8!n16!c",
 						Length:                 "24",
 						BankIdentifierPosition: "Bank Identifier 1-3, Branch Identifier:4-7, Check Digit 8",
@@ -39,7 +41,7 @@ Albania	AL	0000000235698741	0	8!n16!c	24	"Bank Identifier 1-3, Branch Identifier
 						BankIdentifierExample:  "212-1100-9",
 						Example:                "212110090000000235698741",
 					},
-					IBAN: IBAN{
+					IBAN: registry.IBAN{
 						Structure:               "AL2!n8!n16!c",
 						Length:                  "28",
 						ElectronicFormatExample: "AL47212110090000000235698741",

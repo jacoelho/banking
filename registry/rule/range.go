@@ -1,16 +1,18 @@
 package rule
 
-import "fmt"
+import (
+	"fmt"
+)
 
-type RangeType int
+type RangeRuleType int
 
 const (
-	Digit RangeType = iota
+	Digit RangeRuleType = iota
 	UpperCaseLetters
 	AlphaNumeric
 )
 
-func (r RangeType) String() string {
+func (r RangeRuleType) String() string {
 	switch r {
 	case Digit:
 		return "Digit"
@@ -27,7 +29,15 @@ var _ Rule = (*RangeRule)(nil)
 type RangeRule struct {
 	StartPosition int
 	Length        int
-	Format        RangeType
+	Format        RangeRuleType
+}
+
+func (r *RangeRule) StartPos() int {
+	return r.StartPosition
+}
+
+func (r *RangeRule) EndPos() int {
+	return r.StartPosition + r.Length
 }
 
 func (r *RangeRule) Type() string {
@@ -35,5 +45,5 @@ func (r *RangeRule) Type() string {
 }
 
 func (r *RangeRule) String() string {
-	return fmt.Sprintf("%s: start position: %d length: %d, type: %s", r.Type(), r.StartPosition, r.Length, r.Format)
+	return fmt.Sprintf("range rule, start pos: %d, length: %d, expected type %s", r.StartPosition, r.Length, r.Format)
 }

@@ -21,5 +21,16 @@ type Entry struct {
 	CountryCode                  string `json:"country_code"`
 	DomesticAccountNumberExample string `json:"domestic_account_number_example"`
 	BBAN                         BBAN   `json:"bban"`
-	IBAN                         IBAN   `json:"iban"`
+	IBAN                         IBAN   `json:"banking"`
+}
+
+type Country struct {
+	Code string `yaml:"code"`
+	Name string `yaml:"name"`
+	IBAN string `yaml:"IBAN"`
+	BBAN string ` yaml:"BBAN"`
+}
+
+type Countries struct {
+	Countries []Country `yaml:"countries"`
 }
