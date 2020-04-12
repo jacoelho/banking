@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 
-	"github.com/jacoelho/iban/registry/rule"
+	"github.com/jacoelho/banking/registry/rule"
 )
 
 func TestParser_Parse(t *testing.T) {

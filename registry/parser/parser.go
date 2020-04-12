@@ -4,10 +4,9 @@ import (
 	"fmt"
 	"strconv"
 
-	"github.com/jacoelho/iban/registry/token"
-
-	"github.com/jacoelho/iban/registry/lexer"
-	"github.com/jacoelho/iban/registry/rule"
+	"github.com/jacoelho/banking/registry/lexer"
+	"github.com/jacoelho/banking/registry/rule"
+	"github.com/jacoelho/banking/registry/token"
 )
 
 type Parser struct {

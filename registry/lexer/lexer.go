@@ -3,9 +3,8 @@ package lexer
 import (
 	"strings"
 
-	"github.com/jacoelho/iban/ascii"
-
-	"github.com/jacoelho/iban/registry/token"
+	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/registry/token"
 )
 
 const (

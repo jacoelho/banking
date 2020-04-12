@@ -30,7 +30,7 @@ func (s *StaticRule) String() string {
 }
 
 func (s *StaticRule) WriteTo(sb *strings.Builder) {
-	sb.WriteString("if staticValue := iban[")
+	sb.WriteString("if staticValue := banking[")
 	sb.WriteString(strconv.Itoa(s.StartPosition))
 	sb.WriteString(":")
 	sb.WriteString(strconv.Itoa(s.StartPosition + len(s.Value)))

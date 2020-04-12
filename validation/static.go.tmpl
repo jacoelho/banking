@@ -1,6 +1,0 @@
-{{ define "static" }}
-    if staticValue := iban[{{ .StartPos }}:{{ .EndPos }}]; iban != "{{ .Value }}" {
-        return errors.New("validation error")
-    }
-
-{{ end }}

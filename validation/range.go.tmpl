@@ -1,6 +1,0 @@
-{{ define "range" }}
-    {{ $t = .Format }}
-    if rangeValue := iban[{{ .StartPos }}:{{ .EndPos }}]; !every(rangeValue, some) {
-        return errors.New("validation error")
-    }
-{{ end }}
