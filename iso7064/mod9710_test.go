@@ -2,10 +2,10 @@ package iso7064
 
 import "testing"
 
-func TestMod97(t *testing.T) {
+func TestMod9710(t *testing.T) {
 	tests := []struct {
 		input string
-		want  uint
+		want  int
 	}{
 		{
 			input: "3214282912345698765432161182",
@@ -30,8 +30,8 @@ func TestMod97(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.input, func(t *testing.T) {
-			if got := Mod97(tt.input); got != tt.want {
-				t.Errorf("Mod97() = %v, want %v", got, tt.want)
+			if got := Mod9710(tt.input); got != tt.want {
+				t.Errorf("Mod9710() = %v, want %v", got, tt.want)
 			}
 		})
 	}
