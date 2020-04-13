@@ -4,13 +4,82 @@ import (
 	"strconv"
 
 	"github.com/jacoelho/banking/iso7064"
+	"github.com/jacoelho/banking/pool"
 )
+
+func Normalize(s string) string {
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
+
+	for _, r := range s {
+		switch r {
+		case 'A':
+			_, _ = sb.WriteString("10")
+		case 'B':
+			_, _ = sb.WriteString("11")
+		case 'C':
+			_, _ = sb.WriteString("12")
+		case 'D':
+			_, _ = sb.WriteString("13")
+		case 'E':
+			_, _ = sb.WriteString("14")
+		case 'F':
+			_, _ = sb.WriteString("15")
+		case 'G':
+			_, _ = sb.WriteString("16")
+		case 'H':
+			_, _ = sb.WriteString("17")
+		case 'I':
+			_, _ = sb.WriteString("18")
+		case 'J':
+			_, _ = sb.WriteString("19")
+		case 'K':
+			_, _ = sb.WriteString("20")
+		case 'L':
+			_, _ = sb.WriteString("21")
+		case 'M':
+			_, _ = sb.WriteString("22")
+		case 'N':
+			_, _ = sb.WriteString("23")
+		case 'O':
+			_, _ = sb.WriteString("24")
+		case 'P':
+			_, _ = sb.WriteString("25")
+		case 'Q':
+			_, _ = sb.WriteString("26")
+		case 'R':
+			_, _ = sb.WriteString("27")
+		case 'S':
+			_, _ = sb.WriteString("28")
+		case 'T':
+			_, _ = sb.WriteString("29")
+		case 'U':
+			_, _ = sb.WriteString("30")
+		case 'V':
+			_, _ = sb.WriteString("31")
+		case 'W':
+			_, _ = sb.WriteString("32")
+		case 'X':
+			_, _ = sb.WriteString("33")
+		case 'Y':
+			_, _ = sb.WriteString("34")
+		case 'Z':
+			_, _ = sb.WriteString("35")
+		default:
+			if '0' <= r && r <= '9' {
+				_, _ = sb.WriteRune(r)
+			}
+		}
+	}
+
+	return sb.String()
+}
 
 func Checksum(iban string) string {
 	t := []byte(iban)
 	value := append(t[4:], t[0], t[1], '0', '0')
 
-	checkDigit := 98 - iso7064.Mod9710(iso7064.Normalize(string(value)))
+	checkDigit := 98 - iso7064.Mod9710(Normalize(string(value)))
 	if checkDigit == 0 {
 		return "00"
 	}
