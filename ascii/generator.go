@@ -20,7 +20,7 @@ type RuneWriter interface {
 	WriteRune(r rune) (int, error)
 }
 
-func New(r *rand.Rand) *Generator {
+func NewGenerator(r *rand.Rand) *Generator {
 	if r == nil {
 		r = rand.New(rand.NewSource(time.Now().UnixNano()))
 	}
