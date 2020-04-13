@@ -10,7 +10,10 @@ func Checksum(iban string) string {
 	t := []byte(iban)
 	value := append(t[4:], t[0], t[1], '0', '0')
 
-	checkDigit := 98 - iso7064.Mod97(iso7064.Normalize(string(value)))
+	checkDigit := 98 - iso7064.Mod9710(iso7064.Normalize(string(value)))
+	if checkDigit == 0 {
+		return "00"
+	}
 
 	checkString := strconv.FormatInt(int64(checkDigit), 10)
 	if len(checkString) < 2 {
