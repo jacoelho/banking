@@ -40,3 +40,18 @@ func GenerateCzechRepublicIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetCzechRepublicBBAN retrieves BBAN structure from Czech Republic IBAN
+func GetCzechRepublicBBAN(iban string) (BBAN, error) {
+	if len(iban) != 24 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:14],
+		NationalChecksum: "",
+		AccountNumber:    iban[14:24],
+	}, nil
+}

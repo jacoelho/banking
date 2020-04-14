@@ -50,3 +50,18 @@ func GeneratePakistanIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetPakistanBBAN retrieves BBAN structure from Pakistan IBAN
+func GetPakistanBBAN(iban string) (BBAN, error) {
+	if len(iban) != 24 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:24],
+	}, nil
+}

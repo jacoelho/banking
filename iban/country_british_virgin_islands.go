@@ -50,3 +50,18 @@ func GenerateBritishVirginIslandsIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetBritishVirginIslandsBBAN retrieves BBAN structure from British Virgin Islands IBAN
+func GetBritishVirginIslandsBBAN(iban string) (BBAN, error) {
+	if len(iban) != 24 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:24],
+	}, nil
+}

@@ -45,3 +45,18 @@ func GenerateSaudiArabiaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetSaudiArabiaBBAN retrieves BBAN structure from Saudi Arabia IBAN
+func GetSaudiArabiaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 24 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:6],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[6:24],
+	}, nil
+}

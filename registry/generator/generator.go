@@ -20,7 +20,7 @@ var (
 	validateCountryTemplate *template.Template
 )
 
-func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
+func GenerateCodeForCountry(w io.Writer, country registry.Country) error {
 	once.Do(func() {
 		validateCountryTemplate = template.Must(template.New("").Funcs(templateFunctions()).Parse(validateCountryTmpl))
 	})
@@ -34,14 +34,16 @@ func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
 		PackageName      string
 		FunctionValidate string
 		FunctionGenerate string
-		CountryName      string
+		FunctionBBAN     string
+		Country          registry.Country
 		Length           int
 		Rules            []rule.Rule
 	}{
 		FunctionValidate: validateFunctionName(country.Name),
 		FunctionGenerate: generateFunctionName(country.Name),
+		FunctionBBAN:     getBBANFunctionName(country.Name),
 		PackageName:      generatedPackage,
-		CountryName:      country.Name,
+		Country:          country,
 		Length:           rules[len(rules)-1].EndPos(),
 		Rules:            rules,
 	}
@@ -55,6 +57,10 @@ func validateFunctionName(s string) string {
 
 func generateFunctionName(s string) string {
 	return fmt.Sprintf("Generate%sIBAN", strings.ReplaceAll(s, " ", ""))
+}
+
+func getBBANFunctionName(s string) string {
+	return fmt.Sprintf("Get%sBBAN", strings.ReplaceAll(s, " ", ""))
 }
 
 type validateCountry struct {

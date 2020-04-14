@@ -45,3 +45,18 @@ func GenerateKazakhstanIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetKazakhstanBBAN retrieves BBAN structure from Kazakhstan IBAN
+func GetKazakhstanBBAN(iban string) (BBAN, error) {
+	if len(iban) != 20 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:7],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[7:20],
+	}, nil
+}

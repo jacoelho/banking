@@ -2,6 +2,8 @@ package generator
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"text/template"
 
 	"github.com/jacoelho/banking/registry/rule"
@@ -44,6 +46,28 @@ func templateFunctions() template.FuncMap {
 				return fmt.Sprintf(`generator.%s(%s, %d)`, fn, builderName, v.Length)
 			}
 			return `invalid code fix me`
+		},
+		"bban": func(s string, variableName string) string {
+			if s == "" {
+				return `""`
+			}
+
+			fields := strings.Split(s, ":")
+			if len(fields) != 2 {
+				return `invalid code fix me`
+			}
+
+			start, err := strconv.Atoi(fields[0])
+			if err != nil {
+				return `invalid code fix me`
+			}
+
+			end, err := strconv.Atoi(fields[1])
+			if err != nil {
+				return `invalid code fix me`
+			}
+
+			return fmt.Sprintf("%s[%d:%d]", variableName, start+4, end+4)
 		},
 	}
 }

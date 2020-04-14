@@ -45,3 +45,18 @@ func GenerateCyprusIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetCyprusBBAN retrieves BBAN structure from Cyprus IBAN
+func GetCyprusBBAN(iban string) (BBAN, error) {
+	if len(iban) != 28 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:7],
+		BranchCode:       iban[7:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:28],
+	}, nil
+}

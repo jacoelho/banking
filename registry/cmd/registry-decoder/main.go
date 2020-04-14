@@ -1,14 +1,12 @@
 package main
 
 import (
-	"encoding/json"
+	"encoding/csv"
 	"flag"
 	"fmt"
+	"io"
+	"log"
 	"os"
-
-	"github.com/jacoelho/banking/registry/decoder"
-
-	"golang.org/x/text/encoding/charmap"
 )
 
 func main() {
@@ -23,16 +21,29 @@ func main() {
 
 	fileReader, err := os.Open(*fileName)
 	if err != nil {
-		fmt.Printf("failed to open file: %s", err)
-		os.Exit(1)
+		log.Fatalf("failed to open file: %s", err)
 	}
 	defer fileReader.Close()
 
-	entries, err := decoder.Decode(charmap.Windows1252.NewDecoder().Reader(fileReader))
+	reader := csv.NewReader(fileReader)
+	reader.Comma = '|'
+
+	// skip header
+	_, err = reader.Read()
 	if err != nil {
-		fmt.Printf("failed to parse file: %s", err)
-		os.Exit(1)
+		log.Fatal(err)
 	}
 
-	_ = json.NewEncoder(os.Stdout).Encode(entries)
+	for {
+		line, err := reader.Read()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(line)
+	}
+	fmt.Println("end")
 }

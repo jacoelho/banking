@@ -50,3 +50,18 @@ func GenerateKuwaitIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetKuwaitBBAN retrieves BBAN structure from Kuwait IBAN
+func GetKuwaitBBAN(iban string) (BBAN, error) {
+	if len(iban) != 30 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:30],
+	}, nil
+}

@@ -40,3 +40,18 @@ func GenerateGermanyIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetGermanyBBAN retrieves BBAN structure from Germany IBAN
+func GetGermanyBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:12],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[12:22],
+	}, nil
+}

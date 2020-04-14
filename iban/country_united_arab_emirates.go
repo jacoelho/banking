@@ -40,3 +40,18 @@ func GenerateUnitedArabEmiratesIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetUnitedArabEmiratesBBAN retrieves BBAN structure from United Arab Emirates IBAN
+func GetUnitedArabEmiratesBBAN(iban string) (BBAN, error) {
+	if len(iban) != 23 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:7],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[7:23],
+	}, nil
+}

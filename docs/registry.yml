@@ -52,7 +52,7 @@ countries:
     branch_code: 3:6
     national_checksum: 14:16
     account_number: 6:14
-  -
+
   - code: BR
     name: Brazil
     IBAN: BR2!n8!n5!n10!n1!a1!c
@@ -658,7 +658,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:27
-  -
+
   - code: UA
     name: Ukraine
     IBAN: UA2!n6!n19!c

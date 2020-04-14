@@ -40,3 +40,18 @@ func GenerateNorwayIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetNorwayBBAN retrieves BBAN structure from Norway IBAN
+func GetNorwayBBAN(iban string) (BBAN, error) {
+	if len(iban) != 15 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 15: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: iban[14:15],
+		AccountNumber:    iban[8:14],
+	}, nil
+}

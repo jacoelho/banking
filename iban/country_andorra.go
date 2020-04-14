@@ -45,3 +45,18 @@ func GenerateAndorraIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetAndorraBBAN retrieves BBAN structure from Andorra IBAN
+func GetAndorraBBAN(iban string) (BBAN, error) {
+	if len(iban) != 24 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:24],
+	}, nil
+}

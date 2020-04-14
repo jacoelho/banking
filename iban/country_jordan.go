@@ -55,3 +55,18 @@ func GenerateJordanIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetJordanBBAN retrieves BBAN structure from Jordan IBAN
+func GetJordanBBAN(iban string) (BBAN, error) {
+	if len(iban) != 30 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:30],
+	}, nil
+}

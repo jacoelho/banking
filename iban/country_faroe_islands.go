@@ -40,3 +40,18 @@ func GenerateFaroeIslandsIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetFaroeIslandsBBAN retrieves BBAN structure from Faroe Islands IBAN
+func GetFaroeIslandsBBAN(iban string) (BBAN, error) {
+	if len(iban) != 18 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: iban[17:18],
+		AccountNumber:    iban[8:17],
+	}, nil
+}

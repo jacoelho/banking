@@ -55,3 +55,18 @@ func GenerateSeychellesIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetSeychellesBBAN retrieves BBAN structure from Seychelles IBAN
+func GetSeychellesBBAN(iban string) (BBAN, error) {
+	if len(iban) != 31 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:31],
+	}, nil
+}

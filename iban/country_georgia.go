@@ -50,3 +50,18 @@ func GenerateGeorgiaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetGeorgiaBBAN retrieves BBAN structure from Georgia IBAN
+func GetGeorgiaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:6],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[6:22],
+	}, nil
+}

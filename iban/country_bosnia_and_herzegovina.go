@@ -40,3 +40,18 @@ func GenerateBosniaAndHerzegovinaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetBosniaAndHerzegovinaBBAN retrieves BBAN structure from Bosnia And Herzegovina IBAN
+func GetBosniaAndHerzegovinaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 20 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:7],
+		BranchCode:       iban[7:10],
+		NationalChecksum: iban[18:20],
+		AccountNumber:    iban[10:18],
+	}, nil
+}

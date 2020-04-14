@@ -64,7 +64,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		if err := generator.GenerateValidationForCountry(writer, country); err != nil {
+		if err := generator.GenerateCodeForCountry(writer, country); err != nil {
 			writer.Close()
 			if errRemove := os.Remove(targetFileName); errRemove != nil {
 				log.Fatalf("while handling %s, got %s", err, errRemove)

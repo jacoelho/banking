@@ -50,3 +50,18 @@ func GenerateMacedoniaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetMacedoniaBBAN retrieves BBAN structure from Macedonia IBAN
+func GetMacedoniaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 19 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 19: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:7],
+		BranchCode:       "",
+		NationalChecksum: iban[17:19],
+		AccountNumber:    iban[7:17],
+	}, nil
+}

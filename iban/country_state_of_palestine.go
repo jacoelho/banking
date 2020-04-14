@@ -50,3 +50,18 @@ func GenerateStateOfPalestineIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetStateOfPalestineBBAN retrieves BBAN structure from State Of Palestine IBAN
+func GetStateOfPalestineBBAN(iban string) (BBAN, error) {
+	if len(iban) != 29 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:29],
+	}, nil
+}

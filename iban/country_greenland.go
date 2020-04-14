@@ -40,3 +40,18 @@ func GenerateGreenlandIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetGreenlandBBAN retrieves BBAN structure from Greenland IBAN
+func GetGreenlandBBAN(iban string) (BBAN, error) {
+	if len(iban) != 18 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:18],
+	}, nil
+}

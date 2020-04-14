@@ -55,3 +55,18 @@ func GenerateItalyIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetItalyBBAN retrieves BBAN structure from Italy IBAN
+func GetItalyBBAN(iban string) (BBAN, error) {
+	if len(iban) != 27 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[5:10],
+		BranchCode:       iban[10:15],
+		NationalChecksum: iban[4:5],
+		AccountNumber:    iban[15:27],
+	}, nil
+}

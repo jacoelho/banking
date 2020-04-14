@@ -50,3 +50,18 @@ func GenerateGibraltarIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetGibraltarBBAN retrieves BBAN structure from Gibraltar IBAN
+func GetGibraltarBBAN(iban string) (BBAN, error) {
+	if len(iban) != 23 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:23],
+	}, nil
+}

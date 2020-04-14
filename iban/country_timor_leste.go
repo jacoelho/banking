@@ -40,3 +40,18 @@ func GenerateTimorLesteIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetTimorLesteBBAN retrieves BBAN structure from Timor Leste IBAN
+func GetTimorLesteBBAN(iban string) (BBAN, error) {
+	if len(iban) != 23 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:11],
+		NationalChecksum: iban[21:23],
+		AccountNumber:    iban[11:21],
+	}, nil
+}

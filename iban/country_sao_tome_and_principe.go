@@ -40,3 +40,18 @@ func GenerateSaoTomeAndPrincipeIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetSaoTomeAndPrincipeBBAN retrieves BBAN structure from Sao Tome And Principe IBAN
+func GetSaoTomeAndPrincipeBBAN(iban string) (BBAN, error) {
+	if len(iban) != 25 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:25],
+	}, nil
+}

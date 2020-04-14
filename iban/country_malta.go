@@ -55,3 +55,18 @@ func GenerateMaltaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetMaltaBBAN retrieves BBAN structure from Malta IBAN
+func GetMaltaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 31 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:13],
+		NationalChecksum: "",
+		AccountNumber:    iban[13:31],
+	}, nil
+}

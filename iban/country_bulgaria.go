@@ -55,3 +55,18 @@ func GenerateBulgariaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetBulgariaBBAN retrieves BBAN structure from Bulgaria IBAN
+func GetBulgariaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:22],
+	}, nil
+}

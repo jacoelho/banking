@@ -40,3 +40,18 @@ func GenerateIsraelIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetIsraelBBAN retrieves BBAN structure from Israel IBAN
+func GetIsraelBBAN(iban string) (BBAN, error) {
+	if len(iban) != 23 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:7],
+		BranchCode:       iban[7:10],
+		NationalChecksum: "",
+		AccountNumber:    iban[10:23],
+	}, nil
+}

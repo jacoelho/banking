@@ -11,7 +11,7 @@ import (
     "github.com/jacoelho/banking/ascii"
 )
 
-// {{ .FunctionValidate }} validates {{ .CountryName }} IBAN
+// {{ .FunctionValidate }} validates {{ .Country.Name }} IBAN
 func {{ .FunctionValidate }}(iban string) error {
     if len(iban) != {{ .Length }} {
         return fmt.Errorf("unexpected length, want: {{ .Length }}: %w", ErrValidation)
@@ -28,7 +28,7 @@ func {{ .FunctionValidate }}(iban string) error {
     return nil
 }
 
-// {{ .FunctionGenerate }} generates {{ .CountryName }} IBAN
+// {{ .FunctionGenerate }} generates {{ .Country.Name }} IBAN
 func {{ .FunctionGenerate }}() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
@@ -38,6 +38,21 @@ func {{ .FunctionGenerate }}() string {
     {{ end }}
 
 	return ReplaceChecksum(sb.String())
+}
+
+// {{ .FunctionBBAN }} retrieves BBAN structure from {{ .Country.Name }} IBAN
+func {{ .FunctionBBAN }}(iban string) (BBAN, error) {
+	if len(iban) != {{ .Length }} {
+        return BBAN{}, fmt.Errorf("unexpected length, want: {{ .Length }}: %w", ErrValidation)
+    }
+
+	return BBAN {
+		BBAN: iban[4:],
+		BankCode: {{ bban .Country.BankCode "iban" }},
+		BranchCode:  {{ bban .Country.BranchCode "iban" }},
+		NationalChecksum:  {{ bban .Country.NationalChecksum "iban" }},
+		AccountNumber:  {{ bban .Country.AccountNumber "iban" }},
+	}, nil
 }
 `
 

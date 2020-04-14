@@ -40,3 +40,18 @@ func GenerateMontenegroIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetMontenegroBBAN retrieves BBAN structure from Montenegro IBAN
+func GetMontenegroBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:],
+		BankCode:         iban[4:7],
+		BranchCode:       "",
+		NationalChecksum: iban[20:22],
+		AccountNumber:    iban[7:22],
+	}, nil
+}
