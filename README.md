@@ -30,6 +30,24 @@ account := iban.Generate("GB")
 account := iban.GenerateUnitedKingdomIBAN()
 ```
 
+#### BBAN
+
+```go 
+bban, _ := GetBBAN("GB29NWBK60161331926819")
+
+// result
+BBAN {
+    BBAN:             "NWBK60161331926819",
+    BankCode:         "NWBK",
+    BranchCode:       "601613",
+    NationalChecksum: "",
+    AccountNumber:    "31926819",
+}
+
+bban.String()
+"NWBK 6016 1331 9268 19"
+```
+
 ## ISO-7064
 
 Mod-97-10 implemented.
