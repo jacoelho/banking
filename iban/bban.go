@@ -31,8 +31,13 @@ func chunkString(s string, chunkSize int, sep rune) string {
 		if nn > len(runes) {
 			nn = len(runes)
 		}
+
+		if i > 0 {
+			_, _ = sb.WriteRune(sep)
+		}
+
 		_, _ = sb.Write(runes[i:nn])
-		_, _ = sb.WriteRune(sep)
+
 	}
 	return sb.String()
 }
