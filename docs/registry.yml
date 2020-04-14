@@ -3,419 +3,665 @@ countries:
   - code: AL
     name: Albania
     IBAN: AL2!n8!n16!c
-    BBAN: 8!n16!c
+    bank_code: 0:3
+    branch_code: 3:7
+    national_checksum: 7:8
+    account_number: 8:24
 
   - code: AD
     name: Andorra
     IBAN: AD2!n4!n4!n12!c
-    BBAN: 4!n4!n12!c
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:20
 
   - code: AT
     name: Austria
     IBAN: AT2!n5!n11!n
     BBAN: 5!n11!n
+    bank_code: 0:5
+    account_number: 5:16
 
   - code: AZ
     name: Republic Of Azerbaijan
     IBAN: AZ2!n4!a20!c
     BBAN: 4!a20!c
+    bank_code: 0:4
+    account_number: 4:24
 
   - code: BH
     name: Kingdom Of Bahrain
     IBAN: BH2!n4!a14!c
     BBAN: 4!a14!c
+    bank_code: 0:4
+    account_number: 4:22
 
   - code: BE
     name: Belgium
     IBAN: BE2!n3!n7!n2!n
     BBAN: 3!n7!n2!n
+    bank_code: 0:3
+    national_checksum: 10:12
+    account_number: 3:12
 
   - code: BA
     name: Bosnia And Herzegovina
     IBAN: BA2!n3!n3!n8!n2!n
     BBAN: 3!n3!n8!n2!n
-
+    bank_code: 0:3
+    branch_code: 3:6
+    national_checksum: 14:16
+    account_number: 6:14
+  -
   - code: BR
     name: Brazil
     IBAN: BR2!n8!n5!n10!n1!a1!c
     BBAN: 8!n5!n10!n1!a1!c
+    bank_code: 0:8
+    branch_code: 8:13
+    account_number: 13:25
 
   - code: BG
     name: Bulgaria
     IBAN: BG2!n4!a4!n2!n8!c
     BBAN: 4!a4!n2!n8!c
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:18
 
   - code: CR
     name: Costa Rica
     IBAN: CR2!n4!n14!n
     BBAN: 3!n14!n
+    bank_code: 0:4
+    account_number: 4:18
 
   - code: HR
     name: Croatia
     IBAN: HR2!n7!n10!n
     BBAN: 7!n10!n
+    bank_code: 0:7
+    account_number: 7:17
 
   - code: CY
     name: Cyprus
     IBAN: CY2!n3!n5!n16!c
     BBAN: 3!n5!n16!c
+    bank_code: 0:3
+    branch_code: 3:8
+    account_number: 8:24
 
   - code: CZ
     name: Czech Republic
     IBAN: CZ2!n4!n6!n10!n
     BBAN: 4!n6!n10!n
+    bank_code: 0:4
+    branch_code: 4:10
+    account_number: 10:20
 
   - code: DK
     name: Denmark
     IBAN: DK2!n4!n9!n1!n
     BBAN: 4!n9!n1!n
+    bank_code: 0:4
+    account_number: 4:14
 
   - code: FO
     name: Faroe Islands
     IBAN: FO2!n4!n9!n1!n
     BBAN: 4!n9!n1!n
+    bank_code: 0:4
+    national_checksum: 13:14
+    account_number: 4:13
 
   - code: GL
     name: Greenland
     IBAN: GL2!n4!n9!n1!n
     BBAN: 4!n9!n1!n
+    bank_code: 0:4
+    account_number: 4:14
 
   - code: DO
     name: Dominican Republic
     IBAN: DO2!n4!c20!n
     BBAN: 4!c20!n
+    bank_code: 0:4
+    account_number: 4:24
 
   - code: EE
     name: Estonia
     IBAN: EE2!n2!n2!n11!n1!n
     BBAN: 2!n2!n11!n1!n
+    bank_code: 0:2
+    national_checksum: 15:16
+    account_number: 2:15
 
   - code: FI
     name: Finland
     IBAN: FI2!n6!n7!n1!n
-    BBAN:
+    bank_code: 0:3
+    national_checksum: 13:14
+    account_number: 3:13
 
   - code: FR
     name: France
     IBAN: FR2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: GF
     name: French Guyana
     IBAN: GF2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: GP
     name: Guadeloupe
     IBAN: GP2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: MQ
     name: Martinique
     IBAN: MQ2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: RE
     name: Reunion
     IBAN: RE2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: FP
     name: French Polynesia
     IBAN: FP2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: TF
     name: French Southern Territories
     IBAN: TF2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: YT
     name: Mayotte
     IBAN: YT2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: NC
     name: New Caledonia
     IBAN: NC2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: BL
     name: Saint Barthelemy
     IBAN: BL2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: MF
     name: Saint Martin
     IBAN: MF2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: PM
     name: Saint Pierre Et Miquelon
     IBAN: PM2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: WF
     name: Wallis And Futuna Islands
     IBAN: WF2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: GE
     name: Georgia
     IBAN: GE2!n2!a16!n
     BBAN: 2!a16!n
+    bank_code: 0:2
+    account_number: 2:18
 
   - code: DE
     name: Germany
     IBAN: DE2!n8!n10!n
-    BBAN: 8!n10!n
+    bank_code: 0:8
+    account_number: 8:18
 
   - code: GI
     name: Gibraltar
     IBAN: GI2!n4!a15!c
     BBAN: 4!a15!c
+    bank_code: 0:4
+    account_number: 4:19
 
   - code: GR
     name: Greece
     IBAN: GR2!n3!n4!n16!c
     BBAN: 3!n4!n16!c
+    bank_code: 0:3
+    branch_code: 3:7
+    account_number: 7:23
 
   - code: GT
     name: Guatemala
     IBAN: GT2!n4!c20!c
     BBAN: 4!c20!c
+    bank_code: 0:4
+    account_number: 4:24
 
   - code: HU
     name: Hungary
     IBAN: HU2!n3!n4!n1!n15!n1!n
     BBAN: 3!n4!n1!n15!n1!n
+    bank_code: 0:3
+    branch_code: 3:8
+    national_checksum: 23:24
+    account_number: 8:23
 
   - code: IS
     name: Iceland
     IBAN: IS2!n4!n2!n6!n10!n
     BBAN: 4!n2!n6!n10!n
+    bank_code: 0:4
+    branch_code: 6:12
+    account_number: 12:22
 
   - code: IE
     name: Ireland
     IBAN: IE2!n4!a6!n8!n
     BBAN: 4!a6!n8!n
+    bank_code: 0:4
+    branch_code: 4:10
+    account_number: 10:18
 
   - code: IL
     name: Israel
     IBAN: IL2!n3!n3!n13!n
     BBAN: 3!n3!n13!n
+    bank_code: 0:3
+    branch_code: 3:6
+    account_number: 6:19
 
   - code: IT
     name: Italy
     IBAN: IT2!n1!a5!n5!n12!c
     BBAN: 1!a5!n5!n12!c
+    bank_code: 1:6
+    branch_code: 6:11
+    national_checksum: 0:1
+    account_number: 11:23
 
   - code: JO
     name: Jordan
     IBAN: JO2!n4!a4!n18!c
     BBAN: 4!a4!n18!c
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:26
 
   - code: KZ
     name: Kazakhstan
     IBAN: KZ2!n3!n13!c
     BBAN: 3!n13!c
+    bank_code: 0:3
+    account_number: 3:16
 
   - code: XK
     name: Republic Of Kosovo
     IBAN: XK2!n4!n10!n2!n
     BBAN: 4!n10!n2!n
+    bank_code: 0:2
+    branch_code: 2:4
+    account_number: 4:16
 
   - code: KW
     name: Kuwait
     IBAN: KW2!n4!a22!c
     BBAN: 4!a22!c
+    bank_code: 0:4
+    account_number: 4:26
 
   - code: LV
     name: Latvia
     IBAN: LV2!n4!a13!c
     BBAN: 4!a13!c
+    bank_code: 0:4
+    account_number: 4:17
 
   - code: LB
     name: Lebanon
     IBAN: LB2!n4!n20!c
     BBAN: 4!n20!c
+    bank_code: 0:4
+    account_number: 4:24
 
   - code: LI
     name: Principality Of Liechtenstein
     IBAN: LI2!n5!n12!c
     BBAN: 5!n12!c
+    bank_code: 0:5
+    account_number: 5:17
 
   - code: LT
     name: Lithuania
     IBAN: LT2!n5!n11!n
     BBAN: 5!n11!n
+    bank_code: 0:5
+    account_number: 5:16
 
   - code: LU
     name: Luxembourg
     IBAN: LU2!n3!n13!c
     BBAN: 3!n13!c
+    bank_code: 0:3
+    national_checksum: 14:16
+    account_number: 3:14
 
   - code: MK
     name: Macedonia
     IBAN: MK2!n3!n10!c2!n
     BBAN: 3!n10!c2!n
+    bank_code: 0:3
+    national_checksum: 13:15
+    account_number: 3:13
 
   - code: MT
     name: Malta
     IBAN: MT2!n4!a5!n18!c
     BBAN: 4!a5!n18!c
+    bank_code: 0:4
+    branch_code: 4:9
+    account_number: 9:27
 
   - code: MR
     name: Mauritania
     IBAN: MR2!n5!n5!n11!n2!n
     BBAN: 5!n5!n11!n2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: MU
     name: Mauritius
     IBAN: MU2!n4!a2!n2!n12!n3!n3!a
     BBAN: 4!a2!n2!n12!n3!n3!a
+    bank_code: 0:6
+    branch_code: 6:8
+    account_number: 8:26
 
   - code: MD
     name: Moldova
     IBAN: MD2!n20!c
     BBAN: 2!c18!c
+    bank_code: 0:2
+    account_number: 2:20
 
   - code: MC
     name: Monaco
     IBAN: MC2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    national_checksum: 21:23
+    account_number: 10:21
 
   - code: ME
     name: Montenegro
     IBAN: ME2!n3!n13!n2!n
     BBAN: 3!n13!n2!n
+    bank_code: 0:3
+    national_checksum: 16:18
+    account_number: 3:18
 
   - code: NL
     name: The Netherlands
     IBAN: NL2!n4!a10!n
     BBAN: 4!a10!n
+    bank_code: 0:4
+    account_number: 4:14
 
   - code: NO
     name: Norway
     IBAN: NO2!n4!n6!n1!n
     BBAN: 4!n6!n1!n
+    bank_code: 0:4
+    national_checksum: 10:11
+    account_number: 4:10
 
   - code: PK
     name: Pakistan
     IBAN: PK2!n4!a16!c
     BBAN: 4!a16!c
+    bank_code: 0:4
+    account_number: 4:20
 
   - code: PS
     name: State Of Palestine
     IBAN: PS2!n4!a21!c
     BBAN: 4!a21!c
+    bank_code: 0:4
+    account_number: 4:25
 
   - code: PL
     name: Poland
     IBAN: PL2!n8!n16!n
     BBAN: 8!n16!n
+    bank_code: 0:3
+    branch_code: 3:7
+    national_checksum: 7:8
+    account_number: 8:24
 
   - code: PT
     name: Portugal
     IBAN: PT2!n4!n4!n11!n2!n
     BBAN: 4!n4!n11!n2!n
+    bank_code: 0:4
+    branch_code: 4:8
+    national_checksum: 19:21
+    account_number: 8:19
 
   - code: QA
     name: Qatar
     IBAN: QA2!n4!a21!c
     BBAN: 4!a21!c
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:25
 
   - code: RO
     name: Romania
     IBAN: RO2!n4!a16!c
     BBAN: 4!a16!c
+    bank_code: 0:4
+    account_number: 4:20
 
   - code: LC
     name: Saint Lucia
     IBAN: LC2!n4!a24!c
     BBAN: 4!a24!c
+    bank_code: 0:4
+    account_number: 4:28
 
   - code: SM
     name: San Marino
     IBAN: SM2!n1!a5!n5!n12!c
     BBAN: 1!a5!n5!n12!c
+    bank_code: 1:6
+    branch_code: 6:11
+    national_checksum: 0:1
+    account_number: 11:22
 
   - code: ST
     name: Sao Tome And Principe
     IBAN: ST2!n8!n11!n2!n
     BBAN: 8!n11!n2!n
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:21
 
   - code: SA
     name: Saudi Arabia
     IBAN: SA2!n2!n18!c
     BBAN: 2!n18!c
+    bank_code: 0:2
+    account_number: 2:20
 
   - code: RS
     name: Serbia
     IBAN: RS2!n3!n13!n2!n
     BBAN: 3!n13!n2!n
+    bank_code: 0:3
+    national_checksum: 16:18
+    account_number: 3:16
 
   - code: SK
     name: Slovak Republic
     IBAN: SK2!n4!n6!n10!n
     BBAN: 4!n6!n10!n
+    bank_code: 0:4
+    branch_code: 4:10
+    national_checksum: 17:20
+    account_number: 10:17
 
   - code: SI
     name: Slovenia
     IBAN: SI2!n5!n8!n2!n
     BBAN: 5!n8!n2!n
+    bank_code: 0:2
+    branch_code: 2:5
+    national_checksum: 11:15
+    account_number: 5:11
 
   - code: ES
     name: Spain
     IBAN: ES2!n4!n4!n1!n1!n10!n
     BBAN: 4!n4!n1!n1!n10!n
+    bank_code: 0:4
+    branch_code: 4:8
+    national_checksum: 8:10
+    account_number: 10:20
 
   - code: SE
     name: Sweden
     IBAN: SE2!n3!n16!n1!n
     BBAN: 3!n16!n1!n
+    bank_code: 0:3
+    national_checksum: 19:20
+    account_number: 3:20
 
   - code: CH
     name: Switzerland
     IBAN: CH2!n5!n12!c
     BBAN: 5!n12!c
+    bank_code: 0:5
+    account_number: 5:17
 
   - code: TL
     name: Timor Leste
     IBAN: TL2!n3!n14!n2!n
     BBAN: 3!n 14!n 2!n
+    bank_code: 0:4
+    branch_code: 4:7
+    national_checksum: 17:19
+    account_number: 7:17
 
   - code: TN
     name: Tunisia
     IBAN: TN2!n2!n3!n13!n2!n
     BBAN: 2!n3!n13!n2!n
+    bank_code: 0:2
+    branch_code: 2:5
+    national_checksum: 18:20
+    account_number: 5:18
 
   - code: TR
     name: Turkey
     IBAN: TR2!n5!n1!n16!c
     BBAN: 5!n1!n16!c
+    bank_code: 0:5
+    national_checksum: 5:6
+    account_number: 6:22
 
   - code: AE
     name: United Arab Emirates
     IBAN: AE2!n3!n16!n
     BBAN: 3!n16!n
+    bank_code: 0:3
+    account_number: 3:19
 
   - code: GB
     name: United Kingdom
     IBAN: GB2!n4!a6!n8!n
     BBAN: 4!a6!n8!n
+    bank_code: 0:4
+    branch_code: 4:10
+    account_number: 10:18
 
   - code: VG
     name: British Virgin Islands
     IBAN: VG2!n4!a16!n
     BBAN: 4!a16!n
+    bank_code: 0:4
+    account_number: 4:20
 
   - code: SC
     name: Seychelles
     IBAN: SC2!n4!a2!n2!n16!n3!a
     BBAN: 4!a2!n2!n16!n3!a
-
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:27
+  -
   - code: UA
     name: Ukraine
     IBAN: UA2!n6!n19!c
     BBAN: 6!n19!c
+    bank_code: 0:6
+    account_number: 6:25
