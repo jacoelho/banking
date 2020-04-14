@@ -58,7 +58,7 @@ func GetNewCaledoniaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:27],
 		BankCode:         iban[4:9],
 		BranchCode:       iban[9:14],
 		NationalChecksum: iban[25:27],

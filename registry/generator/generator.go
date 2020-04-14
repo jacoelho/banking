@@ -117,3 +117,28 @@ func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 
 	return tmpl.ExecuteTemplate(w, "", data)
 }
+
+func GenerateGetBBAN(w io.Writer, countries []registry.Country) error {
+	tmpl, err := template.New("").Parse(getBbanTmpl)
+	if err != nil {
+		return err
+	}
+
+	var functions []validateCountry
+	for _, country := range countries {
+		functions = append(functions, validateCountry{
+			Code: country.Code,
+			Fn:   getBBANFunctionName(country.Name),
+		})
+	}
+
+	var data = struct {
+		PackageName string
+		Functions   []validateCountry
+	}{
+		PackageName: generatedPackage,
+		Functions:   functions,
+	}
+
+	return tmpl.ExecuteTemplate(w, "", data)
+}

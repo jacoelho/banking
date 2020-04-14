@@ -108,4 +108,21 @@ func main() {
 	}
 
 	writer.Close()
+
+	// single generate file
+	targetFile = path.Join(*destinationDirectory, "bban_helper.go")
+
+	writer, err = os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if err := generator.GenerateGetBBAN(writer, countries.Countries); err != nil {
+		writer.Close()
+		if errRemove := os.Remove(targetFile); errRemove != nil {
+			log.Fatalf("while handling %s, got %s", err, errRemove)
+		}
+		log.Fatal(err)
+	}
+
+	writer.Close()
 }

@@ -53,7 +53,7 @@ func GetMoldovaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:24],
 		BankCode:         iban[4:6],
 		BranchCode:       "",
 		NationalChecksum: "",

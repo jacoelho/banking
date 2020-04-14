@@ -34,7 +34,7 @@ countries:
     IBAN: BH2!n4!a14!c
     BBAN: 4!a14!c
     bank_code: 0:4
-    account_number: 4:22
+    account_number: 4:18
 
   - code: BE
     name: Belgium
@@ -42,7 +42,7 @@ countries:
     BBAN: 3!n7!n2!n
     bank_code: 0:3
     national_checksum: 10:12
-    account_number: 3:12
+    account_number: 3:10
 
   - code: BA
     name: Bosnia And Herzegovina

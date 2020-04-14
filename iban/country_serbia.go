@@ -48,7 +48,7 @@ func GetSerbiaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:22],
 		BankCode:         iban[4:7],
 		BranchCode:       "",
 		NationalChecksum: iban[20:22],

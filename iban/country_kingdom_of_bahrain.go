@@ -58,10 +58,10 @@ func GetKingdomOfBahrainBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:22],
 		BankCode:         iban[4:8],
 		BranchCode:       "",
 		NationalChecksum: "",
-		AccountNumber:    iban[8:26],
+		AccountNumber:    iban[8:22],
 	}, nil
 }

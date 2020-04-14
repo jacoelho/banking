@@ -63,7 +63,7 @@ func GetMaltaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:31],
 		BankCode:         iban[4:8],
 		BranchCode:       iban[8:13],
 		NationalChecksum: "",

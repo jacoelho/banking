@@ -63,7 +63,7 @@ func GetMauritiusBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:30],
 		BankCode:         iban[4:10],
 		BranchCode:       iban[10:12],
 		NationalChecksum: "",

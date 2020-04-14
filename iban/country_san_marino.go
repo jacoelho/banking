@@ -63,7 +63,7 @@ func GetSanMarinoBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:27],
 		BankCode:         iban[5:10],
 		BranchCode:       iban[10:15],
 		NationalChecksum: iban[4:5],

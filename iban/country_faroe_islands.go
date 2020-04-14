@@ -48,7 +48,7 @@ func GetFaroeIslandsBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:18],
 		BankCode:         iban[4:8],
 		BranchCode:       "",
 		NationalChecksum: iban[17:18],

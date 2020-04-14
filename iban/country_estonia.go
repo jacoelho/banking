@@ -48,7 +48,7 @@ func GetEstoniaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:20],
 		BankCode:         iban[4:6],
 		BranchCode:       "",
 		NationalChecksum: iban[19:20],

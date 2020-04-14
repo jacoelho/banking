@@ -53,7 +53,7 @@ func GetTurkeyBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:26],
 		BankCode:         iban[4:9],
 		BranchCode:       "",
 		NationalChecksum: iban[9:10],

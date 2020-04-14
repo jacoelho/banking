@@ -53,7 +53,7 @@ func GetPrincipalityOfLiechtensteinBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:21],
 		BankCode:         iban[4:9],
 		BranchCode:       "",
 		NationalChecksum: "",

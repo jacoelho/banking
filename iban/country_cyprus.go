@@ -53,7 +53,7 @@ func GetCyprusBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:28],
 		BankCode:         iban[4:7],
 		BranchCode:       iban[7:12],
 		NationalChecksum: "",

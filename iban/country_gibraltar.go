@@ -58,7 +58,7 @@ func GetGibraltarBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:23],
 		BankCode:         iban[4:8],
 		BranchCode:       "",
 		NationalChecksum: "",

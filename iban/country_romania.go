@@ -58,7 +58,7 @@ func GetRomaniaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:24],
 		BankCode:         iban[4:8],
 		BranchCode:       "",
 		NationalChecksum: "",

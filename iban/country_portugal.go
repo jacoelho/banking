@@ -48,7 +48,7 @@ func GetPortugalBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:25],
 		BankCode:         iban[4:8],
 		BranchCode:       iban[8:12],
 		NationalChecksum: iban[23:25],

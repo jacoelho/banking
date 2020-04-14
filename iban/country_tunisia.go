@@ -48,7 +48,7 @@ func GetTunisiaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:24],
 		BankCode:         iban[4:6],
 		BranchCode:       iban[6:9],
 		NationalChecksum: iban[22:24],

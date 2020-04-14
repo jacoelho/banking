@@ -48,7 +48,7 @@ func GetUnitedArabEmiratesBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:23],
 		BankCode:         iban[4:7],
 		BranchCode:       "",
 		NationalChecksum: "",

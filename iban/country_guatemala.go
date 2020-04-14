@@ -53,7 +53,7 @@ func GetGuatemalaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:28],
 		BankCode:         iban[4:8],
 		BranchCode:       "",
 		NationalChecksum: "",

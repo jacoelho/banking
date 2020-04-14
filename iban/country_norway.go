@@ -48,7 +48,7 @@ func GetNorwayBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:15],
 		BankCode:         iban[4:8],
 		BranchCode:       "",
 		NationalChecksum: iban[14:15],

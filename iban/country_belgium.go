@@ -48,10 +48,10 @@ func GetBelgiumBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:16],
 		BankCode:         iban[4:7],
 		BranchCode:       "",
 		NationalChecksum: iban[14:16],
-		AccountNumber:    iban[7:16],
+		AccountNumber:    iban[7:14],
 	}, nil
 }

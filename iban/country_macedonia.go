@@ -58,7 +58,7 @@ func GetMacedoniaBBAN(iban string) (BBAN, error) {
 	}
 
 	return BBAN{
-		BBAN:             iban[4:],
+		BBAN:             iban[4:19],
 		BankCode:         iban[4:7],
 		BranchCode:       "",
 		NationalChecksum: iban[17:19],
