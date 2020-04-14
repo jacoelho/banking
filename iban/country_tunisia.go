@@ -40,3 +40,18 @@ func GenerateTunisiaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetTunisiaBBAN retrieves BBAN structure from Tunisia IBAN
+func GetTunisiaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 24 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:24],
+		BankCode:         iban[4:6],
+		BranchCode:       iban[6:9],
+		NationalChecksum: iban[22:24],
+		AccountNumber:    iban[9:22],
+	}, nil
+}

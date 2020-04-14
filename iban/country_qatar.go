@@ -50,3 +50,18 @@ func GenerateQatarIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetQatarBBAN retrieves BBAN structure from Qatar IBAN
+func GetQatarBBAN(iban string) (BBAN, error) {
+	if len(iban) != 29 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:29],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:29],
+	}, nil
+}

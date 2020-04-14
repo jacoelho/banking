@@ -40,3 +40,18 @@ func GenerateAustriaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetAustriaBBAN retrieves BBAN structure from Austria IBAN
+func GetAustriaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 20 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:20],
+		BankCode:         iban[4:9],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[9:20],
+	}, nil
+}

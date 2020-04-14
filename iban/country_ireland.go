@@ -50,3 +50,18 @@ func GenerateIrelandIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetIrelandBBAN retrieves BBAN structure from Ireland IBAN
+func GetIrelandBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:22],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:14],
+		NationalChecksum: "",
+		AccountNumber:    iban[14:22],
+	}, nil
+}

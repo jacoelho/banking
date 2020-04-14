@@ -40,3 +40,18 @@ func GenerateBelgiumIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetBelgiumBBAN retrieves BBAN structure from Belgium IBAN
+func GetBelgiumBBAN(iban string) (BBAN, error) {
+	if len(iban) != 16 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 16: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:16],
+		BankCode:         iban[4:7],
+		BranchCode:       "",
+		NationalChecksum: iban[14:16],
+		AccountNumber:    iban[7:14],
+	}, nil
+}

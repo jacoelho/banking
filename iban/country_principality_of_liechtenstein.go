@@ -45,3 +45,18 @@ func GeneratePrincipalityOfLiechtensteinIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetPrincipalityOfLiechtensteinBBAN retrieves BBAN structure from Principality Of Liechtenstein IBAN
+func GetPrincipalityOfLiechtensteinBBAN(iban string) (BBAN, error) {
+	if len(iban) != 21 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:21],
+		BankCode:         iban[4:9],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[9:21],
+	}, nil
+}

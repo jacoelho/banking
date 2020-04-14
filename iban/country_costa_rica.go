@@ -40,3 +40,18 @@ func GenerateCostaRicaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetCostaRicaBBAN retrieves BBAN structure from Costa Rica IBAN
+func GetCostaRicaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:22],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:22],
+	}, nil
+}

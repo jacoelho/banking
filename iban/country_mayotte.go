@@ -50,3 +50,18 @@ func GenerateMayotteIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetMayotteBBAN retrieves BBAN structure from Mayotte IBAN
+func GetMayotteBBAN(iban string) (BBAN, error) {
+	if len(iban) != 27 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:27],
+		BankCode:         iban[4:9],
+		BranchCode:       iban[9:14],
+		NationalChecksum: iban[25:27],
+		AccountNumber:    iban[14:25],
+	}, nil
+}

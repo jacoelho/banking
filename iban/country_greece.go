@@ -45,3 +45,18 @@ func GenerateGreeceIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetGreeceBBAN retrieves BBAN structure from Greece IBAN
+func GetGreeceBBAN(iban string) (BBAN, error) {
+	if len(iban) != 27 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:27],
+		BankCode:         iban[4:7],
+		BranchCode:       iban[7:11],
+		NationalChecksum: "",
+		AccountNumber:    iban[11:27],
+	}, nil
+}

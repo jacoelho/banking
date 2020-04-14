@@ -45,3 +45,18 @@ func GenerateTurkeyIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetTurkeyBBAN retrieves BBAN structure from Turkey IBAN
+func GetTurkeyBBAN(iban string) (BBAN, error) {
+	if len(iban) != 26 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 26: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:26],
+		BankCode:         iban[4:9],
+		BranchCode:       "",
+		NationalChecksum: iban[9:10],
+		AccountNumber:    iban[10:26],
+	}, nil
+}

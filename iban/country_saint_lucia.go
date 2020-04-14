@@ -50,3 +50,18 @@ func GenerateSaintLuciaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetSaintLuciaBBAN retrieves BBAN structure from Saint Lucia IBAN
+func GetSaintLuciaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 32 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 32: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:32],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:32],
+	}, nil
+}

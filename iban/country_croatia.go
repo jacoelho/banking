@@ -40,3 +40,18 @@ func GenerateCroatiaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetCroatiaBBAN retrieves BBAN structure from Croatia IBAN
+func GetCroatiaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 21 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:21],
+		BankCode:         iban[4:11],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[11:21],
+	}, nil
+}

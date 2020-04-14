@@ -40,3 +40,18 @@ func GenerateHungaryIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetHungaryBBAN retrieves BBAN structure from Hungary IBAN
+func GetHungaryBBAN(iban string) (BBAN, error) {
+	if len(iban) != 28 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:28],
+		BankCode:         iban[4:7],
+		BranchCode:       iban[7:12],
+		NationalChecksum: iban[27:28],
+		AccountNumber:    iban[12:27],
+	}, nil
+}

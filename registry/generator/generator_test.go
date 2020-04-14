@@ -17,9 +17,13 @@ func TestGenerateValidationForCountry(t *testing.T) {
 		{
 			name: "test",
 			country: registry.Country{
-				Code: "AL",
-				Name: "Albania",
-				IBAN: "AL2!n8!n16!c",
+				Code:       "AL",
+				Name:       "Albania",
+				IBAN:       "AL2!n8!n16!c",
+				BankCode:   "0:4",
+				BranchCode: "4:6",
+				//NationalChecksum: "6:8",
+				AccountNumber: "8:10",
 			},
 			result:  "",
 			wantErr: false,
@@ -29,13 +33,13 @@ func TestGenerateValidationForCountry(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			t.Skip()
 			w := &bytes.Buffer{}
-			err := GenerateValidationForCountry(w, tt.country)
+			err := GenerateCodeForCountry(w, tt.country)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("GenerateValidationForCountry() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("GenerateCodeForCountry() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 			if gotW := w.String(); gotW != tt.result {
-				t.Errorf("GenerateValidationForCountry() gotW = %v, want %v", gotW, tt.result)
+				t.Errorf("GenerateCodeForCountry() gotW = %v, want %v", gotW, tt.result)
 			}
 		})
 	}

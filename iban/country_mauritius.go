@@ -55,3 +55,18 @@ func GenerateMauritiusIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetMauritiusBBAN retrieves BBAN structure from Mauritius IBAN
+func GetMauritiusBBAN(iban string) (BBAN, error) {
+	if len(iban) != 30 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:30],
+		BankCode:         iban[4:10],
+		BranchCode:       iban[10:12],
+		NationalChecksum: "",
+		AccountNumber:    iban[12:30],
+	}, nil
+}

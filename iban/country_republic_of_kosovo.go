@@ -40,3 +40,18 @@ func GenerateRepublicOfKosovoIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetRepublicOfKosovoBBAN retrieves BBAN structure from Republic Of Kosovo IBAN
+func GetRepublicOfKosovoBBAN(iban string) (BBAN, error) {
+	if len(iban) != 20 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:20],
+		BankCode:         iban[4:6],
+		BranchCode:       iban[6:8],
+		NationalChecksum: "",
+		AccountNumber:    iban[8:20],
+	}, nil
+}

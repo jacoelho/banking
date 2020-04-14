@@ -25,10 +25,14 @@ type Entry struct {
 }
 
 type Country struct {
-	Code string `yaml:"code"`
-	Name string `yaml:"name"`
-	IBAN string `yaml:"IBAN"`
-	BBAN string ` yaml:"BBAN"`
+	Code             string `yaml:"code"`
+	Name             string `yaml:"name"`
+	IBAN             string `yaml:"IBAN"`
+	BBAN             string `yaml:"BBAN"`
+	BankCode         string `yaml:"bank_code"`
+	BranchCode       string `yaml:"branch_code"`
+	NationalChecksum string `yaml:"national_checksum"`
+	AccountNumber    string `yaml:"account_number"`
 }
 
 type Countries struct {

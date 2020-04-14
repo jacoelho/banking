@@ -45,3 +45,18 @@ func GenerateLebanonIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetLebanonBBAN retrieves BBAN structure from Lebanon IBAN
+func GetLebanonBBAN(iban string) (BBAN, error) {
+	if len(iban) != 28 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:28],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:28],
+	}, nil
+}

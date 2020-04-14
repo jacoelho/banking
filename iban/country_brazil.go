@@ -50,3 +50,18 @@ func GenerateBrazilIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetBrazilBBAN retrieves BBAN structure from Brazil IBAN
+func GetBrazilBBAN(iban string) (BBAN, error) {
+	if len(iban) != 29 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:29],
+		BankCode:         iban[4:12],
+		BranchCode:       iban[12:17],
+		NationalChecksum: "",
+		AccountNumber:    iban[17:29],
+	}, nil
+}

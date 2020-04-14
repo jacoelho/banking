@@ -55,3 +55,18 @@ func GenerateSanMarinoIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetSanMarinoBBAN retrieves BBAN structure from San Marino IBAN
+func GetSanMarinoBBAN(iban string) (BBAN, error) {
+	if len(iban) != 27 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:27],
+		BankCode:         iban[5:10],
+		BranchCode:       iban[10:15],
+		NationalChecksum: iban[4:5],
+		AccountNumber:    iban[15:26],
+	}, nil
+}

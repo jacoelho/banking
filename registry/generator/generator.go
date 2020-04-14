@@ -20,7 +20,7 @@ var (
 	validateCountryTemplate *template.Template
 )
 
-func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
+func GenerateCodeForCountry(w io.Writer, country registry.Country) error {
 	once.Do(func() {
 		validateCountryTemplate = template.Must(template.New("").Funcs(templateFunctions()).Parse(validateCountryTmpl))
 	})
@@ -34,14 +34,16 @@ func GenerateValidationForCountry(w io.Writer, country registry.Country) error {
 		PackageName      string
 		FunctionValidate string
 		FunctionGenerate string
-		CountryName      string
+		FunctionBBAN     string
+		Country          registry.Country
 		Length           int
 		Rules            []rule.Rule
 	}{
 		FunctionValidate: validateFunctionName(country.Name),
 		FunctionGenerate: generateFunctionName(country.Name),
+		FunctionBBAN:     getBBANFunctionName(country.Name),
 		PackageName:      generatedPackage,
-		CountryName:      country.Name,
+		Country:          country,
 		Length:           rules[len(rules)-1].EndPos(),
 		Rules:            rules,
 	}
@@ -55,6 +57,10 @@ func validateFunctionName(s string) string {
 
 func generateFunctionName(s string) string {
 	return fmt.Sprintf("Generate%sIBAN", strings.ReplaceAll(s, " ", ""))
+}
+
+func getBBANFunctionName(s string) string {
+	return fmt.Sprintf("Get%sBBAN", strings.ReplaceAll(s, " ", ""))
 }
 
 type validateCountry struct {
@@ -98,6 +104,31 @@ func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 		functions = append(functions, validateCountry{
 			Code: country.Code,
 			Fn:   generateFunctionName(country.Name),
+		})
+	}
+
+	var data = struct {
+		PackageName string
+		Functions   []validateCountry
+	}{
+		PackageName: generatedPackage,
+		Functions:   functions,
+	}
+
+	return tmpl.ExecuteTemplate(w, "", data)
+}
+
+func GenerateGetBBAN(w io.Writer, countries []registry.Country) error {
+	tmpl, err := template.New("").Parse(getBbanTmpl)
+	if err != nil {
+		return err
+	}
+
+	var functions []validateCountry
+	for _, country := range countries {
+		functions = append(functions, validateCountry{
+			Code: country.Code,
+			Fn:   getBBANFunctionName(country.Name),
 		})
 	}
 

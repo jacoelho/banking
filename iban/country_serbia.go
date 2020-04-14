@@ -40,3 +40,18 @@ func GenerateSerbiaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetSerbiaBBAN retrieves BBAN structure from Serbia IBAN
+func GetSerbiaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:22],
+		BankCode:         iban[4:7],
+		BranchCode:       "",
+		NationalChecksum: iban[20:22],
+		AccountNumber:    iban[7:20],
+	}, nil
+}

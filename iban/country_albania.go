@@ -45,3 +45,18 @@ func GenerateAlbaniaIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetAlbaniaBBAN retrieves BBAN structure from Albania IBAN
+func GetAlbaniaBBAN(iban string) (BBAN, error) {
+	if len(iban) != 28 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:28],
+		BankCode:         iban[4:7],
+		BranchCode:       iban[7:11],
+		NationalChecksum: iban[11:12],
+		AccountNumber:    iban[12:28],
+	}, nil
+}

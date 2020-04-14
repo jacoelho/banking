@@ -50,3 +50,18 @@ func GenerateKingdomOfBahrainIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetKingdomOfBahrainBBAN retrieves BBAN structure from Kingdom Of Bahrain IBAN
+func GetKingdomOfBahrainBBAN(iban string) (BBAN, error) {
+	if len(iban) != 22 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:22],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:22],
+	}, nil
+}

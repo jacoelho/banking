@@ -40,3 +40,18 @@ func GenerateFinlandIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetFinlandBBAN retrieves BBAN structure from Finland IBAN
+func GetFinlandBBAN(iban string) (BBAN, error) {
+	if len(iban) != 18 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:18],
+		BankCode:         iban[4:7],
+		BranchCode:       "",
+		NationalChecksum: iban[17:18],
+		AccountNumber:    iban[7:17],
+	}, nil
+}

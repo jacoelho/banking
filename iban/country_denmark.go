@@ -40,3 +40,18 @@ func GenerateDenmarkIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetDenmarkBBAN retrieves BBAN structure from Denmark IBAN
+func GetDenmarkBBAN(iban string) (BBAN, error) {
+	if len(iban) != 18 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:18],
+		BankCode:         iban[4:8],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[8:18],
+	}, nil
+}

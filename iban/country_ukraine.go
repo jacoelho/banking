@@ -45,3 +45,18 @@ func GenerateUkraineIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetUkraineBBAN retrieves BBAN structure from Ukraine IBAN
+func GetUkraineBBAN(iban string) (BBAN, error) {
+	if len(iban) != 29 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:29],
+		BankCode:         iban[4:10],
+		BranchCode:       "",
+		NationalChecksum: "",
+		AccountNumber:    iban[10:29],
+	}, nil
+}

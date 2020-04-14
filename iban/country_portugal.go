@@ -40,3 +40,18 @@ func GeneratePortugalIBAN() string {
 
 	return ReplaceChecksum(sb.String())
 }
+
+// GetPortugalBBAN retrieves BBAN structure from Portugal IBAN
+func GetPortugalBBAN(iban string) (BBAN, error) {
+	if len(iban) != 25 {
+		return BBAN{}, fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
+	}
+
+	return BBAN{
+		BBAN:             iban[4:25],
+		BankCode:         iban[4:8],
+		BranchCode:       iban[8:12],
+		NationalChecksum: iban[23:25],
+		AccountNumber:    iban[12:23],
+	}, nil
+}
