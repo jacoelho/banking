@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateTunisiaIBAN validates Tunisia IBAN
-func ValidateTunisiaIBAN(iban string) error {
+// validateTunisiaIBAN validates Tunisia IBAN
+func validateTunisiaIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateTunisiaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateTunisiaIBAN generates Tunisia IBAN
-func GenerateTunisiaIBAN() string {
+// generateTunisiaIBAN generates Tunisia IBAN
+func generateTunisiaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateTunisiaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetTunisiaBBAN retrieves BBAN structure from Tunisia IBAN
-func GetTunisiaBBAN(iban string) (BBAN, error) {
+// getTunisiaBBAN retrieves BBAN structure from Tunisia IBAN
+func getTunisiaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}

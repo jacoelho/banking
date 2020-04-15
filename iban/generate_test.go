@@ -4,346 +4,346 @@ package iban
 
 import "testing"
 
-func TestGenerate(t *testing.T) {
+func Testgenerate(t *testing.T) {
 	tests := []struct {
 		name string
 		fn   func() string
 	}{
 		{
 			name: "Albania",
-			fn:   GenerateAlbaniaIBAN,
+			fn:   generateAlbaniaIBAN,
 		},
 		{
 			name: "Andorra",
-			fn:   GenerateAndorraIBAN,
+			fn:   generateAndorraIBAN,
 		},
 		{
 			name: "Austria",
-			fn:   GenerateAustriaIBAN,
+			fn:   generateAustriaIBAN,
 		},
 		{
 			name: "Republic Of Azerbaijan",
-			fn:   GenerateRepublicOfAzerbaijanIBAN,
+			fn:   generateRepublicOfAzerbaijanIBAN,
 		},
 		{
 			name: "Kingdom Of Bahrain",
-			fn:   GenerateKingdomOfBahrainIBAN,
+			fn:   generateKingdomOfBahrainIBAN,
 		},
 		{
 			name: "Belgium",
-			fn:   GenerateBelgiumIBAN,
+			fn:   generateBelgiumIBAN,
 		},
 		{
 			name: "Bosnia And Herzegovina",
-			fn:   GenerateBosniaAndHerzegovinaIBAN,
+			fn:   generateBosniaAndHerzegovinaIBAN,
 		},
 		{
 			name: "Brazil",
-			fn:   GenerateBrazilIBAN,
+			fn:   generateBrazilIBAN,
 		},
 		{
 			name: "Bulgaria",
-			fn:   GenerateBulgariaIBAN,
+			fn:   generateBulgariaIBAN,
 		},
 		{
 			name: "Costa Rica",
-			fn:   GenerateCostaRicaIBAN,
+			fn:   generateCostaRicaIBAN,
 		},
 		{
 			name: "Croatia",
-			fn:   GenerateCroatiaIBAN,
+			fn:   generateCroatiaIBAN,
 		},
 		{
 			name: "Cyprus",
-			fn:   GenerateCyprusIBAN,
+			fn:   generateCyprusIBAN,
 		},
 		{
 			name: "Czech Republic",
-			fn:   GenerateCzechRepublicIBAN,
+			fn:   generateCzechRepublicIBAN,
 		},
 		{
 			name: "Denmark",
-			fn:   GenerateDenmarkIBAN,
+			fn:   generateDenmarkIBAN,
 		},
 		{
 			name: "Faroe Islands",
-			fn:   GenerateFaroeIslandsIBAN,
+			fn:   generateFaroeIslandsIBAN,
 		},
 		{
 			name: "Greenland",
-			fn:   GenerateGreenlandIBAN,
+			fn:   generateGreenlandIBAN,
 		},
 		{
 			name: "Dominican Republic",
-			fn:   GenerateDominicanRepublicIBAN,
+			fn:   generateDominicanRepublicIBAN,
 		},
 		{
 			name: "Estonia",
-			fn:   GenerateEstoniaIBAN,
+			fn:   generateEstoniaIBAN,
 		},
 		{
 			name: "Finland",
-			fn:   GenerateFinlandIBAN,
+			fn:   generateFinlandIBAN,
 		},
 		{
 			name: "France",
-			fn:   GenerateFranceIBAN,
+			fn:   generateFranceIBAN,
 		},
 		{
 			name: "French Guyana",
-			fn:   GenerateFrenchGuyanaIBAN,
+			fn:   generateFrenchGuyanaIBAN,
 		},
 		{
 			name: "Guadeloupe",
-			fn:   GenerateGuadeloupeIBAN,
+			fn:   generateGuadeloupeIBAN,
 		},
 		{
 			name: "Martinique",
-			fn:   GenerateMartiniqueIBAN,
+			fn:   generateMartiniqueIBAN,
 		},
 		{
 			name: "Reunion",
-			fn:   GenerateReunionIBAN,
+			fn:   generateReunionIBAN,
 		},
 		{
 			name: "French Polynesia",
-			fn:   GenerateFrenchPolynesiaIBAN,
+			fn:   generateFrenchPolynesiaIBAN,
 		},
 		{
 			name: "French Southern Territories",
-			fn:   GenerateFrenchSouthernTerritoriesIBAN,
+			fn:   generateFrenchSouthernTerritoriesIBAN,
 		},
 		{
 			name: "Mayotte",
-			fn:   GenerateMayotteIBAN,
+			fn:   generateMayotteIBAN,
 		},
 		{
 			name: "New Caledonia",
-			fn:   GenerateNewCaledoniaIBAN,
+			fn:   generateNewCaledoniaIBAN,
 		},
 		{
 			name: "Saint Barthelemy",
-			fn:   GenerateSaintBarthelemyIBAN,
+			fn:   generateSaintBarthelemyIBAN,
 		},
 		{
 			name: "Saint Martin",
-			fn:   GenerateSaintMartinIBAN,
+			fn:   generateSaintMartinIBAN,
 		},
 		{
 			name: "Saint Pierre Et Miquelon",
-			fn:   GenerateSaintPierreEtMiquelonIBAN,
+			fn:   generateSaintPierreEtMiquelonIBAN,
 		},
 		{
 			name: "Wallis And Futuna Islands",
-			fn:   GenerateWallisAndFutunaIslandsIBAN,
+			fn:   generateWallisAndFutunaIslandsIBAN,
 		},
 		{
 			name: "Georgia",
-			fn:   GenerateGeorgiaIBAN,
+			fn:   generateGeorgiaIBAN,
 		},
 		{
 			name: "Germany",
-			fn:   GenerateGermanyIBAN,
+			fn:   generateGermanyIBAN,
 		},
 		{
 			name: "Gibraltar",
-			fn:   GenerateGibraltarIBAN,
+			fn:   generateGibraltarIBAN,
 		},
 		{
 			name: "Greece",
-			fn:   GenerateGreeceIBAN,
+			fn:   generateGreeceIBAN,
 		},
 		{
 			name: "Guatemala",
-			fn:   GenerateGuatemalaIBAN,
+			fn:   generateGuatemalaIBAN,
 		},
 		{
 			name: "Hungary",
-			fn:   GenerateHungaryIBAN,
+			fn:   generateHungaryIBAN,
 		},
 		{
 			name: "Iceland",
-			fn:   GenerateIcelandIBAN,
+			fn:   generateIcelandIBAN,
 		},
 		{
 			name: "Ireland",
-			fn:   GenerateIrelandIBAN,
+			fn:   generateIrelandIBAN,
 		},
 		{
 			name: "Israel",
-			fn:   GenerateIsraelIBAN,
+			fn:   generateIsraelIBAN,
 		},
 		{
 			name: "Italy",
-			fn:   GenerateItalyIBAN,
+			fn:   generateItalyIBAN,
 		},
 		{
 			name: "Jordan",
-			fn:   GenerateJordanIBAN,
+			fn:   generateJordanIBAN,
 		},
 		{
 			name: "Kazakhstan",
-			fn:   GenerateKazakhstanIBAN,
+			fn:   generateKazakhstanIBAN,
 		},
 		{
 			name: "Republic Of Kosovo",
-			fn:   GenerateRepublicOfKosovoIBAN,
+			fn:   generateRepublicOfKosovoIBAN,
 		},
 		{
 			name: "Kuwait",
-			fn:   GenerateKuwaitIBAN,
+			fn:   generateKuwaitIBAN,
 		},
 		{
 			name: "Latvia",
-			fn:   GenerateLatviaIBAN,
+			fn:   generateLatviaIBAN,
 		},
 		{
 			name: "Lebanon",
-			fn:   GenerateLebanonIBAN,
+			fn:   generateLebanonIBAN,
 		},
 		{
 			name: "Principality Of Liechtenstein",
-			fn:   GeneratePrincipalityOfLiechtensteinIBAN,
+			fn:   generatePrincipalityOfLiechtensteinIBAN,
 		},
 		{
 			name: "Lithuania",
-			fn:   GenerateLithuaniaIBAN,
+			fn:   generateLithuaniaIBAN,
 		},
 		{
 			name: "Luxembourg",
-			fn:   GenerateLuxembourgIBAN,
+			fn:   generateLuxembourgIBAN,
 		},
 		{
 			name: "Macedonia",
-			fn:   GenerateMacedoniaIBAN,
+			fn:   generateMacedoniaIBAN,
 		},
 		{
 			name: "Malta",
-			fn:   GenerateMaltaIBAN,
+			fn:   generateMaltaIBAN,
 		},
 		{
 			name: "Mauritania",
-			fn:   GenerateMauritaniaIBAN,
+			fn:   generateMauritaniaIBAN,
 		},
 		{
 			name: "Mauritius",
-			fn:   GenerateMauritiusIBAN,
+			fn:   generateMauritiusIBAN,
 		},
 		{
 			name: "Moldova",
-			fn:   GenerateMoldovaIBAN,
+			fn:   generateMoldovaIBAN,
 		},
 		{
 			name: "Monaco",
-			fn:   GenerateMonacoIBAN,
+			fn:   generateMonacoIBAN,
 		},
 		{
 			name: "Montenegro",
-			fn:   GenerateMontenegroIBAN,
+			fn:   generateMontenegroIBAN,
 		},
 		{
 			name: "The Netherlands",
-			fn:   GenerateTheNetherlandsIBAN,
+			fn:   generateTheNetherlandsIBAN,
 		},
 		{
 			name: "Norway",
-			fn:   GenerateNorwayIBAN,
+			fn:   generateNorwayIBAN,
 		},
 		{
 			name: "Pakistan",
-			fn:   GeneratePakistanIBAN,
+			fn:   generatePakistanIBAN,
 		},
 		{
 			name: "State Of Palestine",
-			fn:   GenerateStateOfPalestineIBAN,
+			fn:   generateStateOfPalestineIBAN,
 		},
 		{
 			name: "Poland",
-			fn:   GeneratePolandIBAN,
+			fn:   generatePolandIBAN,
 		},
 		{
 			name: "Portugal",
-			fn:   GeneratePortugalIBAN,
+			fn:   generatePortugalIBAN,
 		},
 		{
 			name: "Qatar",
-			fn:   GenerateQatarIBAN,
+			fn:   generateQatarIBAN,
 		},
 		{
 			name: "Romania",
-			fn:   GenerateRomaniaIBAN,
+			fn:   generateRomaniaIBAN,
 		},
 		{
 			name: "Saint Lucia",
-			fn:   GenerateSaintLuciaIBAN,
+			fn:   generateSaintLuciaIBAN,
 		},
 		{
 			name: "San Marino",
-			fn:   GenerateSanMarinoIBAN,
+			fn:   generateSanMarinoIBAN,
 		},
 		{
 			name: "Sao Tome And Principe",
-			fn:   GenerateSaoTomeAndPrincipeIBAN,
+			fn:   generateSaoTomeAndPrincipeIBAN,
 		},
 		{
 			name: "Saudi Arabia",
-			fn:   GenerateSaudiArabiaIBAN,
+			fn:   generateSaudiArabiaIBAN,
 		},
 		{
 			name: "Serbia",
-			fn:   GenerateSerbiaIBAN,
+			fn:   generateSerbiaIBAN,
 		},
 		{
 			name: "Slovak Republic",
-			fn:   GenerateSlovakRepublicIBAN,
+			fn:   generateSlovakRepublicIBAN,
 		},
 		{
 			name: "Slovenia",
-			fn:   GenerateSloveniaIBAN,
+			fn:   generateSloveniaIBAN,
 		},
 		{
 			name: "Spain",
-			fn:   GenerateSpainIBAN,
+			fn:   generateSpainIBAN,
 		},
 		{
 			name: "Sweden",
-			fn:   GenerateSwedenIBAN,
+			fn:   generateSwedenIBAN,
 		},
 		{
 			name: "Switzerland",
-			fn:   GenerateSwitzerlandIBAN,
+			fn:   generateSwitzerlandIBAN,
 		},
 		{
 			name: "Timor Leste",
-			fn:   GenerateTimorLesteIBAN,
+			fn:   generateTimorLesteIBAN,
 		},
 		{
 			name: "Tunisia",
-			fn:   GenerateTunisiaIBAN,
+			fn:   generateTunisiaIBAN,
 		},
 		{
 			name: "Turkey",
-			fn:   GenerateTurkeyIBAN,
+			fn:   generateTurkeyIBAN,
 		},
 		{
 			name: "United Arab Emirates",
-			fn:   GenerateUnitedArabEmiratesIBAN,
+			fn:   generateUnitedArabEmiratesIBAN,
 		},
 		{
 			name: "United Kingdom",
-			fn:   GenerateUnitedKingdomIBAN,
+			fn:   generateUnitedKingdomIBAN,
 		},
 		{
 			name: "British Virgin Islands",
-			fn:   GenerateBritishVirginIslandsIBAN,
+			fn:   generateBritishVirginIslandsIBAN,
 		},
 		{
 			name: "Seychelles",
-			fn:   GenerateSeychellesIBAN,
+			fn:   generateSeychellesIBAN,
 		},
 		{
 			name: "Ukraine",
-			fn:   GenerateUkraineIBAN,
+			fn:   generateUkraineIBAN,
 		},
 	}
 	for _, tt := range tests {

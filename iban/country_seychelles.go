@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSeychellesIBAN validates Seychelles IBAN
-func ValidateSeychellesIBAN(iban string) error {
+// validateSeychellesIBAN validates Seychelles IBAN
+func validateSeychellesIBAN(iban string) error {
 	if len(iban) != 31 {
 		return fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
 	}
@@ -42,8 +42,8 @@ func ValidateSeychellesIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSeychellesIBAN generates Seychelles IBAN
-func GenerateSeychellesIBAN() string {
+// generateSeychellesIBAN generates Seychelles IBAN
+func generateSeychellesIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -56,8 +56,8 @@ func GenerateSeychellesIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSeychellesBBAN retrieves BBAN structure from Seychelles IBAN
-func GetSeychellesBBAN(iban string) (BBAN, error) {
+// getSeychellesBBAN retrieves BBAN structure from Seychelles IBAN
+func getSeychellesBBAN(iban string) (BBAN, error) {
 	if len(iban) != 31 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
 	}

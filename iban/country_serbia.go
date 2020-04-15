@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSerbiaIBAN validates Serbia IBAN
-func ValidateSerbiaIBAN(iban string) error {
+// validateSerbiaIBAN validates Serbia IBAN
+func validateSerbiaIBAN(iban string) error {
 	if len(iban) != 22 {
 		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateSerbiaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSerbiaIBAN generates Serbia IBAN
-func GenerateSerbiaIBAN() string {
+// generateSerbiaIBAN generates Serbia IBAN
+func generateSerbiaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateSerbiaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSerbiaBBAN retrieves BBAN structure from Serbia IBAN
-func GetSerbiaBBAN(iban string) (BBAN, error) {
+// getSerbiaBBAN retrieves BBAN structure from Serbia IBAN
+func getSerbiaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
 	}

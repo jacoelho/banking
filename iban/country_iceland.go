@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateIcelandIBAN validates Iceland IBAN
-func ValidateIcelandIBAN(iban string) error {
+// validateIcelandIBAN validates Iceland IBAN
+func validateIcelandIBAN(iban string) error {
 	if len(iban) != 26 {
 		return fmt.Errorf("unexpected length, want: 26: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateIcelandIBAN(iban string) error {
 	return nil
 }
 
-// GenerateIcelandIBAN generates Iceland IBAN
-func GenerateIcelandIBAN() string {
+// generateIcelandIBAN generates Iceland IBAN
+func generateIcelandIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateIcelandIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetIcelandBBAN retrieves BBAN structure from Iceland IBAN
-func GetIcelandBBAN(iban string) (BBAN, error) {
+// getIcelandBBAN retrieves BBAN structure from Iceland IBAN
+func getIcelandBBAN(iban string) (BBAN, error) {
 	if len(iban) != 26 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 26: %w", ErrValidation)
 	}

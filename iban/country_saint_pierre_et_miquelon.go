@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSaintPierreEtMiquelonIBAN validates Saint Pierre Et Miquelon IBAN
-func ValidateSaintPierreEtMiquelonIBAN(iban string) error {
+// validateSaintPierreEtMiquelonIBAN validates Saint Pierre Et Miquelon IBAN
+func validateSaintPierreEtMiquelonIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateSaintPierreEtMiquelonIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSaintPierreEtMiquelonIBAN generates Saint Pierre Et Miquelon IBAN
-func GenerateSaintPierreEtMiquelonIBAN() string {
+// generateSaintPierreEtMiquelonIBAN generates Saint Pierre Et Miquelon IBAN
+func generateSaintPierreEtMiquelonIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateSaintPierreEtMiquelonIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSaintPierreEtMiquelonBBAN retrieves BBAN structure from Saint Pierre Et Miquelon IBAN
-func GetSaintPierreEtMiquelonBBAN(iban string) (BBAN, error) {
+// getSaintPierreEtMiquelonBBAN retrieves BBAN structure from Saint Pierre Et Miquelon IBAN
+func getSaintPierreEtMiquelonBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

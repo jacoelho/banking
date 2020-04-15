@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidatePakistanIBAN validates Pakistan IBAN
-func ValidatePakistanIBAN(iban string) error {
+// validatePakistanIBAN validates Pakistan IBAN
+func validatePakistanIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidatePakistanIBAN(iban string) error {
 	return nil
 }
 
-// GeneratePakistanIBAN generates Pakistan IBAN
-func GeneratePakistanIBAN() string {
+// generatePakistanIBAN generates Pakistan IBAN
+func generatePakistanIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GeneratePakistanIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetPakistanBBAN retrieves BBAN structure from Pakistan IBAN
-func GetPakistanBBAN(iban string) (BBAN, error) {
+// getPakistanBBAN retrieves BBAN structure from Pakistan IBAN
+func getPakistanBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}

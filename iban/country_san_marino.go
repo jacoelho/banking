@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSanMarinoIBAN validates San Marino IBAN
-func ValidateSanMarinoIBAN(iban string) error {
+// validateSanMarinoIBAN validates San Marino IBAN
+func validateSanMarinoIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -42,8 +42,8 @@ func ValidateSanMarinoIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSanMarinoIBAN generates San Marino IBAN
-func GenerateSanMarinoIBAN() string {
+// generateSanMarinoIBAN generates San Marino IBAN
+func generateSanMarinoIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -56,8 +56,8 @@ func GenerateSanMarinoIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSanMarinoBBAN retrieves BBAN structure from San Marino IBAN
-func GetSanMarinoBBAN(iban string) (BBAN, error) {
+// getSanMarinoBBAN retrieves BBAN structure from San Marino IBAN
+func getSanMarinoBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

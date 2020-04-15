@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateBritishVirginIslandsIBAN validates British Virgin Islands IBAN
-func ValidateBritishVirginIslandsIBAN(iban string) error {
+// validateBritishVirginIslandsIBAN validates British Virgin Islands IBAN
+func validateBritishVirginIslandsIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateBritishVirginIslandsIBAN(iban string) error {
 	return nil
 }
 
-// GenerateBritishVirginIslandsIBAN generates British Virgin Islands IBAN
-func GenerateBritishVirginIslandsIBAN() string {
+// generateBritishVirginIslandsIBAN generates British Virgin Islands IBAN
+func generateBritishVirginIslandsIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateBritishVirginIslandsIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetBritishVirginIslandsBBAN retrieves BBAN structure from British Virgin Islands IBAN
-func GetBritishVirginIslandsBBAN(iban string) (BBAN, error) {
+// getBritishVirginIslandsBBAN retrieves BBAN structure from British Virgin Islands IBAN
+func getBritishVirginIslandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}

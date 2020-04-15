@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateJordanIBAN validates Jordan IBAN
-func ValidateJordanIBAN(iban string) error {
+// validateJordanIBAN validates Jordan IBAN
+func validateJordanIBAN(iban string) error {
 	if len(iban) != 30 {
 		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}
@@ -42,8 +42,8 @@ func ValidateJordanIBAN(iban string) error {
 	return nil
 }
 
-// GenerateJordanIBAN generates Jordan IBAN
-func GenerateJordanIBAN() string {
+// generateJordanIBAN generates Jordan IBAN
+func generateJordanIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -56,8 +56,8 @@ func GenerateJordanIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetJordanBBAN retrieves BBAN structure from Jordan IBAN
-func GetJordanBBAN(iban string) (BBAN, error) {
+// getJordanBBAN retrieves BBAN structure from Jordan IBAN
+func getJordanBBAN(iban string) (BBAN, error) {
 	if len(iban) != 30 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}

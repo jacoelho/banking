@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateMayotteIBAN validates Mayotte IBAN
-func ValidateMayotteIBAN(iban string) error {
+// validateMayotteIBAN validates Mayotte IBAN
+func validateMayotteIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateMayotteIBAN(iban string) error {
 	return nil
 }
 
-// GenerateMayotteIBAN generates Mayotte IBAN
-func GenerateMayotteIBAN() string {
+// generateMayotteIBAN generates Mayotte IBAN
+func generateMayotteIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateMayotteIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetMayotteBBAN retrieves BBAN structure from Mayotte IBAN
-func GetMayotteBBAN(iban string) (BBAN, error) {
+// getMayotteBBAN retrieves BBAN structure from Mayotte IBAN
+func getMayotteBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

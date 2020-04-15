@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateGreenlandIBAN validates Greenland IBAN
-func ValidateGreenlandIBAN(iban string) error {
+// validateGreenlandIBAN validates Greenland IBAN
+func validateGreenlandIBAN(iban string) error {
 	if len(iban) != 18 {
 		return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateGreenlandIBAN(iban string) error {
 	return nil
 }
 
-// GenerateGreenlandIBAN generates Greenland IBAN
-func GenerateGreenlandIBAN() string {
+// generateGreenlandIBAN generates Greenland IBAN
+func generateGreenlandIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateGreenlandIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetGreenlandBBAN retrieves BBAN structure from Greenland IBAN
-func GetGreenlandBBAN(iban string) (BBAN, error) {
+// getGreenlandBBAN retrieves BBAN structure from Greenland IBAN
+func getGreenlandBBAN(iban string) (BBAN, error) {
 	if len(iban) != 18 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
 	}

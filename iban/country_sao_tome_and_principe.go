@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSaoTomeAndPrincipeIBAN validates Sao Tome And Principe IBAN
-func ValidateSaoTomeAndPrincipeIBAN(iban string) error {
+// validateSaoTomeAndPrincipeIBAN validates Sao Tome And Principe IBAN
+func validateSaoTomeAndPrincipeIBAN(iban string) error {
 	if len(iban) != 25 {
 		return fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateSaoTomeAndPrincipeIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSaoTomeAndPrincipeIBAN generates Sao Tome And Principe IBAN
-func GenerateSaoTomeAndPrincipeIBAN() string {
+// generateSaoTomeAndPrincipeIBAN generates Sao Tome And Principe IBAN
+func generateSaoTomeAndPrincipeIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateSaoTomeAndPrincipeIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSaoTomeAndPrincipeBBAN retrieves BBAN structure from Sao Tome And Principe IBAN
-func GetSaoTomeAndPrincipeBBAN(iban string) (BBAN, error) {
+// getSaoTomeAndPrincipeBBAN retrieves BBAN structure from Sao Tome And Principe IBAN
+func getSaoTomeAndPrincipeBBAN(iban string) (BBAN, error) {
 	if len(iban) != 25 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
 	}

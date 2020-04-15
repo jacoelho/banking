@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateMaltaIBAN validates Malta IBAN
-func ValidateMaltaIBAN(iban string) error {
+// validateMaltaIBAN validates Malta IBAN
+func validateMaltaIBAN(iban string) error {
 	if len(iban) != 31 {
 		return fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
 	}
@@ -42,8 +42,8 @@ func ValidateMaltaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateMaltaIBAN generates Malta IBAN
-func GenerateMaltaIBAN() string {
+// generateMaltaIBAN generates Malta IBAN
+func generateMaltaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -56,8 +56,8 @@ func GenerateMaltaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetMaltaBBAN retrieves BBAN structure from Malta IBAN
-func GetMaltaBBAN(iban string) (BBAN, error) {
+// getMaltaBBAN retrieves BBAN structure from Malta IBAN
+func getMaltaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 31 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 31: %w", ErrValidation)
 	}

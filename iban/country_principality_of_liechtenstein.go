@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidatePrincipalityOfLiechtensteinIBAN validates Principality Of Liechtenstein IBAN
-func ValidatePrincipalityOfLiechtensteinIBAN(iban string) error {
+// validatePrincipalityOfLiechtensteinIBAN validates Principality Of Liechtenstein IBAN
+func validatePrincipalityOfLiechtensteinIBAN(iban string) error {
 	if len(iban) != 21 {
 		return fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidatePrincipalityOfLiechtensteinIBAN(iban string) error {
 	return nil
 }
 
-// GeneratePrincipalityOfLiechtensteinIBAN generates Principality Of Liechtenstein IBAN
-func GeneratePrincipalityOfLiechtensteinIBAN() string {
+// generatePrincipalityOfLiechtensteinIBAN generates Principality Of Liechtenstein IBAN
+func generatePrincipalityOfLiechtensteinIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GeneratePrincipalityOfLiechtensteinIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetPrincipalityOfLiechtensteinBBAN retrieves BBAN structure from Principality Of Liechtenstein IBAN
-func GetPrincipalityOfLiechtensteinBBAN(iban string) (BBAN, error) {
+// getPrincipalityOfLiechtensteinBBAN retrieves BBAN structure from Principality Of Liechtenstein IBAN
+func getPrincipalityOfLiechtensteinBBAN(iban string) (BBAN, error) {
 	if len(iban) != 21 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
 	}

@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSaintBarthelemyIBAN validates Saint Barthelemy IBAN
-func ValidateSaintBarthelemyIBAN(iban string) error {
+// validateSaintBarthelemyIBAN validates Saint Barthelemy IBAN
+func validateSaintBarthelemyIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateSaintBarthelemyIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSaintBarthelemyIBAN generates Saint Barthelemy IBAN
-func GenerateSaintBarthelemyIBAN() string {
+// generateSaintBarthelemyIBAN generates Saint Barthelemy IBAN
+func generateSaintBarthelemyIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateSaintBarthelemyIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSaintBarthelemyBBAN retrieves BBAN structure from Saint Barthelemy IBAN
-func GetSaintBarthelemyBBAN(iban string) (BBAN, error) {
+// getSaintBarthelemyBBAN retrieves BBAN structure from Saint Barthelemy IBAN
+func getSaintBarthelemyBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

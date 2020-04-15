@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateTurkeyIBAN validates Turkey IBAN
-func ValidateTurkeyIBAN(iban string) error {
+// validateTurkeyIBAN validates Turkey IBAN
+func validateTurkeyIBAN(iban string) error {
 	if len(iban) != 26 {
 		return fmt.Errorf("unexpected length, want: 26: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateTurkeyIBAN(iban string) error {
 	return nil
 }
 
-// GenerateTurkeyIBAN generates Turkey IBAN
-func GenerateTurkeyIBAN() string {
+// generateTurkeyIBAN generates Turkey IBAN
+func generateTurkeyIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateTurkeyIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetTurkeyBBAN retrieves BBAN structure from Turkey IBAN
-func GetTurkeyBBAN(iban string) (BBAN, error) {
+// getTurkeyBBAN retrieves BBAN structure from Turkey IBAN
+func getTurkeyBBAN(iban string) (BBAN, error) {
 	if len(iban) != 26 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 26: %w", ErrValidation)
 	}

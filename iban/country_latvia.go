@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateLatviaIBAN validates Latvia IBAN
-func ValidateLatviaIBAN(iban string) error {
+// validateLatviaIBAN validates Latvia IBAN
+func validateLatviaIBAN(iban string) error {
 	if len(iban) != 21 {
 		return fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateLatviaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateLatviaIBAN generates Latvia IBAN
-func GenerateLatviaIBAN() string {
+// generateLatviaIBAN generates Latvia IBAN
+func generateLatviaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateLatviaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetLatviaBBAN retrieves BBAN structure from Latvia IBAN
-func GetLatviaBBAN(iban string) (BBAN, error) {
+// getLatviaBBAN retrieves BBAN structure from Latvia IBAN
+func getLatviaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 21 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
 	}

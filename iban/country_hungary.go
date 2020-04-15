@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateHungaryIBAN validates Hungary IBAN
-func ValidateHungaryIBAN(iban string) error {
+// validateHungaryIBAN validates Hungary IBAN
+func validateHungaryIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateHungaryIBAN(iban string) error {
 	return nil
 }
 
-// GenerateHungaryIBAN generates Hungary IBAN
-func GenerateHungaryIBAN() string {
+// generateHungaryIBAN generates Hungary IBAN
+func generateHungaryIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateHungaryIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetHungaryBBAN retrieves BBAN structure from Hungary IBAN
-func GetHungaryBBAN(iban string) (BBAN, error) {
+// getHungaryBBAN retrieves BBAN structure from Hungary IBAN
+func getHungaryBBAN(iban string) (BBAN, error) {
 	if len(iban) != 28 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}

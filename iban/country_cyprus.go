@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateCyprusIBAN validates Cyprus IBAN
-func ValidateCyprusIBAN(iban string) error {
+// validateCyprusIBAN validates Cyprus IBAN
+func validateCyprusIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateCyprusIBAN(iban string) error {
 	return nil
 }
 
-// GenerateCyprusIBAN generates Cyprus IBAN
-func GenerateCyprusIBAN() string {
+// generateCyprusIBAN generates Cyprus IBAN
+func generateCyprusIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateCyprusIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetCyprusBBAN retrieves BBAN structure from Cyprus IBAN
-func GetCyprusBBAN(iban string) (BBAN, error) {
+// getCyprusBBAN retrieves BBAN structure from Cyprus IBAN
+func getCyprusBBAN(iban string) (BBAN, error) {
 	if len(iban) != 28 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}

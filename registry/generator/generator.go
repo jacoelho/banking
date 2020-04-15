@@ -52,15 +52,15 @@ func GenerateCodeForCountry(w io.Writer, country registry.Country) error {
 }
 
 func validateFunctionName(s string) string {
-	return fmt.Sprintf("Validate%sIBAN", strings.ReplaceAll(s, " ", ""))
+	return fmt.Sprintf("validate%sIBAN", strings.ReplaceAll(s, " ", ""))
 }
 
 func generateFunctionName(s string) string {
-	return fmt.Sprintf("Generate%sIBAN", strings.ReplaceAll(s, " ", ""))
+	return fmt.Sprintf("generate%sIBAN", strings.ReplaceAll(s, " ", ""))
 }
 
 func getBBANFunctionName(s string) string {
-	return fmt.Sprintf("Get%sBBAN", strings.ReplaceAll(s, " ", ""))
+	return fmt.Sprintf("get%sBBAN", strings.ReplaceAll(s, " ", ""))
 }
 
 type validateCountry struct {
@@ -69,7 +69,7 @@ type validateCountry struct {
 }
 
 func GenerateValidate(w io.Writer, countries []registry.Country) error {
-	tmpl, err := template.New("").Parse(validateTmpl)
+	tmpl, err := template.New("").Funcs(templateFunctions()).Parse(validateTmpl)
 	if err != nil {
 		return err
 	}
@@ -94,7 +94,7 @@ func GenerateValidate(w io.Writer, countries []registry.Country) error {
 }
 
 func GenerateGenerate(w io.Writer, countries []registry.Country) error {
-	tmpl, err := template.New("").Parse(generateTmpl)
+	tmpl, err := template.New("").Funcs(templateFunctions()).Parse(generateTmpl)
 	if err != nil {
 		return err
 	}
@@ -119,7 +119,7 @@ func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 }
 
 func GenerateGetBBAN(w io.Writer, countries []registry.Country) error {
-	tmpl, err := template.New("").Parse(getBbanTmpl)
+	tmpl, err := template.New("").Funcs(templateFunctions()).Parse(getBbanTmpl)
 	if err != nil {
 		return err
 	}
@@ -138,6 +138,23 @@ func GenerateGetBBAN(w io.Writer, countries []registry.Country) error {
 	}{
 		PackageName: generatedPackage,
 		Functions:   functions,
+	}
+
+	return tmpl.ExecuteTemplate(w, "", data)
+}
+
+func GenerateConstants(w io.Writer, countries []registry.Country) error {
+	tmpl, err := template.New("").Funcs(templateFunctions()).Parse(countryCodeConstantsTmpl)
+	if err != nil {
+		return err
+	}
+
+	var data = struct {
+		PackageName string
+		Countries   []registry.Country
+	}{
+		PackageName: generatedPackage,
+		Countries:   countries,
 	}
 
 	return tmpl.ExecuteTemplate(w, "", data)

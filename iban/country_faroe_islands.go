@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateFaroeIslandsIBAN validates Faroe Islands IBAN
-func ValidateFaroeIslandsIBAN(iban string) error {
+// validateFaroeIslandsIBAN validates Faroe Islands IBAN
+func validateFaroeIslandsIBAN(iban string) error {
 	if len(iban) != 18 {
 		return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateFaroeIslandsIBAN(iban string) error {
 	return nil
 }
 
-// GenerateFaroeIslandsIBAN generates Faroe Islands IBAN
-func GenerateFaroeIslandsIBAN() string {
+// generateFaroeIslandsIBAN generates Faroe Islands IBAN
+func generateFaroeIslandsIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateFaroeIslandsIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetFaroeIslandsBBAN retrieves BBAN structure from Faroe Islands IBAN
-func GetFaroeIslandsBBAN(iban string) (BBAN, error) {
+// getFaroeIslandsBBAN retrieves BBAN structure from Faroe Islands IBAN
+func getFaroeIslandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 18 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
 	}

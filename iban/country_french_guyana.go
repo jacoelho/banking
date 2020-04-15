@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateFrenchGuyanaIBAN validates French Guyana IBAN
-func ValidateFrenchGuyanaIBAN(iban string) error {
+// validateFrenchGuyanaIBAN validates French Guyana IBAN
+func validateFrenchGuyanaIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateFrenchGuyanaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateFrenchGuyanaIBAN generates French Guyana IBAN
-func GenerateFrenchGuyanaIBAN() string {
+// generateFrenchGuyanaIBAN generates French Guyana IBAN
+func generateFrenchGuyanaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateFrenchGuyanaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetFrenchGuyanaBBAN retrieves BBAN structure from French Guyana IBAN
-func GetFrenchGuyanaBBAN(iban string) (BBAN, error) {
+// getFrenchGuyanaBBAN retrieves BBAN structure from French Guyana IBAN
+func getFrenchGuyanaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

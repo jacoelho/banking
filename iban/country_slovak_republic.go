@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSlovakRepublicIBAN validates Slovak Republic IBAN
-func ValidateSlovakRepublicIBAN(iban string) error {
+// validateSlovakRepublicIBAN validates Slovak Republic IBAN
+func validateSlovakRepublicIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateSlovakRepublicIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSlovakRepublicIBAN generates Slovak Republic IBAN
-func GenerateSlovakRepublicIBAN() string {
+// generateSlovakRepublicIBAN generates Slovak Republic IBAN
+func generateSlovakRepublicIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateSlovakRepublicIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSlovakRepublicBBAN retrieves BBAN structure from Slovak Republic IBAN
-func GetSlovakRepublicBBAN(iban string) (BBAN, error) {
+// getSlovakRepublicBBAN retrieves BBAN structure from Slovak Republic IBAN
+func getSlovakRepublicBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}

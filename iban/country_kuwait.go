@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateKuwaitIBAN validates Kuwait IBAN
-func ValidateKuwaitIBAN(iban string) error {
+// validateKuwaitIBAN validates Kuwait IBAN
+func validateKuwaitIBAN(iban string) error {
 	if len(iban) != 30 {
 		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateKuwaitIBAN(iban string) error {
 	return nil
 }
 
-// GenerateKuwaitIBAN generates Kuwait IBAN
-func GenerateKuwaitIBAN() string {
+// generateKuwaitIBAN generates Kuwait IBAN
+func generateKuwaitIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateKuwaitIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetKuwaitBBAN retrieves BBAN structure from Kuwait IBAN
-func GetKuwaitBBAN(iban string) (BBAN, error) {
+// getKuwaitBBAN retrieves BBAN structure from Kuwait IBAN
+func getKuwaitBBAN(iban string) (BBAN, error) {
 	if len(iban) != 30 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}

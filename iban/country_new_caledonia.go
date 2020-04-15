@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateNewCaledoniaIBAN validates New Caledonia IBAN
-func ValidateNewCaledoniaIBAN(iban string) error {
+// validateNewCaledoniaIBAN validates New Caledonia IBAN
+func validateNewCaledoniaIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateNewCaledoniaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateNewCaledoniaIBAN generates New Caledonia IBAN
-func GenerateNewCaledoniaIBAN() string {
+// generateNewCaledoniaIBAN generates New Caledonia IBAN
+func generateNewCaledoniaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateNewCaledoniaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetNewCaledoniaBBAN retrieves BBAN structure from New Caledonia IBAN
-func GetNewCaledoniaBBAN(iban string) (BBAN, error) {
+// getNewCaledoniaBBAN retrieves BBAN structure from New Caledonia IBAN
+func getNewCaledoniaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

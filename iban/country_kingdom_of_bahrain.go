@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateKingdomOfBahrainIBAN validates Kingdom Of Bahrain IBAN
-func ValidateKingdomOfBahrainIBAN(iban string) error {
+// validateKingdomOfBahrainIBAN validates Kingdom Of Bahrain IBAN
+func validateKingdomOfBahrainIBAN(iban string) error {
 	if len(iban) != 22 {
 		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateKingdomOfBahrainIBAN(iban string) error {
 	return nil
 }
 
-// GenerateKingdomOfBahrainIBAN generates Kingdom Of Bahrain IBAN
-func GenerateKingdomOfBahrainIBAN() string {
+// generateKingdomOfBahrainIBAN generates Kingdom Of Bahrain IBAN
+func generateKingdomOfBahrainIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateKingdomOfBahrainIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetKingdomOfBahrainBBAN retrieves BBAN structure from Kingdom Of Bahrain IBAN
-func GetKingdomOfBahrainBBAN(iban string) (BBAN, error) {
+// getKingdomOfBahrainBBAN retrieves BBAN structure from Kingdom Of Bahrain IBAN
+func getKingdomOfBahrainBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
 	}

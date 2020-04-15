@@ -13,14 +13,6 @@ func ExampleValidate() {
 	// Output: true
 }
 
-func ExampleValidateUnitedKingdomIBAN() {
-	// Validate an iban using country specific validate function
-	err := iban.ValidateUnitedKingdomIBAN("GB29NWBK60161331926819")
-
-	fmt.Println(err == nil)
-	// Output: true
-}
-
 func ExampleGenerate() {
 	// force results - not needed during regular usage
 	iban.SeedGenerator(rand.New(rand.NewSource(1)))

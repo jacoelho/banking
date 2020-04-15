@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateAndorraIBAN validates Andorra IBAN
-func ValidateAndorraIBAN(iban string) error {
+// validateAndorraIBAN validates Andorra IBAN
+func validateAndorraIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateAndorraIBAN(iban string) error {
 	return nil
 }
 
-// GenerateAndorraIBAN generates Andorra IBAN
-func GenerateAndorraIBAN() string {
+// generateAndorraIBAN generates Andorra IBAN
+func generateAndorraIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateAndorraIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetAndorraBBAN retrieves BBAN structure from Andorra IBAN
-func GetAndorraBBAN(iban string) (BBAN, error) {
+// getAndorraBBAN retrieves BBAN structure from Andorra IBAN
+func getAndorraBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}

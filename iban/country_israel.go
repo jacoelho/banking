@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateIsraelIBAN validates Israel IBAN
-func ValidateIsraelIBAN(iban string) error {
+// validateIsraelIBAN validates Israel IBAN
+func validateIsraelIBAN(iban string) error {
 	if len(iban) != 23 {
 		return fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateIsraelIBAN(iban string) error {
 	return nil
 }
 
-// GenerateIsraelIBAN generates Israel IBAN
-func GenerateIsraelIBAN() string {
+// generateIsraelIBAN generates Israel IBAN
+func generateIsraelIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateIsraelIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetIsraelBBAN retrieves BBAN structure from Israel IBAN
-func GetIsraelBBAN(iban string) (BBAN, error) {
+// getIsraelBBAN retrieves BBAN structure from Israel IBAN
+func getIsraelBBAN(iban string) (BBAN, error) {
 	if len(iban) != 23 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
 	}

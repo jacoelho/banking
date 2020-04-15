@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateItalyIBAN validates Italy IBAN
-func ValidateItalyIBAN(iban string) error {
+// validateItalyIBAN validates Italy IBAN
+func validateItalyIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -42,8 +42,8 @@ func ValidateItalyIBAN(iban string) error {
 	return nil
 }
 
-// GenerateItalyIBAN generates Italy IBAN
-func GenerateItalyIBAN() string {
+// generateItalyIBAN generates Italy IBAN
+func generateItalyIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -56,8 +56,8 @@ func GenerateItalyIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetItalyBBAN retrieves BBAN structure from Italy IBAN
-func GetItalyBBAN(iban string) (BBAN, error) {
+// getItalyBBAN retrieves BBAN structure from Italy IBAN
+func getItalyBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
