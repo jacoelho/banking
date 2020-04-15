@@ -1,9 +1,13 @@
 package iban
 
-import "github.com/jacoelho/banking/ascii"
+import (
+	"math/rand"
 
-var generator *ascii.Generator
+	"github.com/jacoelho/banking/ascii"
+)
 
-func init() {
-	generator = ascii.NewGenerator(nil)
+var generator = ascii.NewGenerator(nil)
+
+func SeedGenerator(r *rand.Rand) {
+	generator = ascii.NewGenerator(r)
 }
