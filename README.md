@@ -1,6 +1,6 @@
 # Banking
 
-[![GoDoc](https://godoc.org/github.com/jacoelho/banking?status.svg)](https://godoc.org/github.com/jacoelho/banking)
+[![GoDoc](https://godoc.org/github.com/jacoelho/banking?status.svg)](https://pkg.go.dev/github.com/jacoelho/banking?tab=overview)
 
 Banking related library.
 
