@@ -1,5 +1,7 @@
 # Banking
 
+[![GoDoc](https://godoc.org/github.com/jacoelho/banking?status.svg)](https://godoc.org/github.com/jacoelho/banking)
+
 Banking related library.
 
 ## Install
@@ -30,22 +32,20 @@ account := iban.Generate("GB")
 account := iban.GenerateUnitedKingdomIBAN()
 ```
 
+#### Printing
+```go
+iban.PaperFormat("GB29NWBK60161331926819"))
+// Output: GB29 NWBK 6016 1331 9268 19
+```
+
 #### BBAN
 
 ```go 
-bban, _ := GetBBAN("GB29NWBK60161331926819")
+// Get BBAN from IBAN
+result, _ := iban.GetBBAN("GB29NWBK60161331926819")
 
-// result
-BBAN {
-    BBAN:             "NWBK60161331926819",
-    BankCode:         "NWBK",
-    BranchCode:       "601613",
-    NationalChecksum: "",
-    AccountNumber:    "31926819",
-}
-
-bban.String()
-"NWBK 6016 1331 9268 19"
+fmt.Println(result.BBAN, result.BankCode, result.BranchCode, result.AccountNumber)
+// Output: NWBK60161331926819 NWBK 601613 31926819
 ```
 
 ## ISO-7064
