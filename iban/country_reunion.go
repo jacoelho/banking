@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateReunionIBAN validates Reunion IBAN
-func ValidateReunionIBAN(iban string) error {
+// validateReunionIBAN validates Reunion IBAN
+func validateReunionIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateReunionIBAN(iban string) error {
 	return nil
 }
 
-// GenerateReunionIBAN generates Reunion IBAN
-func GenerateReunionIBAN() string {
+// generateReunionIBAN generates Reunion IBAN
+func generateReunionIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateReunionIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetReunionBBAN retrieves BBAN structure from Reunion IBAN
-func GetReunionBBAN(iban string) (BBAN, error) {
+// getReunionBBAN retrieves BBAN structure from Reunion IBAN
+func getReunionBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

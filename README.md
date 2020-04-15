@@ -19,17 +19,12 @@ Supports IBAN validation based on [swift rules](https://www.swift.com/sites/defa
 #### Validation
 ```go
 err := iban.Validate("SOME IBAN")
-
-// Or a specific iban directly
-err := iban.ValidateUnitedKingdomIBAN("SOME GB IBAN")
 ```
 
 #### Generation
 ```go
 account := iban.Generate("GB")
-
-// Or a specific iban directly
-account := iban.GenerateUnitedKingdomIBAN()
+// Output: GB29NWBK60161331926819
 ```
 
 #### Printing

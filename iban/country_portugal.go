@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidatePortugalIBAN validates Portugal IBAN
-func ValidatePortugalIBAN(iban string) error {
+// validatePortugalIBAN validates Portugal IBAN
+func validatePortugalIBAN(iban string) error {
 	if len(iban) != 25 {
 		return fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidatePortugalIBAN(iban string) error {
 	return nil
 }
 
-// GeneratePortugalIBAN generates Portugal IBAN
-func GeneratePortugalIBAN() string {
+// generatePortugalIBAN generates Portugal IBAN
+func generatePortugalIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GeneratePortugalIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetPortugalBBAN retrieves BBAN structure from Portugal IBAN
-func GetPortugalBBAN(iban string) (BBAN, error) {
+// getPortugalBBAN retrieves BBAN structure from Portugal IBAN
+func getPortugalBBAN(iban string) (BBAN, error) {
 	if len(iban) != 25 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
 	}

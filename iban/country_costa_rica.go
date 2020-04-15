@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateCostaRicaIBAN validates Costa Rica IBAN
-func ValidateCostaRicaIBAN(iban string) error {
+// validateCostaRicaIBAN validates Costa Rica IBAN
+func validateCostaRicaIBAN(iban string) error {
 	if len(iban) != 22 {
 		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateCostaRicaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateCostaRicaIBAN generates Costa Rica IBAN
-func GenerateCostaRicaIBAN() string {
+// generateCostaRicaIBAN generates Costa Rica IBAN
+func generateCostaRicaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateCostaRicaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetCostaRicaBBAN retrieves BBAN structure from Costa Rica IBAN
-func GetCostaRicaBBAN(iban string) (BBAN, error) {
+// getCostaRicaBBAN retrieves BBAN structure from Costa Rica IBAN
+func getCostaRicaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
 	}

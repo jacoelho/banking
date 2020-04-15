@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateRepublicOfAzerbaijanIBAN validates Republic Of Azerbaijan IBAN
-func ValidateRepublicOfAzerbaijanIBAN(iban string) error {
+// validateRepublicOfAzerbaijanIBAN validates Republic Of Azerbaijan IBAN
+func validateRepublicOfAzerbaijanIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateRepublicOfAzerbaijanIBAN(iban string) error {
 	return nil
 }
 
-// GenerateRepublicOfAzerbaijanIBAN generates Republic Of Azerbaijan IBAN
-func GenerateRepublicOfAzerbaijanIBAN() string {
+// generateRepublicOfAzerbaijanIBAN generates Republic Of Azerbaijan IBAN
+func generateRepublicOfAzerbaijanIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateRepublicOfAzerbaijanIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetRepublicOfAzerbaijanBBAN retrieves BBAN structure from Republic Of Azerbaijan IBAN
-func GetRepublicOfAzerbaijanBBAN(iban string) (BBAN, error) {
+// getRepublicOfAzerbaijanBBAN retrieves BBAN structure from Republic Of Azerbaijan IBAN
+func getRepublicOfAzerbaijanBBAN(iban string) (BBAN, error) {
 	if len(iban) != 28 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}

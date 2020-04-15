@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateTimorLesteIBAN validates Timor Leste IBAN
-func ValidateTimorLesteIBAN(iban string) error {
+// validateTimorLesteIBAN validates Timor Leste IBAN
+func validateTimorLesteIBAN(iban string) error {
 	if len(iban) != 23 {
 		return fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateTimorLesteIBAN(iban string) error {
 	return nil
 }
 
-// GenerateTimorLesteIBAN generates Timor Leste IBAN
-func GenerateTimorLesteIBAN() string {
+// generateTimorLesteIBAN generates Timor Leste IBAN
+func generateTimorLesteIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateTimorLesteIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetTimorLesteBBAN retrieves BBAN structure from Timor Leste IBAN
-func GetTimorLesteBBAN(iban string) (BBAN, error) {
+// getTimorLesteBBAN retrieves BBAN structure from Timor Leste IBAN
+func getTimorLesteBBAN(iban string) (BBAN, error) {
 	if len(iban) != 23 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
 	}

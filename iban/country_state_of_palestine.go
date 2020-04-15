@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateStateOfPalestineIBAN validates State Of Palestine IBAN
-func ValidateStateOfPalestineIBAN(iban string) error {
+// validateStateOfPalestineIBAN validates State Of Palestine IBAN
+func validateStateOfPalestineIBAN(iban string) error {
 	if len(iban) != 29 {
 		return fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateStateOfPalestineIBAN(iban string) error {
 	return nil
 }
 
-// GenerateStateOfPalestineIBAN generates State Of Palestine IBAN
-func GenerateStateOfPalestineIBAN() string {
+// generateStateOfPalestineIBAN generates State Of Palestine IBAN
+func generateStateOfPalestineIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateStateOfPalestineIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetStateOfPalestineBBAN retrieves BBAN structure from State Of Palestine IBAN
-func GetStateOfPalestineBBAN(iban string) (BBAN, error) {
+// getStateOfPalestineBBAN retrieves BBAN structure from State Of Palestine IBAN
+func getStateOfPalestineBBAN(iban string) (BBAN, error) {
 	if len(iban) != 29 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}

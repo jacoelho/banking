@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateLuxembourgIBAN validates Luxembourg IBAN
-func ValidateLuxembourgIBAN(iban string) error {
+// validateLuxembourgIBAN validates Luxembourg IBAN
+func validateLuxembourgIBAN(iban string) error {
 	if len(iban) != 20 {
 		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateLuxembourgIBAN(iban string) error {
 	return nil
 }
 
-// GenerateLuxembourgIBAN generates Luxembourg IBAN
-func GenerateLuxembourgIBAN() string {
+// generateLuxembourgIBAN generates Luxembourg IBAN
+func generateLuxembourgIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateLuxembourgIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetLuxembourgBBAN retrieves BBAN structure from Luxembourg IBAN
-func GetLuxembourgBBAN(iban string) (BBAN, error) {
+// getLuxembourgBBAN retrieves BBAN structure from Luxembourg IBAN
+func getLuxembourgBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}

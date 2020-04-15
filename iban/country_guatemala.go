@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateGuatemalaIBAN validates Guatemala IBAN
-func ValidateGuatemalaIBAN(iban string) error {
+// validateGuatemalaIBAN validates Guatemala IBAN
+func validateGuatemalaIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateGuatemalaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateGuatemalaIBAN generates Guatemala IBAN
-func GenerateGuatemalaIBAN() string {
+// generateGuatemalaIBAN generates Guatemala IBAN
+func generateGuatemalaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateGuatemalaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetGuatemalaBBAN retrieves BBAN structure from Guatemala IBAN
-func GetGuatemalaBBAN(iban string) (BBAN, error) {
+// getGuatemalaBBAN retrieves BBAN structure from Guatemala IBAN
+func getGuatemalaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 28 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}

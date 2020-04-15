@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateUkraineIBAN validates Ukraine IBAN
-func ValidateUkraineIBAN(iban string) error {
+// validateUkraineIBAN validates Ukraine IBAN
+func validateUkraineIBAN(iban string) error {
 	if len(iban) != 29 {
 		return fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateUkraineIBAN(iban string) error {
 	return nil
 }
 
-// GenerateUkraineIBAN generates Ukraine IBAN
-func GenerateUkraineIBAN() string {
+// generateUkraineIBAN generates Ukraine IBAN
+func generateUkraineIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateUkraineIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetUkraineBBAN retrieves BBAN structure from Ukraine IBAN
-func GetUkraineBBAN(iban string) (BBAN, error) {
+// getUkraineBBAN retrieves BBAN structure from Ukraine IBAN
+func getUkraineBBAN(iban string) (BBAN, error) {
 	if len(iban) != 29 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}

@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateGuadeloupeIBAN validates Guadeloupe IBAN
-func ValidateGuadeloupeIBAN(iban string) error {
+// validateGuadeloupeIBAN validates Guadeloupe IBAN
+func validateGuadeloupeIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateGuadeloupeIBAN(iban string) error {
 	return nil
 }
 
-// GenerateGuadeloupeIBAN generates Guadeloupe IBAN
-func GenerateGuadeloupeIBAN() string {
+// generateGuadeloupeIBAN generates Guadeloupe IBAN
+func generateGuadeloupeIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateGuadeloupeIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetGuadeloupeBBAN retrieves BBAN structure from Guadeloupe IBAN
-func GetGuadeloupeBBAN(iban string) (BBAN, error) {
+// getGuadeloupeBBAN retrieves BBAN structure from Guadeloupe IBAN
+func getGuadeloupeBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

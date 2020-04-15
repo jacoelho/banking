@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateLebanonIBAN validates Lebanon IBAN
-func ValidateLebanonIBAN(iban string) error {
+// validateLebanonIBAN validates Lebanon IBAN
+func validateLebanonIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateLebanonIBAN(iban string) error {
 	return nil
 }
 
-// GenerateLebanonIBAN generates Lebanon IBAN
-func GenerateLebanonIBAN() string {
+// generateLebanonIBAN generates Lebanon IBAN
+func generateLebanonIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateLebanonIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetLebanonBBAN retrieves BBAN structure from Lebanon IBAN
-func GetLebanonBBAN(iban string) (BBAN, error) {
+// getLebanonBBAN retrieves BBAN structure from Lebanon IBAN
+func getLebanonBBAN(iban string) (BBAN, error) {
 	if len(iban) != 28 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}

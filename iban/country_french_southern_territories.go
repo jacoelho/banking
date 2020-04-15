@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateFrenchSouthernTerritoriesIBAN validates French Southern Territories IBAN
-func ValidateFrenchSouthernTerritoriesIBAN(iban string) error {
+// validateFrenchSouthernTerritoriesIBAN validates French Southern Territories IBAN
+func validateFrenchSouthernTerritoriesIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateFrenchSouthernTerritoriesIBAN(iban string) error {
 	return nil
 }
 
-// GenerateFrenchSouthernTerritoriesIBAN generates French Southern Territories IBAN
-func GenerateFrenchSouthernTerritoriesIBAN() string {
+// generateFrenchSouthernTerritoriesIBAN generates French Southern Territories IBAN
+func generateFrenchSouthernTerritoriesIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateFrenchSouthernTerritoriesIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetFrenchSouthernTerritoriesBBAN retrieves BBAN structure from French Southern Territories IBAN
-func GetFrenchSouthernTerritoriesBBAN(iban string) (BBAN, error) {
+// getFrenchSouthernTerritoriesBBAN retrieves BBAN structure from French Southern Territories IBAN
+func getFrenchSouthernTerritoriesBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

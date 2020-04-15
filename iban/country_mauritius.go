@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateMauritiusIBAN validates Mauritius IBAN
-func ValidateMauritiusIBAN(iban string) error {
+// validateMauritiusIBAN validates Mauritius IBAN
+func validateMauritiusIBAN(iban string) error {
 	if len(iban) != 30 {
 		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}
@@ -42,8 +42,8 @@ func ValidateMauritiusIBAN(iban string) error {
 	return nil
 }
 
-// GenerateMauritiusIBAN generates Mauritius IBAN
-func GenerateMauritiusIBAN() string {
+// generateMauritiusIBAN generates Mauritius IBAN
+func generateMauritiusIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -56,8 +56,8 @@ func GenerateMauritiusIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetMauritiusBBAN retrieves BBAN structure from Mauritius IBAN
-func GetMauritiusBBAN(iban string) (BBAN, error) {
+// getMauritiusBBAN retrieves BBAN structure from Mauritius IBAN
+func getMauritiusBBAN(iban string) (BBAN, error) {
 	if len(iban) != 30 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}

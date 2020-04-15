@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateMartiniqueIBAN validates Martinique IBAN
-func ValidateMartiniqueIBAN(iban string) error {
+// validateMartiniqueIBAN validates Martinique IBAN
+func validateMartiniqueIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateMartiniqueIBAN(iban string) error {
 	return nil
 }
 
-// GenerateMartiniqueIBAN generates Martinique IBAN
-func GenerateMartiniqueIBAN() string {
+// generateMartiniqueIBAN generates Martinique IBAN
+func generateMartiniqueIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateMartiniqueIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetMartiniqueBBAN retrieves BBAN structure from Martinique IBAN
-func GetMartiniqueBBAN(iban string) (BBAN, error) {
+// getMartiniqueBBAN retrieves BBAN structure from Martinique IBAN
+func getMartiniqueBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

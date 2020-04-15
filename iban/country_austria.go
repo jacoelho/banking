@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateAustriaIBAN validates Austria IBAN
-func ValidateAustriaIBAN(iban string) error {
+// validateAustriaIBAN validates Austria IBAN
+func validateAustriaIBAN(iban string) error {
 	if len(iban) != 20 {
 		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateAustriaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateAustriaIBAN generates Austria IBAN
-func GenerateAustriaIBAN() string {
+// generateAustriaIBAN generates Austria IBAN
+func generateAustriaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateAustriaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetAustriaBBAN retrieves BBAN structure from Austria IBAN
-func GetAustriaBBAN(iban string) (BBAN, error) {
+// getAustriaBBAN retrieves BBAN structure from Austria IBAN
+func getAustriaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}

@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateGibraltarIBAN validates Gibraltar IBAN
-func ValidateGibraltarIBAN(iban string) error {
+// validateGibraltarIBAN validates Gibraltar IBAN
+func validateGibraltarIBAN(iban string) error {
 	if len(iban) != 23 {
 		return fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateGibraltarIBAN(iban string) error {
 	return nil
 }
 
-// GenerateGibraltarIBAN generates Gibraltar IBAN
-func GenerateGibraltarIBAN() string {
+// generateGibraltarIBAN generates Gibraltar IBAN
+func generateGibraltarIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateGibraltarIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetGibraltarBBAN retrieves BBAN structure from Gibraltar IBAN
-func GetGibraltarBBAN(iban string) (BBAN, error) {
+// getGibraltarBBAN retrieves BBAN structure from Gibraltar IBAN
+func getGibraltarBBAN(iban string) (BBAN, error) {
 	if len(iban) != 23 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
 	}

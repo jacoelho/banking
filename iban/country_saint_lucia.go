@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateSaintLuciaIBAN validates Saint Lucia IBAN
-func ValidateSaintLuciaIBAN(iban string) error {
+// validateSaintLuciaIBAN validates Saint Lucia IBAN
+func validateSaintLuciaIBAN(iban string) error {
 	if len(iban) != 32 {
 		return fmt.Errorf("unexpected length, want: 32: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateSaintLuciaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateSaintLuciaIBAN generates Saint Lucia IBAN
-func GenerateSaintLuciaIBAN() string {
+// generateSaintLuciaIBAN generates Saint Lucia IBAN
+func generateSaintLuciaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateSaintLuciaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetSaintLuciaBBAN retrieves BBAN structure from Saint Lucia IBAN
-func GetSaintLuciaBBAN(iban string) (BBAN, error) {
+// getSaintLuciaBBAN retrieves BBAN structure from Saint Lucia IBAN
+func getSaintLuciaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 32 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 32: %w", ErrValidation)
 	}

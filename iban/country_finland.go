@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateFinlandIBAN validates Finland IBAN
-func ValidateFinlandIBAN(iban string) error {
+// validateFinlandIBAN validates Finland IBAN
+func validateFinlandIBAN(iban string) error {
 	if len(iban) != 18 {
 		return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateFinlandIBAN(iban string) error {
 	return nil
 }
 
-// GenerateFinlandIBAN generates Finland IBAN
-func GenerateFinlandIBAN() string {
+// generateFinlandIBAN generates Finland IBAN
+func generateFinlandIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateFinlandIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetFinlandBBAN retrieves BBAN structure from Finland IBAN
-func GetFinlandBBAN(iban string) (BBAN, error) {
+// getFinlandBBAN retrieves BBAN structure from Finland IBAN
+func getFinlandBBAN(iban string) (BBAN, error) {
 	if len(iban) != 18 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
 	}

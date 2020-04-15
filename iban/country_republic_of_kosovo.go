@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateRepublicOfKosovoIBAN validates Republic Of Kosovo IBAN
-func ValidateRepublicOfKosovoIBAN(iban string) error {
+// validateRepublicOfKosovoIBAN validates Republic Of Kosovo IBAN
+func validateRepublicOfKosovoIBAN(iban string) error {
 	if len(iban) != 20 {
 		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateRepublicOfKosovoIBAN(iban string) error {
 	return nil
 }
 
-// GenerateRepublicOfKosovoIBAN generates Republic Of Kosovo IBAN
-func GenerateRepublicOfKosovoIBAN() string {
+// generateRepublicOfKosovoIBAN generates Republic Of Kosovo IBAN
+func generateRepublicOfKosovoIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateRepublicOfKosovoIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetRepublicOfKosovoBBAN retrieves BBAN structure from Republic Of Kosovo IBAN
-func GetRepublicOfKosovoBBAN(iban string) (BBAN, error) {
+// getRepublicOfKosovoBBAN retrieves BBAN structure from Republic Of Kosovo IBAN
+func getRepublicOfKosovoBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}

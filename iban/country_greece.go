@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateGreeceIBAN validates Greece IBAN
-func ValidateGreeceIBAN(iban string) error {
+// validateGreeceIBAN validates Greece IBAN
+func validateGreeceIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -34,8 +34,8 @@ func ValidateGreeceIBAN(iban string) error {
 	return nil
 }
 
-// GenerateGreeceIBAN generates Greece IBAN
-func GenerateGreeceIBAN() string {
+// generateGreeceIBAN generates Greece IBAN
+func generateGreeceIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -46,8 +46,8 @@ func GenerateGreeceIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetGreeceBBAN retrieves BBAN structure from Greece IBAN
-func GetGreeceBBAN(iban string) (BBAN, error) {
+// getGreeceBBAN retrieves BBAN structure from Greece IBAN
+func getGreeceBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateDominicanRepublicIBAN validates Dominican Republic IBAN
-func ValidateDominicanRepublicIBAN(iban string) error {
+// validateDominicanRepublicIBAN validates Dominican Republic IBAN
+func validateDominicanRepublicIBAN(iban string) error {
 	if len(iban) != 28 {
 		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateDominicanRepublicIBAN(iban string) error {
 	return nil
 }
 
-// GenerateDominicanRepublicIBAN generates Dominican Republic IBAN
-func GenerateDominicanRepublicIBAN() string {
+// generateDominicanRepublicIBAN generates Dominican Republic IBAN
+func generateDominicanRepublicIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateDominicanRepublicIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetDominicanRepublicBBAN retrieves BBAN structure from Dominican Republic IBAN
-func GetDominicanRepublicBBAN(iban string) (BBAN, error) {
+// getDominicanRepublicBBAN retrieves BBAN structure from Dominican Republic IBAN
+func getDominicanRepublicBBAN(iban string) (BBAN, error) {
 	if len(iban) != 28 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
 	}

@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateBosniaAndHerzegovinaIBAN validates Bosnia And Herzegovina IBAN
-func ValidateBosniaAndHerzegovinaIBAN(iban string) error {
+// validateBosniaAndHerzegovinaIBAN validates Bosnia And Herzegovina IBAN
+func validateBosniaAndHerzegovinaIBAN(iban string) error {
 	if len(iban) != 20 {
 		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}
@@ -30,8 +30,8 @@ func ValidateBosniaAndHerzegovinaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateBosniaAndHerzegovinaIBAN generates Bosnia And Herzegovina IBAN
-func GenerateBosniaAndHerzegovinaIBAN() string {
+// generateBosniaAndHerzegovinaIBAN generates Bosnia And Herzegovina IBAN
+func generateBosniaAndHerzegovinaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -41,8 +41,8 @@ func GenerateBosniaAndHerzegovinaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetBosniaAndHerzegovinaBBAN retrieves BBAN structure from Bosnia And Herzegovina IBAN
-func GetBosniaAndHerzegovinaBBAN(iban string) (BBAN, error) {
+// getBosniaAndHerzegovinaBBAN retrieves BBAN structure from Bosnia And Herzegovina IBAN
+func getBosniaAndHerzegovinaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
 	}

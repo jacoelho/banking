@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateMacedoniaIBAN validates Macedonia IBAN
-func ValidateMacedoniaIBAN(iban string) error {
+// validateMacedoniaIBAN validates Macedonia IBAN
+func validateMacedoniaIBAN(iban string) error {
 	if len(iban) != 19 {
 		return fmt.Errorf("unexpected length, want: 19: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateMacedoniaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateMacedoniaIBAN generates Macedonia IBAN
-func GenerateMacedoniaIBAN() string {
+// generateMacedoniaIBAN generates Macedonia IBAN
+func generateMacedoniaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateMacedoniaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetMacedoniaBBAN retrieves BBAN structure from Macedonia IBAN
-func GetMacedoniaBBAN(iban string) (BBAN, error) {
+// getMacedoniaBBAN retrieves BBAN structure from Macedonia IBAN
+func getMacedoniaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 19 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 19: %w", ErrValidation)
 	}

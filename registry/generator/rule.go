@@ -11,6 +11,9 @@ import (
 
 func templateFunctions() template.FuncMap {
 	return template.FuncMap{
+		"ToLower": func(s string) string {
+			return strings.ToLower(s)
+		},
 		"rule": func(r rule.Rule, s string) string {
 			switch v := r.(type) {
 			case *rule.StaticRule:

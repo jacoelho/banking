@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateWallisAndFutunaIslandsIBAN validates Wallis And Futuna Islands IBAN
-func ValidateWallisAndFutunaIslandsIBAN(iban string) error {
+// validateWallisAndFutunaIslandsIBAN validates Wallis And Futuna Islands IBAN
+func validateWallisAndFutunaIslandsIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateWallisAndFutunaIslandsIBAN(iban string) error {
 	return nil
 }
 
-// GenerateWallisAndFutunaIslandsIBAN generates Wallis And Futuna Islands IBAN
-func GenerateWallisAndFutunaIslandsIBAN() string {
+// generateWallisAndFutunaIslandsIBAN generates Wallis And Futuna Islands IBAN
+func generateWallisAndFutunaIslandsIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateWallisAndFutunaIslandsIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetWallisAndFutunaIslandsBBAN retrieves BBAN structure from Wallis And Futuna Islands IBAN
-func GetWallisAndFutunaIslandsBBAN(iban string) (BBAN, error) {
+// getWallisAndFutunaIslandsBBAN retrieves BBAN structure from Wallis And Futuna Islands IBAN
+func getWallisAndFutunaIslandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

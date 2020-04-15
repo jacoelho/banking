@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateFrenchPolynesiaIBAN validates French Polynesia IBAN
-func ValidateFrenchPolynesiaIBAN(iban string) error {
+// validateFrenchPolynesiaIBAN validates French Polynesia IBAN
+func validateFrenchPolynesiaIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateFrenchPolynesiaIBAN(iban string) error {
 	return nil
 }
 
-// GenerateFrenchPolynesiaIBAN generates French Polynesia IBAN
-func GenerateFrenchPolynesiaIBAN() string {
+// generateFrenchPolynesiaIBAN generates French Polynesia IBAN
+func generateFrenchPolynesiaIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateFrenchPolynesiaIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetFrenchPolynesiaBBAN retrieves BBAN structure from French Polynesia IBAN
-func GetFrenchPolynesiaBBAN(iban string) (BBAN, error) {
+// getFrenchPolynesiaBBAN retrieves BBAN structure from French Polynesia IBAN
+func getFrenchPolynesiaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

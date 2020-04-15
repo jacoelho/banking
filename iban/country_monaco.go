@@ -9,8 +9,8 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-// ValidateMonacoIBAN validates Monaco IBAN
-func ValidateMonacoIBAN(iban string) error {
+// validateMonacoIBAN validates Monaco IBAN
+func validateMonacoIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
@@ -38,8 +38,8 @@ func ValidateMonacoIBAN(iban string) error {
 	return nil
 }
 
-// GenerateMonacoIBAN generates Monaco IBAN
-func GenerateMonacoIBAN() string {
+// generateMonacoIBAN generates Monaco IBAN
+func generateMonacoIBAN() string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -51,8 +51,8 @@ func GenerateMonacoIBAN() string {
 	return ReplaceChecksum(sb.String())
 }
 
-// GetMonacoBBAN retrieves BBAN structure from Monaco IBAN
-func GetMonacoBBAN(iban string) (BBAN, error) {
+// getMonacoBBAN retrieves BBAN structure from Monaco IBAN
+func getMonacoBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}

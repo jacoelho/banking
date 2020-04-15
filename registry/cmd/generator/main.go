@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path"
@@ -77,48 +78,29 @@ func main() {
 
 	// single validate file
 	targetFile := path.Join(*destinationDirectory, "validate.go")
-
-	writer, err := os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := generator.GenerateValidate(writer, countries.Countries); err != nil {
-		writer.Close()
-		if errRemove := os.Remove(targetFile); errRemove != nil {
-			log.Fatalf("while handling %s, got %s", err, errRemove)
-		}
-		log.Fatal(err)
-	}
-
-	writer.Close()
+	generateFunc(targetFile, generator.GenerateValidate, countries.Countries)
 
 	// single generate file
 	targetFile = path.Join(*destinationDirectory, "generate.go")
-
-	writer, err = os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if err := generator.GenerateGenerate(writer, countries.Countries); err != nil {
-		writer.Close()
-		if errRemove := os.Remove(targetFile); errRemove != nil {
-			log.Fatalf("while handling %s, got %s", err, errRemove)
-		}
-		log.Fatal(err)
-	}
-
-	writer.Close()
+	generateFunc(targetFile, generator.GenerateGenerate, countries.Countries)
 
 	// single generate file
 	targetFile = path.Join(*destinationDirectory, "bban_helper.go")
+	generateFunc(targetFile, generator.GenerateGetBBAN, countries.Countries)
 
-	writer, err = os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
+	// single generate file
+	targetFile = path.Join(*destinationDirectory, "country_constants.go")
+	generateFunc(targetFile, generator.GenerateConstants, countries.Countries)
+}
+
+func generateFunc(filename string, fn func(io.Writer, []registry.Country) error, countries []registry.Country) {
+	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
 	if err != nil {
 		log.Fatal(err)
 	}
-	if err := generator.GenerateGetBBAN(writer, countries.Countries); err != nil {
+	if err := fn(writer, countries); err != nil {
 		writer.Close()
-		if errRemove := os.Remove(targetFile); errRemove != nil {
+		if errRemove := os.Remove(filename); errRemove != nil {
 			log.Fatalf("while handling %s, got %s", err, errRemove)
 		}
 		log.Fatal(err)
