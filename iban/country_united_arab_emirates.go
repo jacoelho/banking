@@ -23,7 +23,7 @@ func validateUnitedArabEmiratesIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 21, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generateUnitedArabEmiratesIBAN() string {
 	sb.WriteString("AE")
 	generator.Digits(sb, 21)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getUnitedArabEmiratesBBAN retrieves BBAN structure from United Arab Emirates IBAN

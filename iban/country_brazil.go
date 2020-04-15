@@ -31,7 +31,7 @@ func validateBrazilIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 28, length: 1, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -48,7 +48,7 @@ func generateBrazilIBAN() string {
 	generator.UpperCaseLetters(sb, 1)
 	generator.AlphaNumeric(sb, 1)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getBrazilBBAN retrieves BBAN structure from Brazil IBAN

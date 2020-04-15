@@ -31,7 +31,7 @@ func validateRepublicOfAzerbaijanIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 8, length: 20, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -48,7 +48,7 @@ func generateRepublicOfAzerbaijanIBAN() string {
 	generator.UpperCaseLetters(sb, 4)
 	generator.AlphaNumeric(sb, 20)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getRepublicOfAzerbaijanBBAN retrieves BBAN structure from Republic Of Azerbaijan IBAN

@@ -35,7 +35,7 @@ func validateMaltaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 13, length: 18, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -53,7 +53,7 @@ func generateMaltaIBAN() string {
 	generator.Digits(sb, 5)
 	generator.AlphaNumeric(sb, 18)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getMaltaBBAN retrieves BBAN structure from Malta IBAN

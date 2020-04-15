@@ -23,7 +23,7 @@ func validatePortugalIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 23, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generatePortugalIBAN() string {
 	sb.WriteString("PT")
 	generator.Digits(sb, 23)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getPortugalBBAN retrieves BBAN structure from Portugal IBAN

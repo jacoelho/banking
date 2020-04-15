@@ -23,7 +23,7 @@ func validateGreenlandIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generateGreenlandIBAN() string {
 	sb.WriteString("GL")
 	generator.Digits(sb, 16)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getGreenlandBBAN retrieves BBAN structure from Greenland IBAN

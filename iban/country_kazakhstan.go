@@ -27,7 +27,7 @@ func validateKazakhstanIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 7, length: 13, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +43,7 @@ func generateKazakhstanIBAN() string {
 	generator.Digits(sb, 5)
 	generator.AlphaNumeric(sb, 13)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getKazakhstanBBAN retrieves BBAN structure from Kazakhstan IBAN

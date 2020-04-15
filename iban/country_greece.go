@@ -27,7 +27,7 @@ func validateGreeceIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 11, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +43,7 @@ func generateGreeceIBAN() string {
 	generator.Digits(sb, 9)
 	generator.AlphaNumeric(sb, 16)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getGreeceBBAN retrieves BBAN structure from Greece IBAN

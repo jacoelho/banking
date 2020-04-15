@@ -7,7 +7,7 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
-func Normalize(s string) string {
+func normalize(s string) string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -75,11 +75,11 @@ func Normalize(s string) string {
 	return sb.String()
 }
 
-func Checksum(iban string) string {
+func checksum(iban string) string {
 	t := []byte(iban)
 	value := append(t[4:], t[0], t[1], '0', '0')
 
-	checkDigit := 98 - iso7064.Mod9710(Normalize(string(value)))
+	checkDigit := 98 - iso7064.Mod9710(normalize(string(value)))
 	if checkDigit == 0 {
 		return "00"
 	}
@@ -92,10 +92,10 @@ func Checksum(iban string) string {
 	return checkString
 }
 
-func ReplaceChecksum(iban string) string {
+func replaceChecksum(iban string) string {
 	raw := []byte(iban)
 
-	check := Checksum(iban)
+	check := checksum(iban)
 
 	raw[2], raw[3] = check[0], check[1]
 

@@ -23,7 +23,7 @@ func validateEstoniaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 18, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generateEstoniaIBAN() string {
 	sb.WriteString("EE")
 	generator.Digits(sb, 18)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getEstoniaBBAN retrieves BBAN structure from Estonia IBAN

@@ -23,7 +23,7 @@ func validateNorwayIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 13, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generateNorwayIBAN() string {
 	sb.WriteString("NO")
 	generator.Digits(sb, 13)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getNorwayBBAN retrieves BBAN structure from Norway IBAN

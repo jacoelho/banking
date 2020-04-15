@@ -23,7 +23,7 @@ func validateMauritaniaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 25, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generateMauritaniaIBAN() string {
 	sb.WriteString("MR")
 	generator.Digits(sb, 25)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getMauritaniaBBAN retrieves BBAN structure from Mauritania IBAN
