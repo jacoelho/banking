@@ -31,7 +31,7 @@ func validateTheNetherlandsIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 8, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -48,7 +48,7 @@ func generateTheNetherlandsIBAN() string {
 	generator.UpperCaseLetters(sb, 4)
 	generator.Digits(sb, 10)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getTheNetherlandsBBAN retrieves BBAN structure from The Netherlands IBAN

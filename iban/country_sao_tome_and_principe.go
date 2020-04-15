@@ -23,7 +23,7 @@ func validateSaoTomeAndPrincipeIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 23, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generateSaoTomeAndPrincipeIBAN() string {
 	sb.WriteString("ST")
 	generator.Digits(sb, 23)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getSaoTomeAndPrincipeBBAN retrieves BBAN structure from Sao Tome And Principe IBAN

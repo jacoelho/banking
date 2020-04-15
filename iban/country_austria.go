@@ -23,7 +23,7 @@ func validateAustriaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 18, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -38,7 +38,7 @@ func generateAustriaIBAN() string {
 	sb.WriteString("AT")
 	generator.Digits(sb, 18)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getAustriaBBAN retrieves BBAN structure from Austria IBAN

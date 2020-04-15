@@ -35,7 +35,7 @@ func validateBulgariaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 14, length: 8, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -53,7 +53,7 @@ func generateBulgariaIBAN() string {
 	generator.Digits(sb, 6)
 	generator.AlphaNumeric(sb, 8)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getBulgariaBBAN retrieves BBAN structure from Bulgaria IBAN

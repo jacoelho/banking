@@ -27,7 +27,7 @@ func validateTurkeyIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 10, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +43,7 @@ func generateTurkeyIBAN() string {
 	generator.Digits(sb, 8)
 	generator.AlphaNumeric(sb, 16)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getTurkeyBBAN retrieves BBAN structure from Turkey IBAN

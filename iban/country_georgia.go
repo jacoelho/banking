@@ -31,7 +31,7 @@ func validateGeorgiaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 6, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -48,7 +48,7 @@ func generateGeorgiaIBAN() string {
 	generator.UpperCaseLetters(sb, 2)
 	generator.Digits(sb, 16)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getGeorgiaBBAN retrieves BBAN structure from Georgia IBAN

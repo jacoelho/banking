@@ -31,7 +31,7 @@ func validateMartiniqueIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 25, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -48,7 +48,7 @@ func generateMartiniqueIBAN() string {
 	generator.AlphaNumeric(sb, 11)
 	generator.Digits(sb, 2)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getMartiniqueBBAN retrieves BBAN structure from Martinique IBAN

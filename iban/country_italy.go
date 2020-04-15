@@ -35,7 +35,7 @@ func validateItalyIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 15, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -53,7 +53,7 @@ func generateItalyIBAN() string {
 	generator.Digits(sb, 10)
 	generator.AlphaNumeric(sb, 12)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getItalyBBAN retrieves BBAN structure from Italy IBAN

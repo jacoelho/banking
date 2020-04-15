@@ -31,7 +31,7 @@ func validateLatviaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 8, length: 13, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -48,7 +48,7 @@ func generateLatviaIBAN() string {
 	generator.UpperCaseLetters(sb, 4)
 	generator.AlphaNumeric(sb, 13)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getLatviaBBAN retrieves BBAN structure from Latvia IBAN

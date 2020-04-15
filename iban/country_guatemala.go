@@ -27,7 +27,7 @@ func validateGuatemalaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 4, length: 24, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +43,7 @@ func generateGuatemalaIBAN() string {
 	generator.Digits(sb, 2)
 	generator.AlphaNumeric(sb, 24)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getGuatemalaBBAN retrieves BBAN structure from Guatemala IBAN

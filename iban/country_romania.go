@@ -31,7 +31,7 @@ func validateRomaniaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 8, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -48,7 +48,7 @@ func generateRomaniaIBAN() string {
 	generator.UpperCaseLetters(sb, 4)
 	generator.AlphaNumeric(sb, 16)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getRomaniaBBAN retrieves BBAN structure from Romania IBAN

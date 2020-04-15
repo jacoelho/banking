@@ -35,7 +35,7 @@ func validateJordanIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 12, length: 18, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -53,7 +53,7 @@ func generateJordanIBAN() string {
 	generator.Digits(sb, 4)
 	generator.AlphaNumeric(sb, 18)
 
-	return ReplaceChecksum(sb.String())
+	return replaceChecksum(sb.String())
 }
 
 // getJordanBBAN retrieves BBAN structure from Jordan IBAN
