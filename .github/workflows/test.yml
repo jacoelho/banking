@@ -12,3 +12,4 @@ jobs:
       - run: make lint
       - run: cd registry && make -f ../Makefile
       - run: make validation
+

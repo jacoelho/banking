@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  release-on-push:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: rymndhng/release-on-push-action@v0.12.1
+        with:
+          bump_version_scheme: patch
+      - run: mkdir test && cd test && go mod init test && go get -u github.com/jacoelho/banking
