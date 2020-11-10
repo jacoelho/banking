@@ -79,11 +79,11 @@ countries:
     account_number: 13:25
 
   - code: BY
-    name: Republic of Belarus
-    IBAN: CR2!n4!n14!n
-    BBAN: 3!n14!n
+    name: Belarus
+    IBAN: BY2!n4!c4!n16!c
+    BBAN: 4!c4!n16!c
     bank_code: 0:4
-    account_number: 4:18
+    account_number: 4:24
 
   - code: CH
     name: Switzerland
@@ -162,7 +162,8 @@ countries:
 
   - code: FI
     name: Finland
-    IBAN: FI2!n6!n7!n1!n
+    IBAN: FI2!n3!n11!n
+    BBAN: 3!n11!n
     bank_code: 0:3
     national_checksum: 13:14
     account_number: 3:13
@@ -369,7 +370,7 @@ countries:
 
   - code: MD
     name: Moldova
-    IBAN: MD2!n20!c
+    IBAN: MD2!n2!c18!c
     BBAN: 2!c18!c
     bank_code: 0:2
     account_number: 2:20
@@ -537,7 +538,7 @@ countries:
 
   - code: ST
     name: Sao Tome And Principe
-    IBAN: ST2!n8!n11!n2!n
+    IBAN: ST2!n4!n4!n11!n2!n
     BBAN: 8!n11!n2!n
     bank_code: 0:4
     branch_code: 4:8
@@ -549,7 +550,6 @@ countries:
     BBAN: 4!a20!n
     bank_code: 0:4
     account_number: 4:24
-    # TODO checksum
 
   - code: TL
     name: Timor Leste
@@ -590,7 +590,6 @@ countries:
     BBAN: 3!n15!n
     bank_code: 0:3
     account_number: 3:18
-    # TODO checksum
 
   - code: VG
     name: British Virgin Islands

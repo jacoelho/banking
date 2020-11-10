@@ -23,7 +23,7 @@ const (
 	bh = "BH"
 	// Country Code Brazil
 	br = "BR"
-	// Country Code Republic of Belarus
+	// Country Code Belarus
 	by = "BY"
 	// Country Code Switzerland
 	ch = "CH"

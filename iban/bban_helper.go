@@ -35,7 +35,7 @@ func GetBBAN(iban string) (BBAN, error) {
 	case br:
 		return getBrazilBBAN(iban)
 	case by:
-		return getRepublicofBelarusBBAN(iban)
+		return getBelarusBBAN(iban)
 	case ch:
 		return getSwitzerlandBBAN(iban)
 	case cr:

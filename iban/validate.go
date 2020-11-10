@@ -35,7 +35,7 @@ func Validate(iban string) error {
 	case br:
 		return validateBrazilIBAN(iban)
 	case by:
-		return validateRepublicofBelarusIBAN(iban)
+		return validateBelarusIBAN(iban)
 	case ch:
 		return validateSwitzerlandIBAN(iban)
 	case cr:

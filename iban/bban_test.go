@@ -593,14 +593,14 @@ func TestBBAN(t *testing.T) {
 				AccountNumber:    "00000027010"},
 		},
 		{
-			iban:    "ST68000100010051845310112",
+			iban:    "ST23000100010051845310146",
 			wantErr: false,
 			bban: BBAN{
-				BBAN:             "000100010051845310112",
+				BBAN:             "000100010051845310146",
 				BankCode:         "0001",
 				BranchCode:       "0001",
 				NationalChecksum: "",
-				AccountNumber:    "0051845310112"},
+				AccountNumber:    "0051845310146"},
 		},
 		{
 			iban:    "SA0380000000608010167519",
@@ -774,6 +774,17 @@ func TestBBAN(t *testing.T) {
 				BranchCode:       "",
 				NationalChecksum: "",
 				AccountNumber:    "123000012345678",
+			},
+		},
+		{
+			iban:    "BY13NBRB3600900000002Z00AB00",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "NBRB3600900000002Z00AB00",
+				BankCode:         "NBRB",
+				BranchCode:       "",
+				NationalChecksum: "",
+				AccountNumber:    "3600900000002Z00AB00",
 			},
 		},
 	}
