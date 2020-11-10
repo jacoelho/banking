@@ -14,46 +14,162 @@ func GetBBAN(iban string) (BBAN, error) {
 
 	code := iban[0:2]
 	switch code {
-	case al:
-		return getAlbaniaBBAN(iban)
 	case ad:
 		return getAndorraBBAN(iban)
+	case ae:
+		return getUnitedArabEmiratesBBAN(iban)
+	case al:
+		return getAlbaniaBBAN(iban)
 	case at:
 		return getAustriaBBAN(iban)
 	case az:
 		return getRepublicOfAzerbaijanBBAN(iban)
-	case bh:
-		return getKingdomOfBahrainBBAN(iban)
-	case be:
-		return getBelgiumBBAN(iban)
 	case ba:
 		return getBosniaAndHerzegovinaBBAN(iban)
-	case br:
-		return getBrazilBBAN(iban)
+	case be:
+		return getBelgiumBBAN(iban)
 	case bg:
 		return getBulgariaBBAN(iban)
+	case bh:
+		return getKingdomOfBahrainBBAN(iban)
+	case br:
+		return getBrazilBBAN(iban)
+	case by:
+		return getBelarusBBAN(iban)
+	case ch:
+		return getSwitzerlandBBAN(iban)
 	case cr:
 		return getCostaRicaBBAN(iban)
-	case hr:
-		return getCroatiaBBAN(iban)
 	case cy:
 		return getCyprusBBAN(iban)
 	case cz:
 		return getCzechRepublicBBAN(iban)
+	case de:
+		return getGermanyBBAN(iban)
 	case dk:
 		return getDenmarkBBAN(iban)
-	case fo:
-		return getFaroeIslandsBBAN(iban)
-	case gl:
-		return getGreenlandBBAN(iban)
 	case do:
 		return getDominicanRepublicBBAN(iban)
 	case ee:
 		return getEstoniaBBAN(iban)
+	case eg:
+		return getEgyptBBAN(iban)
+	case es:
+		return getSpainBBAN(iban)
 	case fi:
 		return getFinlandBBAN(iban)
+	case fo:
+		return getFaroeIslandsBBAN(iban)
 	case fr:
 		return getFranceBBAN(iban)
+	case gb:
+		return getUnitedKingdomBBAN(iban)
+	case ge:
+		return getGeorgiaBBAN(iban)
+	case gi:
+		return getGibraltarBBAN(iban)
+	case gl:
+		return getGreenlandBBAN(iban)
+	case gr:
+		return getGreeceBBAN(iban)
+	case gt:
+		return getGuatemalaBBAN(iban)
+	case hr:
+		return getCroatiaBBAN(iban)
+	case hu:
+		return getHungaryBBAN(iban)
+	case ie:
+		return getIrelandBBAN(iban)
+	case il:
+		return getIsraelBBAN(iban)
+	case iq:
+		return getIraqBBAN(iban)
+	case is:
+		return getIcelandBBAN(iban)
+	case it:
+		return getItalyBBAN(iban)
+	case jo:
+		return getJordanBBAN(iban)
+	case kw:
+		return getKuwaitBBAN(iban)
+	case kz:
+		return getKazakhstanBBAN(iban)
+	case lb:
+		return getLebanonBBAN(iban)
+	case lc:
+		return getSaintLuciaBBAN(iban)
+	case li:
+		return getPrincipalityOfLiechtensteinBBAN(iban)
+	case lt:
+		return getLithuaniaBBAN(iban)
+	case lu:
+		return getLuxembourgBBAN(iban)
+	case lv:
+		return getLatviaBBAN(iban)
+	case ly:
+		return getLibyaBBAN(iban)
+	case mc:
+		return getMonacoBBAN(iban)
+	case md:
+		return getMoldovaBBAN(iban)
+	case me:
+		return getMontenegroBBAN(iban)
+	case mk:
+		return getMacedoniaBBAN(iban)
+	case mr:
+		return getMauritaniaBBAN(iban)
+	case mt:
+		return getMaltaBBAN(iban)
+	case mu:
+		return getMauritiusBBAN(iban)
+	case nl:
+		return getTheNetherlandsBBAN(iban)
+	case no:
+		return getNorwayBBAN(iban)
+	case pk:
+		return getPakistanBBAN(iban)
+	case pl:
+		return getPolandBBAN(iban)
+	case ps:
+		return getStateOfPalestineBBAN(iban)
+	case pt:
+		return getPortugalBBAN(iban)
+	case qa:
+		return getQatarBBAN(iban)
+	case ro:
+		return getRomaniaBBAN(iban)
+	case rs:
+		return getSerbiaBBAN(iban)
+	case sa:
+		return getSaudiArabiaBBAN(iban)
+	case sc:
+		return getSeychellesBBAN(iban)
+	case se:
+		return getSwedenBBAN(iban)
+	case si:
+		return getSloveniaBBAN(iban)
+	case sk:
+		return getSlovakRepublicBBAN(iban)
+	case sm:
+		return getSanMarinoBBAN(iban)
+	case st:
+		return getSaoTomeAndPrincipeBBAN(iban)
+	case sv:
+		return getElSalvadorBBAN(iban)
+	case tl:
+		return getTimorLesteBBAN(iban)
+	case tn:
+		return getTunisiaBBAN(iban)
+	case tr:
+		return getTurkeyBBAN(iban)
+	case ua:
+		return getUkraineBBAN(iban)
+	case va:
+		return getVaticanCityStateBBAN(iban)
+	case vg:
+		return getBritishVirginIslandsBBAN(iban)
+	case xk:
+		return getRepublicOfKosovoBBAN(iban)
 	case gf:
 		return getFrenchGuyanaBBAN(iban)
 	case gp:
@@ -78,110 +194,6 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getSaintPierreEtMiquelonBBAN(iban)
 	case wf:
 		return getWallisAndFutunaIslandsBBAN(iban)
-	case ge:
-		return getGeorgiaBBAN(iban)
-	case de:
-		return getGermanyBBAN(iban)
-	case gi:
-		return getGibraltarBBAN(iban)
-	case gr:
-		return getGreeceBBAN(iban)
-	case gt:
-		return getGuatemalaBBAN(iban)
-	case hu:
-		return getHungaryBBAN(iban)
-	case is:
-		return getIcelandBBAN(iban)
-	case ie:
-		return getIrelandBBAN(iban)
-	case il:
-		return getIsraelBBAN(iban)
-	case it:
-		return getItalyBBAN(iban)
-	case jo:
-		return getJordanBBAN(iban)
-	case kz:
-		return getKazakhstanBBAN(iban)
-	case xk:
-		return getRepublicOfKosovoBBAN(iban)
-	case kw:
-		return getKuwaitBBAN(iban)
-	case lv:
-		return getLatviaBBAN(iban)
-	case lb:
-		return getLebanonBBAN(iban)
-	case li:
-		return getPrincipalityOfLiechtensteinBBAN(iban)
-	case lt:
-		return getLithuaniaBBAN(iban)
-	case lu:
-		return getLuxembourgBBAN(iban)
-	case mk:
-		return getMacedoniaBBAN(iban)
-	case mt:
-		return getMaltaBBAN(iban)
-	case mr:
-		return getMauritaniaBBAN(iban)
-	case mu:
-		return getMauritiusBBAN(iban)
-	case md:
-		return getMoldovaBBAN(iban)
-	case mc:
-		return getMonacoBBAN(iban)
-	case me:
-		return getMontenegroBBAN(iban)
-	case nl:
-		return getTheNetherlandsBBAN(iban)
-	case no:
-		return getNorwayBBAN(iban)
-	case pk:
-		return getPakistanBBAN(iban)
-	case ps:
-		return getStateOfPalestineBBAN(iban)
-	case pl:
-		return getPolandBBAN(iban)
-	case pt:
-		return getPortugalBBAN(iban)
-	case qa:
-		return getQatarBBAN(iban)
-	case ro:
-		return getRomaniaBBAN(iban)
-	case lc:
-		return getSaintLuciaBBAN(iban)
-	case sm:
-		return getSanMarinoBBAN(iban)
-	case st:
-		return getSaoTomeAndPrincipeBBAN(iban)
-	case sa:
-		return getSaudiArabiaBBAN(iban)
-	case rs:
-		return getSerbiaBBAN(iban)
-	case sk:
-		return getSlovakRepublicBBAN(iban)
-	case si:
-		return getSloveniaBBAN(iban)
-	case es:
-		return getSpainBBAN(iban)
-	case se:
-		return getSwedenBBAN(iban)
-	case ch:
-		return getSwitzerlandBBAN(iban)
-	case tl:
-		return getTimorLesteBBAN(iban)
-	case tn:
-		return getTunisiaBBAN(iban)
-	case tr:
-		return getTurkeyBBAN(iban)
-	case ae:
-		return getUnitedArabEmiratesBBAN(iban)
-	case gb:
-		return getUnitedKingdomBBAN(iban)
-	case vg:
-		return getBritishVirginIslandsBBAN(iban)
-	case sc:
-		return getSeychellesBBAN(iban)
-	case ua:
-		return getUkraineBBAN(iban)
 
 	default:
 		return BBAN{}, fmt.Errorf("%s is not supported: %w", code, ErrValidation)

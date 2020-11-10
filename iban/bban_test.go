@@ -593,14 +593,14 @@ func TestBBAN(t *testing.T) {
 				AccountNumber:    "00000027010"},
 		},
 		{
-			iban:    "ST68000100010051845310112",
+			iban:    "ST23000100010051845310146",
 			wantErr: false,
 			bban: BBAN{
-				BBAN:             "000100010051845310112",
+				BBAN:             "000100010051845310146",
 				BankCode:         "0001",
 				BranchCode:       "0001",
 				NationalChecksum: "",
-				AccountNumber:    "0051845310112"},
+				AccountNumber:    "0051845310146"},
 		},
 		{
 			iban:    "SA0380000000608010167519",
@@ -731,6 +731,61 @@ func TestBBAN(t *testing.T) {
 				BranchCode:       "",
 				NationalChecksum: "",
 				AccountNumber:    "0000012345678901"},
+		},
+		{
+			iban:    "EG380019000500000000263180002",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "0019000500000000263180002",
+				BankCode:         "0019",
+				BranchCode:       "0005",
+				NationalChecksum: "",
+				AccountNumber:    "00000000263180002",
+			},
+		},
+		{
+			iban:    "IQ98NBIQ850123456789012",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "NBIQ850123456789012",
+				BankCode:         "NBIQ",
+				BranchCode:       "850",
+				NationalChecksum: "",
+				AccountNumber:    "123456789012",
+			},
+		},
+		{
+			iban:    "SV62CENR00000000000000700025",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "CENR00000000000000700025",
+				BankCode:         "CENR",
+				BranchCode:       "",
+				NationalChecksum: "",
+				AccountNumber:    "00000000000000700025",
+			},
+		},
+		{
+			iban:    "VA59001123000012345678",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "001123000012345678",
+				BankCode:         "001",
+				BranchCode:       "",
+				NationalChecksum: "",
+				AccountNumber:    "123000012345678",
+			},
+		},
+		{
+			iban:    "BY13NBRB3600900000002Z00AB00",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "NBRB3600900000002Z00AB00",
+				BankCode:         "NBRB",
+				BranchCode:       "",
+				NationalChecksum: "",
+				AccountNumber:    "3600900000002Z00AB00",
+			},
 		},
 	}
 	for _, tt := range tests {
