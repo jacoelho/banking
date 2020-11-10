@@ -732,6 +732,50 @@ func TestBBAN(t *testing.T) {
 				NationalChecksum: "",
 				AccountNumber:    "0000012345678901"},
 		},
+		{
+			iban:    "EG380019000500000000263180002",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "0019000500000000263180002",
+				BankCode:         "0019",
+				BranchCode:       "0005",
+				NationalChecksum: "",
+				AccountNumber:    "00000000263180002",
+			},
+		},
+		{
+			iban:    "IQ98NBIQ850123456789012",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "NBIQ850123456789012",
+				BankCode:         "NBIQ",
+				BranchCode:       "850",
+				NationalChecksum: "",
+				AccountNumber:    "123456789012",
+			},
+		},
+		{
+			iban:    "SV62CENR00000000000000700025",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "CENR00000000000000700025",
+				BankCode:         "CENR",
+				BranchCode:       "",
+				NationalChecksum: "",
+				AccountNumber:    "00000000000000700025",
+			},
+		},
+		{
+			iban:    "VA59001123000012345678",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "001123000012345678",
+				BankCode:         "001",
+				BranchCode:       "",
+				NationalChecksum: "",
+				AccountNumber:    "123000012345678",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.iban,

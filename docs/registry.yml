@@ -147,10 +147,9 @@ countries:
     name: Egypt
     IBAN: EG2!n4!n4!n17!n
     BBAN: 4!n4!n17!n
-    bank_code: 0:3
-    branch_code: 3:6
-    account_number: 6:24
-    // TODO checksum
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:25
 
   - code: ES
     name: Spain
@@ -265,10 +264,9 @@ countries:
     name: Iraq
     IBAN: IQ2!n4!a3!n12!n
     BBAN: 4!a3!n12!n
-    bank_code: 0:3
-    branch_code: 3:6
-    account_number: 6:12
-    // TODO checksum?
+    bank_code: 0:4
+    branch_code: 4:7
+    account_number: 7:19
 
   - code: IS
     name: Iceland
@@ -549,9 +547,9 @@ countries:
     name: El Salvador
     IBAN: SV2!n4!a20!n
     BBAN: 4!a20!n
-    bank_code: 0:3
-    account_number: 3:20
-    // TODO checksum
+    bank_code: 0:4
+    account_number: 4:24
+    # TODO checksum
 
   - code: TL
     name: Timor Leste
@@ -592,7 +590,7 @@ countries:
     BBAN: 3!n15!n
     bank_code: 0:3
     account_number: 3:18
-    // TODO checksum
+    # TODO checksum
 
   - code: VG
     name: British Virgin Islands

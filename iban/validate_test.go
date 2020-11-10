@@ -299,6 +299,22 @@ func TestValidateIBAN(t *testing.T) {
 			iban:    "VG96VPVG0000012345678901",
 			wantErr: false,
 		},
+		{
+			iban:    "EG380019000500000000263180002",
+			wantErr: false,
+		},
+		{
+			iban:    "IQ98NBIQ850123456789012",
+			wantErr: false,
+		},
+		{
+			iban:    "SV62CENR00000000000000700025",
+			wantErr: false,
+		},
+		{
+			iban:    "VA59001123000012345678",
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.iban, func(t *testing.T) {

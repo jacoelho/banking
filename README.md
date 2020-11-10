@@ -35,7 +35,7 @@ iban.PaperFormat("GB29NWBK60161331926819"))
 
 #### BBAN
 
-```go 
+```go
 // Get BBAN from IBAN
 result, _ := iban.GetBBAN("GB29NWBK60161331926819")
 
@@ -46,6 +46,15 @@ fmt.Println(result.BBAN, result.BankCode, result.BranchCode, result.AccountNumbe
 ## ISO-7064
 
 Mod-97-10 implemented.
+
+## Generate
+
+```
+cd registry
+go install -v ./...
+cd ..
+./bin/generator  -registry-file ./docs/registry.yml
+```
 
 ## Roadmap
 

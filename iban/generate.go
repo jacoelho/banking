@@ -11,46 +11,162 @@ func Generate(countryCode string) (string, error) {
 	var result string
 
 	switch countryCode {
-	case al:
-		result = generateAlbaniaIBAN()
 	case ad:
 		result = generateAndorraIBAN()
+	case ae:
+		result = generateUnitedArabEmiratesIBAN()
+	case al:
+		result = generateAlbaniaIBAN()
 	case at:
 		result = generateAustriaIBAN()
 	case az:
 		result = generateRepublicOfAzerbaijanIBAN()
-	case bh:
-		result = generateKingdomOfBahrainIBAN()
-	case be:
-		result = generateBelgiumIBAN()
 	case ba:
 		result = generateBosniaAndHerzegovinaIBAN()
-	case br:
-		result = generateBrazilIBAN()
+	case be:
+		result = generateBelgiumIBAN()
 	case bg:
 		result = generateBulgariaIBAN()
+	case bh:
+		result = generateKingdomOfBahrainIBAN()
+	case br:
+		result = generateBrazilIBAN()
+	case by:
+		result = generateRepublicofBelarusIBAN()
+	case ch:
+		result = generateSwitzerlandIBAN()
 	case cr:
 		result = generateCostaRicaIBAN()
-	case hr:
-		result = generateCroatiaIBAN()
 	case cy:
 		result = generateCyprusIBAN()
 	case cz:
 		result = generateCzechRepublicIBAN()
+	case de:
+		result = generateGermanyIBAN()
 	case dk:
 		result = generateDenmarkIBAN()
-	case fo:
-		result = generateFaroeIslandsIBAN()
-	case gl:
-		result = generateGreenlandIBAN()
 	case do:
 		result = generateDominicanRepublicIBAN()
 	case ee:
 		result = generateEstoniaIBAN()
+	case eg:
+		result = generateEgyptIBAN()
+	case es:
+		result = generateSpainIBAN()
 	case fi:
 		result = generateFinlandIBAN()
+	case fo:
+		result = generateFaroeIslandsIBAN()
 	case fr:
 		result = generateFranceIBAN()
+	case gb:
+		result = generateUnitedKingdomIBAN()
+	case ge:
+		result = generateGeorgiaIBAN()
+	case gi:
+		result = generateGibraltarIBAN()
+	case gl:
+		result = generateGreenlandIBAN()
+	case gr:
+		result = generateGreeceIBAN()
+	case gt:
+		result = generateGuatemalaIBAN()
+	case hr:
+		result = generateCroatiaIBAN()
+	case hu:
+		result = generateHungaryIBAN()
+	case ie:
+		result = generateIrelandIBAN()
+	case il:
+		result = generateIsraelIBAN()
+	case iq:
+		result = generateIraqIBAN()
+	case is:
+		result = generateIcelandIBAN()
+	case it:
+		result = generateItalyIBAN()
+	case jo:
+		result = generateJordanIBAN()
+	case kw:
+		result = generateKuwaitIBAN()
+	case kz:
+		result = generateKazakhstanIBAN()
+	case lb:
+		result = generateLebanonIBAN()
+	case lc:
+		result = generateSaintLuciaIBAN()
+	case li:
+		result = generatePrincipalityOfLiechtensteinIBAN()
+	case lt:
+		result = generateLithuaniaIBAN()
+	case lu:
+		result = generateLuxembourgIBAN()
+	case lv:
+		result = generateLatviaIBAN()
+	case ly:
+		result = generateLibyaIBAN()
+	case mc:
+		result = generateMonacoIBAN()
+	case md:
+		result = generateMoldovaIBAN()
+	case me:
+		result = generateMontenegroIBAN()
+	case mk:
+		result = generateMacedoniaIBAN()
+	case mr:
+		result = generateMauritaniaIBAN()
+	case mt:
+		result = generateMaltaIBAN()
+	case mu:
+		result = generateMauritiusIBAN()
+	case nl:
+		result = generateTheNetherlandsIBAN()
+	case no:
+		result = generateNorwayIBAN()
+	case pk:
+		result = generatePakistanIBAN()
+	case pl:
+		result = generatePolandIBAN()
+	case ps:
+		result = generateStateOfPalestineIBAN()
+	case pt:
+		result = generatePortugalIBAN()
+	case qa:
+		result = generateQatarIBAN()
+	case ro:
+		result = generateRomaniaIBAN()
+	case rs:
+		result = generateSerbiaIBAN()
+	case sa:
+		result = generateSaudiArabiaIBAN()
+	case sc:
+		result = generateSeychellesIBAN()
+	case se:
+		result = generateSwedenIBAN()
+	case si:
+		result = generateSloveniaIBAN()
+	case sk:
+		result = generateSlovakRepublicIBAN()
+	case sm:
+		result = generateSanMarinoIBAN()
+	case st:
+		result = generateSaoTomeAndPrincipeIBAN()
+	case sv:
+		result = generateElSalvadorIBAN()
+	case tl:
+		result = generateTimorLesteIBAN()
+	case tn:
+		result = generateTunisiaIBAN()
+	case tr:
+		result = generateTurkeyIBAN()
+	case ua:
+		result = generateUkraineIBAN()
+	case va:
+		result = generateVaticanCityStateIBAN()
+	case vg:
+		result = generateBritishVirginIslandsIBAN()
+	case xk:
+		result = generateRepublicOfKosovoIBAN()
 	case gf:
 		result = generateFrenchGuyanaIBAN()
 	case gp:
@@ -75,110 +191,6 @@ func Generate(countryCode string) (string, error) {
 		result = generateSaintPierreEtMiquelonIBAN()
 	case wf:
 		result = generateWallisAndFutunaIslandsIBAN()
-	case ge:
-		result = generateGeorgiaIBAN()
-	case de:
-		result = generateGermanyIBAN()
-	case gi:
-		result = generateGibraltarIBAN()
-	case gr:
-		result = generateGreeceIBAN()
-	case gt:
-		result = generateGuatemalaIBAN()
-	case hu:
-		result = generateHungaryIBAN()
-	case is:
-		result = generateIcelandIBAN()
-	case ie:
-		result = generateIrelandIBAN()
-	case il:
-		result = generateIsraelIBAN()
-	case it:
-		result = generateItalyIBAN()
-	case jo:
-		result = generateJordanIBAN()
-	case kz:
-		result = generateKazakhstanIBAN()
-	case xk:
-		result = generateRepublicOfKosovoIBAN()
-	case kw:
-		result = generateKuwaitIBAN()
-	case lv:
-		result = generateLatviaIBAN()
-	case lb:
-		result = generateLebanonIBAN()
-	case li:
-		result = generatePrincipalityOfLiechtensteinIBAN()
-	case lt:
-		result = generateLithuaniaIBAN()
-	case lu:
-		result = generateLuxembourgIBAN()
-	case mk:
-		result = generateMacedoniaIBAN()
-	case mt:
-		result = generateMaltaIBAN()
-	case mr:
-		result = generateMauritaniaIBAN()
-	case mu:
-		result = generateMauritiusIBAN()
-	case md:
-		result = generateMoldovaIBAN()
-	case mc:
-		result = generateMonacoIBAN()
-	case me:
-		result = generateMontenegroIBAN()
-	case nl:
-		result = generateTheNetherlandsIBAN()
-	case no:
-		result = generateNorwayIBAN()
-	case pk:
-		result = generatePakistanIBAN()
-	case ps:
-		result = generateStateOfPalestineIBAN()
-	case pl:
-		result = generatePolandIBAN()
-	case pt:
-		result = generatePortugalIBAN()
-	case qa:
-		result = generateQatarIBAN()
-	case ro:
-		result = generateRomaniaIBAN()
-	case lc:
-		result = generateSaintLuciaIBAN()
-	case sm:
-		result = generateSanMarinoIBAN()
-	case st:
-		result = generateSaoTomeAndPrincipeIBAN()
-	case sa:
-		result = generateSaudiArabiaIBAN()
-	case rs:
-		result = generateSerbiaIBAN()
-	case sk:
-		result = generateSlovakRepublicIBAN()
-	case si:
-		result = generateSloveniaIBAN()
-	case es:
-		result = generateSpainIBAN()
-	case se:
-		result = generateSwedenIBAN()
-	case ch:
-		result = generateSwitzerlandIBAN()
-	case tl:
-		result = generateTimorLesteIBAN()
-	case tn:
-		result = generateTunisiaIBAN()
-	case tr:
-		result = generateTurkeyIBAN()
-	case ae:
-		result = generateUnitedArabEmiratesIBAN()
-	case gb:
-		result = generateUnitedKingdomIBAN()
-	case vg:
-		result = generateBritishVirginIslandsIBAN()
-	case sc:
-		result = generateSeychellesIBAN()
-	case ua:
-		result = generateUkraineIBAN()
 
 	default:
 		return "", fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)
