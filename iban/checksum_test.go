@@ -15,8 +15,10 @@ func TestChecksum(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.iban, func(t *testing.T) {
-			if got := checksum(tt.iban); got != tt.want {
+			t.Parallel()
+			if got := Checksum(tt.iban); got != tt.want {
 				t.Errorf("Checksum() = %v, want %v", got, tt.want)
 			}
 		})
@@ -42,7 +44,9 @@ func TestReplaceChecksum(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.iban, func(t *testing.T) {
+			t.Parallel()
 			if got := replaceChecksum(tt.iban); got != tt.want {
 				t.Errorf("Checksum() = %v, want %v", got, tt.want)
 			}
@@ -52,7 +56,7 @@ func TestReplaceChecksum(t *testing.T) {
 
 func benchmarkIBANChecksum(b *testing.B, input string) {
 	for i := 0; i < b.N; i++ {
-		checksum(input)
+		Checksum(input)
 	}
 }
 

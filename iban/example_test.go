@@ -15,7 +15,7 @@ func ExampleValidate() {
 
 func ExampleGenerate() {
 	// force results - not needed during regular usage
-	iban.SeedGenerator(rand.New(rand.NewSource(1)))
+	rand.Seed(1)
 
 	// Validate an iban using country specific validate function
 	result, _ := iban.Generate("GB")

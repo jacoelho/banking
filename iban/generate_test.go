@@ -4,7 +4,7 @@ package iban
 
 import "testing"
 
-func Testgenerate(t *testing.T) {
+func TestGenerate(t *testing.T) {
 	tests := []struct {
 		name string
 		fn   func() string
@@ -347,7 +347,9 @@ func Testgenerate(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := Validate(tt.fn()); err != nil {
 				t.Error(err)
 			}

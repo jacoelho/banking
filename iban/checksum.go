@@ -75,7 +75,7 @@ func normalize(s string) string {
 	return sb.String()
 }
 
-func checksum(iban string) string {
+func Checksum(iban string) string {
 	t := []byte(iban)
 	value := append(t[4:], t[0], t[1], '0', '0')
 
@@ -95,7 +95,7 @@ func checksum(iban string) string {
 func replaceChecksum(iban string) string {
 	raw := []byte(iban)
 
-	check := checksum(iban)
+	check := Checksum(iban)
 
 	raw[2], raw[3] = check[0], check[1]
 
