@@ -46,7 +46,7 @@ func templateFunctions() template.FuncMap {
 				case rule.UpperCaseLetters:
 					fn = "UpperCaseLetters"
 				}
-				return fmt.Sprintf(`generator.%s(%s, %d)`, fn, builderName, v.Length)
+				return fmt.Sprintf(`ascii.%s(%s, %d)`, fn, builderName, v.Length)
 			}
 			return `invalid code fix me`
 		},

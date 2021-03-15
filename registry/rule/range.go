@@ -21,7 +21,7 @@ func (r RangeRuleType) String() string {
 	case AlphaNumeric:
 		return "AlphaNumeric"
 	}
-	return string(r)
+	return fmt.Sprintf("unknown range rule type %d", r)
 }
 
 var _ Rule = (*RangeRule)(nil)
