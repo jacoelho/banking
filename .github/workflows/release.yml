@@ -12,4 +12,4 @@ jobs:
       - uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: patch
-      - run: mkdir test && cd test && go mod init test && go get -u github.com/jacoelho/banking
+      - run: mkdir test && cd test && go mod init test && go get -u github.com/jacoelho/banking@${{ steps.release.outputs.version }}"
