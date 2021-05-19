@@ -9,10 +9,13 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: rymndhng/release-on-push-action@master
+      - id: release
+        uses: rymndhng/release-on-push-action@master
         with:
           bump_version_scheme: patch
-      - run: |
+
+      - name: Check Output Parameters
+        run: |
           mkdir test && cd test
           go mod init test
           go get -u github.com/jacoelho/banking@${{ steps.release.outputs.tag_name }}"
