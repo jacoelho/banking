@@ -15,4 +15,4 @@ jobs:
           bump_version_scheme: patch
 
       - name: Refresh pkg.go.dev
-        run: GOPROXY=https://proxy.golang.org GO111MODULE=on go get -d ${{ github.repository }}@${{ steps.release.outputs.tag_name }}
+        run: GOPROXY=https://proxy.golang.org GO111MODULE=on go get -d github.com/${{ github.repository }}@${{ steps.release.outputs.tag_name }}
