@@ -21,6 +21,12 @@ Supports IBAN validation based on [swift rules](https://www.swift.com/sites/defa
 err := iban.Validate("SOME IBAN")
 ```
 
+#### Replace check digits
+```go
+result, err := iban.ReplaceChecksum("GB99NWBK60161331926819")
+// Output: GB29NWBK60161331926819
+```
+
 #### Generation
 ```go
 account := iban.Generate("GB")

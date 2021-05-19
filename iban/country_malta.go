@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -35,7 +34,7 @@ func validateMaltaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 13, length: 18, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +42,7 @@ func validateMaltaIBAN(iban string) error {
 }
 
 // generateMaltaIBAN generates Malta IBAN
-func generateMaltaIBAN() string {
+func generateMaltaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -53,7 +52,7 @@ func generateMaltaIBAN() string {
 	ascii.Digits(sb, 5)
 	ascii.AlphaNumeric(sb, 18)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getMaltaBBAN retrieves BBAN structure from Malta IBAN

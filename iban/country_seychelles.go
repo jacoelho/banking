@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -35,7 +34,7 @@ func validateSeychellesIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 28, length: 3, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +42,7 @@ func validateSeychellesIBAN(iban string) error {
 }
 
 // generateSeychellesIBAN generates Seychelles IBAN
-func generateSeychellesIBAN() string {
+func generateSeychellesIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -53,7 +52,7 @@ func generateSeychellesIBAN() string {
 	ascii.Digits(sb, 20)
 	ascii.UpperCaseLetters(sb, 3)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getSeychellesBBAN retrieves BBAN structure from Seychelles IBAN

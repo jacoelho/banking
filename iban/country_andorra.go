@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -27,7 +26,7 @@ func validateAndorraIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 12, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -35,7 +34,7 @@ func validateAndorraIBAN(iban string) error {
 }
 
 // generateAndorraIBAN generates Andorra IBAN
-func generateAndorraIBAN() string {
+func generateAndorraIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -43,7 +42,7 @@ func generateAndorraIBAN() string {
 	ascii.Digits(sb, 10)
 	ascii.AlphaNumeric(sb, 12)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getAndorraBBAN retrieves BBAN structure from Andorra IBAN

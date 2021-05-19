@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -27,7 +26,7 @@ func validateMoldovaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 4, length: 20, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -35,7 +34,7 @@ func validateMoldovaIBAN(iban string) error {
 }
 
 // generateMoldovaIBAN generates Moldova IBAN
-func generateMoldovaIBAN() string {
+func generateMoldovaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -43,7 +42,7 @@ func generateMoldovaIBAN() string {
 	ascii.Digits(sb, 2)
 	ascii.AlphaNumeric(sb, 20)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getMoldovaBBAN retrieves BBAN structure from Moldova IBAN

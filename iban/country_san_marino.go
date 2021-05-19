@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -35,7 +34,7 @@ func validateSanMarinoIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 15, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +42,7 @@ func validateSanMarinoIBAN(iban string) error {
 }
 
 // generateSanMarinoIBAN generates San Marino IBAN
-func generateSanMarinoIBAN() string {
+func generateSanMarinoIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -53,7 +52,7 @@ func generateSanMarinoIBAN() string {
 	ascii.Digits(sb, 10)
 	ascii.AlphaNumeric(sb, 12)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getSanMarinoBBAN retrieves BBAN structure from San Marino IBAN

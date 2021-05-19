@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -31,7 +30,7 @@ func validateGeorgiaIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 6, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -39,7 +38,7 @@ func validateGeorgiaIBAN(iban string) error {
 }
 
 // generateGeorgiaIBAN generates Georgia IBAN
-func generateGeorgiaIBAN() string {
+func generateGeorgiaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -48,7 +47,7 @@ func generateGeorgiaIBAN() string {
 	ascii.UpperCaseLetters(sb, 2)
 	ascii.Digits(sb, 16)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getGeorgiaBBAN retrieves BBAN structure from Georgia IBAN

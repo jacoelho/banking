@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -35,7 +34,7 @@ func validateBelarusIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 12, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +42,7 @@ func validateBelarusIBAN(iban string) error {
 }
 
 // generateBelarusIBAN generates Belarus IBAN
-func generateBelarusIBAN() string {
+func generateBelarusIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -53,7 +52,7 @@ func generateBelarusIBAN() string {
 	ascii.Digits(sb, 4)
 	ascii.AlphaNumeric(sb, 16)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getBelarusBBAN retrieves BBAN structure from Belarus IBAN

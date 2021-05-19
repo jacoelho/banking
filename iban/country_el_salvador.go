@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -31,7 +30,7 @@ func validateElSalvadorIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 8, length: 20, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -39,7 +38,7 @@ func validateElSalvadorIBAN(iban string) error {
 }
 
 // generateElSalvadorIBAN generates El Salvador IBAN
-func generateElSalvadorIBAN() string {
+func generateElSalvadorIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -48,7 +47,7 @@ func generateElSalvadorIBAN() string {
 	ascii.UpperCaseLetters(sb, 4)
 	ascii.Digits(sb, 20)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getElSalvadorBBAN retrieves BBAN structure from El Salvador IBAN
