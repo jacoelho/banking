@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -27,7 +26,7 @@ func validatePrincipalityOfLiechtensteinIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 9, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -35,7 +34,7 @@ func validatePrincipalityOfLiechtensteinIBAN(iban string) error {
 }
 
 // generatePrincipalityOfLiechtensteinIBAN generates Principality Of Liechtenstein IBAN
-func generatePrincipalityOfLiechtensteinIBAN() string {
+func generatePrincipalityOfLiechtensteinIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -43,7 +42,7 @@ func generatePrincipalityOfLiechtensteinIBAN() string {
 	ascii.Digits(sb, 7)
 	ascii.AlphaNumeric(sb, 12)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getPrincipalityOfLiechtensteinBBAN retrieves BBAN structure from Principality Of Liechtenstein IBAN

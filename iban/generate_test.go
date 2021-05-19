@@ -7,7 +7,7 @@ import "testing"
 func TestGenerate(t *testing.T) {
 	tests := []struct {
 		name string
-		fn   func() string
+		fn   func() (string, error)
 	}{
 		{
 			name: "Albania",
@@ -350,7 +350,14 @@ func TestGenerate(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			t.Parallel()
-			if err := Validate(tt.fn()); err != nil {
+
+			generated, err := tt.fn()
+			if err != nil {
+				t.Error(err)
+				return
+			}
+
+			if err := Validate(generated); err != nil {
 				t.Error(err)
 			}
 		})

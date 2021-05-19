@@ -13,6 +13,14 @@ func ExampleValidate() {
 	// Output: true
 }
 
+func ExampleReplaceChecksum() {
+	// Replace an iban checksum
+	result, _ := iban.ReplaceChecksum("GB99NWBK60161331926819")
+
+	fmt.Println(result)
+	// Output: GB29NWBK60161331926819
+}
+
 func ExampleGenerate() {
 	// force results - not needed during regular usage
 	rand.Seed(1)

@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -23,7 +22,7 @@ func validateTimorLesteIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 21, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -31,14 +30,14 @@ func validateTimorLesteIBAN(iban string) error {
 }
 
 // generateTimorLesteIBAN generates Timor Leste IBAN
-func generateTimorLesteIBAN() string {
+func generateTimorLesteIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
 	sb.WriteString("TL")
 	ascii.Digits(sb, 21)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getTimorLesteBBAN retrieves BBAN structure from Timor Leste IBAN

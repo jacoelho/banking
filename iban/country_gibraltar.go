@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -31,7 +30,7 @@ func validateGibraltarIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 8, length: 15, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -39,7 +38,7 @@ func validateGibraltarIBAN(iban string) error {
 }
 
 // generateGibraltarIBAN generates Gibraltar IBAN
-func generateGibraltarIBAN() string {
+func generateGibraltarIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -48,7 +47,7 @@ func generateGibraltarIBAN() string {
 	ascii.UpperCaseLetters(sb, 4)
 	ascii.AlphaNumeric(sb, 15)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getGibraltarBBAN retrieves BBAN structure from Gibraltar IBAN

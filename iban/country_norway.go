@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -23,7 +22,7 @@ func validateNorwayIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 13, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -31,14 +30,14 @@ func validateNorwayIBAN(iban string) error {
 }
 
 // generateNorwayIBAN generates Norway IBAN
-func generateNorwayIBAN() string {
+func generateNorwayIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
 	sb.WriteString("NO")
 	ascii.Digits(sb, 13)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getNorwayBBAN retrieves BBAN structure from Norway IBAN

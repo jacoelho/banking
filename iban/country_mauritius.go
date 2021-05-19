@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -35,7 +34,7 @@ func validateMauritiusIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 27, length: 3, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -43,7 +42,7 @@ func validateMauritiusIBAN(iban string) error {
 }
 
 // generateMauritiusIBAN generates Mauritius IBAN
-func generateMauritiusIBAN() string {
+func generateMauritiusIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -53,7 +52,7 @@ func generateMauritiusIBAN() string {
 	ascii.Digits(sb, 19)
 	ascii.UpperCaseLetters(sb, 3)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getMauritiusBBAN retrieves BBAN structure from Mauritius IBAN

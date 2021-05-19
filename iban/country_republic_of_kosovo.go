@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -23,7 +22,7 @@ func validateRepublicOfKosovoIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 2, length: 18, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -31,14 +30,14 @@ func validateRepublicOfKosovoIBAN(iban string) error {
 }
 
 // generateRepublicOfKosovoIBAN generates Republic Of Kosovo IBAN
-func generateRepublicOfKosovoIBAN() string {
+func generateRepublicOfKosovoIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
 	sb.WriteString("XK")
 	ascii.Digits(sb, 18)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getRepublicOfKosovoBBAN retrieves BBAN structure from Republic Of Kosovo IBAN

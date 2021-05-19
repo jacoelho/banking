@@ -21,6 +21,8 @@ func TestMod11_2(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
+		tt := tt
+
 		t.Run(tt.input, func(t *testing.T) {
 			if got := Mod112(tt.input); got != tt.want {
 				t.Errorf("Mod11_10() = %v, want %v", got, tt.want)

@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -31,7 +30,7 @@ func validatePakistanIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 8, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -39,7 +38,7 @@ func validatePakistanIBAN(iban string) error {
 }
 
 // generatePakistanIBAN generates Pakistan IBAN
-func generatePakistanIBAN() string {
+func generatePakistanIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -48,7 +47,7 @@ func generatePakistanIBAN() string {
 	ascii.UpperCaseLetters(sb, 4)
 	ascii.AlphaNumeric(sb, 16)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getPakistanBBAN retrieves BBAN structure from Pakistan IBAN

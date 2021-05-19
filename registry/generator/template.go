@@ -6,7 +6,6 @@ package {{ .PackageName }}
 
 import (
     "fmt"
-
     "github.com/jacoelho/banking/pool"
     "github.com/jacoelho/banking/ascii"
 )
@@ -21,7 +20,7 @@ func {{ .FunctionValidate }}(iban string) error {
         return fmt.Errorf("{{ .String }}, found %s: %w", subject, ErrValidation)
     }
     {{ end }}
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -29,7 +28,7 @@ func {{ .FunctionValidate }}(iban string) error {
 }
 
 // {{ .FunctionGenerate }} generates {{ .Country.Name }} IBAN
-func {{ .FunctionGenerate }}() string {
+func {{ .FunctionGenerate }}() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -37,7 +36,7 @@ func {{ .FunctionGenerate }}() string {
     {{ generator . "sb" -}}
     {{ end }}
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // {{ .FunctionBBAN }} retrieves BBAN structure from {{ .Country.Name }} IBAN
@@ -120,19 +119,15 @@ import (
 
 // Generate IBAN based on ISO 3166-1 country code
 func Generate(countryCode string) (string, error) {
-	var result string
-
 	switch countryCode {
     {{- range .Functions }}
     case {{ ToLower .Code }}:
-		result = {{ .Fn }}()
+		return {{ .Fn }}()
     {{- end }}
 
 	default:
 		return "", fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)
 	}
-
-	return result, nil
 }
 `
 

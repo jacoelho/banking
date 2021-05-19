@@ -6,7 +6,7 @@ import "strconv"
 // caller must ensure string only contains values between 0-9
 func Mod1110(s string) int {
 	helper := func(x int) int {
-		if val := x % 10; val != 0 {
+		if val := x % 10; val > 0 {
 			return val
 		}
 		return 10

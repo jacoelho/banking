@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -31,7 +30,7 @@ func validateFrenchSouthernTerritoriesIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 25, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -39,7 +38,7 @@ func validateFrenchSouthernTerritoriesIBAN(iban string) error {
 }
 
 // generateFrenchSouthernTerritoriesIBAN generates French Southern Territories IBAN
-func generateFrenchSouthernTerritoriesIBAN() string {
+func generateFrenchSouthernTerritoriesIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -48,7 +47,7 @@ func generateFrenchSouthernTerritoriesIBAN() string {
 	ascii.AlphaNumeric(sb, 11)
 	ascii.Digits(sb, 2)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getFrenchSouthernTerritoriesBBAN retrieves BBAN structure from French Southern Territories IBAN

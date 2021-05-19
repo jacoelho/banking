@@ -4,7 +4,6 @@ package iban
 
 import (
 	"fmt"
-
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
 )
@@ -31,7 +30,7 @@ func validateSaintPierreEtMiquelonIBAN(iban string) error {
 		return fmt.Errorf("range rule, start pos: 25, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if c := Checksum(iban); c != iban[2:4] {
+	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
 
@@ -39,7 +38,7 @@ func validateSaintPierreEtMiquelonIBAN(iban string) error {
 }
 
 // generateSaintPierreEtMiquelonIBAN generates Saint Pierre Et Miquelon IBAN
-func generateSaintPierreEtMiquelonIBAN() string {
+func generateSaintPierreEtMiquelonIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
@@ -48,7 +47,7 @@ func generateSaintPierreEtMiquelonIBAN() string {
 	ascii.AlphaNumeric(sb, 11)
 	ascii.Digits(sb, 2)
 
-	return replaceChecksum(sb.String())
+	return ReplaceChecksum(sb.String())
 }
 
 // getSaintPierreEtMiquelonBBAN retrieves BBAN structure from Saint Pierre Et Miquelon IBAN

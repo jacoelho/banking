@@ -1,7 +1,9 @@
 package iban
 
 import (
+	"fmt"
 	"strconv"
+	"unsafe"
 
 	"github.com/jacoelho/banking/iso7064"
 	"github.com/jacoelho/banking/pool"
@@ -75,7 +77,8 @@ func normalize(s string) string {
 	return sb.String()
 }
 
-func Checksum(iban string) string {
+// checksum calculates checksum digits
+func checksum(iban string) string {
 	t := []byte(iban)
 	value := append(t[4:], t[0], t[1], '0', '0')
 
@@ -92,12 +95,17 @@ func Checksum(iban string) string {
 	return checkString
 }
 
-func replaceChecksum(iban string) string {
+// ReplaceChecksum returns input iban with the correct check digits
+func ReplaceChecksum(iban string) (string, error) {
+	if len(iban) < 4 {
+		return "", fmt.Errorf("invalid iban length: %w", ErrValidation)
+	}
+
 	raw := []byte(iban)
 
-	check := Checksum(iban)
+	check := checksum(iban)
 
 	raw[2], raw[3] = check[0], check[1]
 
-	return string(raw)
+	return *(*string)(unsafe.Pointer(&raw)), nil
 }
