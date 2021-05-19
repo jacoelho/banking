@@ -18,5 +18,4 @@ jobs:
         run: |
           mkdir test && cd test
           go mod init test
-          go get -u github.com/jacoelho/banking@${{ steps.release.outputs.tag_name }}"
-
+          go get -u github.com/jacoelho/banking@${{ steps.release.outputs.tag_name }}
