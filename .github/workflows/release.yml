@@ -14,8 +14,5 @@ jobs:
         with:
           bump_version_scheme: patch
 
-      - name: Check Output Parameters
-        run: |
-          mkdir test && cd test
-          go mod init test
-          go get -u github.com/jacoelho/banking@${{ steps.release.outputs.tag_name }}
+      - name: Refresh pkg.go.dev
+        run: curl -X POST "https://https://pkg.go.dev/fetch/${{ github.repository }}@${{ steps.release.outputs.tag_name }}
