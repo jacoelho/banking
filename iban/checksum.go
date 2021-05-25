@@ -2,11 +2,10 @@ package iban
 
 import (
 	"fmt"
-	"strconv"
 	"unsafe"
 
-	"github.com/jacoelho/banking/iso7064"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/go-iso7064/iso7064"
 )
 
 func normalize(s string) string {
@@ -80,19 +79,9 @@ func normalize(s string) string {
 // checksum calculates checksum digits
 func checksum(iban string) string {
 	t := []byte(iban)
-	value := append(t[4:], t[0], t[1], '0', '0')
+	value := append(t[4:], t[0], t[1])
 
-	checkDigit := 98 - iso7064.Mod9710(normalize(string(value)))
-	if checkDigit == 0 {
-		return "00"
-	}
-
-	checkString := strconv.FormatInt(int64(checkDigit), 10)
-	if len(checkString) < 2 {
-		return "0" + checkString
-	}
-
-	return checkString
+	return iso7064.Modulo97Radix10(normalize(string(value)))
 }
 
 // ReplaceChecksum returns input iban with the correct check digits

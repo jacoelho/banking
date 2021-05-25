@@ -1,4 +1,4 @@
-package iso7064
+package checkcharacter
 
 import (
 	"strconv"
@@ -17,7 +17,7 @@ func Mod731(s string) int {
 		result += uint(s[length-1-i]-'0') * weights[i%3]
 	}
 
-	return -int(result%10 - 10)
+	return 10 - int(result%10)
 }
 
 func Mod731Encoded(s string) string {

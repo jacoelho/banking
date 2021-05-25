@@ -9,10 +9,12 @@ func TestChecksum(t *testing.T) {
 		iban string
 		want string
 	}{
-		{
-			iban: "PT50000201231234567890154",
-			want: "50",
-		},
+		{iban: "PT50000201231234567890154", want: "50"},
+		{iban: "GB39BARC20040418131256", want: "39"},
+		{iban: "GB08BARC20040141721778", want: "08"},
+		{iban: "GB75BARC20031847335253", want: "75"},
+		{iban: "GB39BARC20039557137528", want: "39"},
+		{iban: "GB83BARC20038474225535", want: "83"},
 	}
 	for _, tt := range tests {
 		tt := tt
