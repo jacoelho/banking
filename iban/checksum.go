@@ -2,11 +2,10 @@ package iban
 
 import (
 	"fmt"
-	"strconv"
 	"unsafe"
 
-	"github.com/jacoelho/banking/iso7064"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/go-iso7064/iso7064"
 )
 
 func normalize(s string) string {
@@ -79,20 +78,30 @@ func normalize(s string) string {
 
 // checksum calculates checksum digits
 func checksum(iban string) string {
-	t := []byte(iban)
-	value := append(t[4:], t[0], t[1], '0', '0')
+	sb := pool.BytesPool.Get()
+	defer sb.Free()
 
-	checkDigit := 98 - iso7064.Mod9710(normalize(string(value)))
-	if checkDigit == 0 {
-		return "00"
+	_, _ = sb.WriteString(iban[4:])
+	_ = sb.WriteByte(iban[0])
+	_ = sb.WriteByte(iban[1])
+
+	digits := iso7064.Modulo97Radix10(normalize(sb.String()))
+
+	// The underlying rules for IBANs is that the account-servicing financial institution should issue an IBAN,
+	// as there are a number of areas where different IBANs could be generated from the same account and branch numbers
+	// that would satisfy the generic IBAN validation rules.
+	// In particular cases where 00 is a valid check digit, 97 will not be a valid check digit, likewise,
+	// if 01 is a valid check digit, 98 will not be a valid check digit, similarly with 02 and 99.
+	switch digits {
+	case "00":
+		return "97"
+	case "01":
+		return "98"
+	case "02":
+		return "99"
+	default:
+		return digits
 	}
-
-	checkString := strconv.FormatInt(int64(checkDigit), 10)
-	if len(checkString) < 2 {
-		return "0" + checkString
-	}
-
-	return checkString
 }
 
 // ReplaceChecksum returns input iban with the correct check digits

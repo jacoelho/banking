@@ -1,4 +1,4 @@
-package iso7064
+package checkcharacter
 
 import (
 	"testing"
