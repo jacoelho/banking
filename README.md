@@ -69,6 +69,6 @@ cd ..
 
 ## License
 
-GNU General Public License v3.0 or later
+MIT License
 
 See [LICENSE](LICENSE) to see the full text.
