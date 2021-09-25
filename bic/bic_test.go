@@ -14,7 +14,7 @@ func TestParse(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:  "bic.BIC 8",
+			name:  "bic 8",
 			input: "ABCDBEB1",
 			want: bic.BIC{
 				BusinessPartyPrefix: "ABCD",
@@ -25,7 +25,7 @@ func TestParse(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:  "bic.BIC 11 XXX",
+			name:  "bic 11 XXX",
 			input: "ABCDBEB1XXX",
 			want: bic.BIC{
 				BusinessPartyPrefix: "ABCD",
@@ -36,7 +36,7 @@ func TestParse(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:  "bic.BIC 11 branch code with letters",
+			name:  "bic 11 branch code with letters",
 			input: "ABCDBEB1ABC",
 			want: bic.BIC{
 				BusinessPartyPrefix: "ABCD",
@@ -47,7 +47,7 @@ func TestParse(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:  "bic.BIC 11 branch code with digits",
+			name:  "bic 11 branch code with digits",
 			input: "ABCDBEB1ABC",
 			want: bic.BIC{
 				BusinessPartyPrefix: "ABCD",
@@ -58,7 +58,7 @@ func TestParse(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name:  "bic.BIC 11 branch code with mixed characters",
+			name:  "bic 11 branch code with mixed characters",
 			input: "ABCDBEB1A1C",
 			want: bic.BIC{
 				BusinessPartyPrefix: "ABCD",
@@ -118,7 +118,7 @@ func TestIsValid(t *testing.T) {
 		want                bool
 	}{
 		{
-			name:                "valid bic.BIC",
+			name:                "valid bic",
 			BusinessPartyPrefix: "ABCD",
 			CountryCode:         "BE",
 			BusinessPartySuffix: "B1",
@@ -310,9 +310,9 @@ func TestSameInstitution(t *testing.T) {
 
 func TestBIC8(t *testing.T) {
 	tests := []struct {
-		name   string
-		bic bic.BIC
-		want   string
+		name string
+		bic  bic.BIC
+		want string
 	}{
 		{
 			name: "happy case",
