@@ -48,9 +48,9 @@ func getLibyaBBAN(iban string) (BBAN, error) {
 
 	return BBAN{
 		BBAN:             iban[4:25],
-		BankCode:         iban[6:9],
-		BranchCode:       "",
+		BankCode:         iban[4:7],
+		BranchCode:       iban[7:10],
 		NationalChecksum: "",
-		AccountNumber:    iban[9:24],
+		AccountNumber:    iban[10:25],
 	}, nil
 }
