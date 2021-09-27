@@ -144,6 +144,8 @@ func Validate(iban string) error {
 		return validateSaudiArabiaIBAN(iban)
 	case sc:
 		return validateSeychellesIBAN(iban)
+	case sd:
+		return validateSudanIBAN(iban)
 	case se:
 		return validateSwedenIBAN(iban)
 	case si:

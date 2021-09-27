@@ -144,6 +144,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getSaudiArabiaBBAN(iban)
 	case sc:
 		return getSeychellesBBAN(iban)
+	case sd:
+		return getSudanBBAN(iban)
 	case se:
 		return getSwedenBBAN(iban)
 	case si:
