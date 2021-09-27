@@ -93,6 +93,23 @@ func GenerateValidate(w io.Writer, countries []registry.Country) error {
 	return tmpl.ExecuteTemplate(w, "", data)
 }
 
+func GenerateIsSEPA(w io.Writer, countries []registry.Country) error {
+	tmpl, err := template.New("").Funcs(templateFunctions()).Parse(isSepaTmpl)
+	if err != nil {
+		return err
+	}
+
+	var data = struct {
+		PackageName string
+		Countries   []registry.Country
+	}{
+		PackageName: generatedPackage,
+		Countries:   countries,
+	}
+
+	return tmpl.ExecuteTemplate(w, "", data)
+}
+
 func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 	tmpl, err := template.New("").Funcs(templateFunctions()).Parse(generateTmpl)
 	if err != nil {

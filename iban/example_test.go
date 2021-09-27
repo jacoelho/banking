@@ -45,3 +45,17 @@ func ExamplePaperFormat() {
 	fmt.Println(iban.PaperFormat("GB29NWBK60161331926819"))
 	// Output: GB29 NWBK 6016 1331 9268 19
 }
+
+func ExampleIsSEPA() {
+	// IsSEPA returns if an iban country is a SEPA member
+	result, _ := iban.IsSEPA("GB29NWBK60161331926819")
+	fmt.Println(result)
+	// Output: true
+}
+
+func ExampleIsSEPACountryCode() {
+	// IsSEPACountry returns if a country is a SEPA member
+	result, _ := iban.IsSEPACountryCode("AE")
+	fmt.Println(result)
+	// Output: false
+}
