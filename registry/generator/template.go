@@ -97,10 +97,10 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
     }
 
 	switch countryCode {
-    {{- range .Countries }}
+	{{- range .Countries }}
 	// Country Code {{ .Name }}
-    case {{ ToLower .Code }}:
-    	return {{ .IsSEPA }}, nil
+	case {{ ToLower .Code }}:
+		return {{ .IsSEPA }}, nil
     {{- end }}
 	default:
 		return false, fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)
