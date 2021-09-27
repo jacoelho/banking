@@ -28,8 +28,8 @@ result, err := iban.ReplaceChecksum("GB99NWBK60161331926819")
 ```
 
 #### Generation
-```go
-account := iban.Generate("GB")
+```
+iban, err := iban.Generate("GB")
 // Output: GB29NWBK60161331926819
 ```
 
