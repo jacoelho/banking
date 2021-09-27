@@ -49,6 +49,15 @@ fmt.Println(result.BBAN, result.BankCode, result.BranchCode, result.AccountNumbe
 // Output: NWBK60161331926819 NWBK 601613 31926819
 ```
 
+#### IsSEPA
+
+```go
+// IsSEPA returns if an iban country is a SEPA member
+result, _ := iban.IsSEPA("GB29NWBK60161331926819")
+fmt.Println(result)
+// Output: true
+```
+
 ## ISO-7064
 
 Mod-97-10 implemented.

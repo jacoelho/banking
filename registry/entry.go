@@ -33,6 +33,7 @@ type Country struct {
 	BranchCode       string `yaml:"branch_code"`
 	NationalChecksum string `yaml:"national_checksum"`
 	AccountNumber    string `yaml:"account_number"`
+	IsSEPA           string `yaml:"sepa"`
 }
 
 type Countries struct {

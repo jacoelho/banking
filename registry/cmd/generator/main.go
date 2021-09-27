@@ -91,6 +91,10 @@ func main() {
 	// single generate file
 	targetFile = path.Join(*destinationDirectory, "country_constants.go")
 	generateFunc(targetFile, generator.GenerateConstants, countries.Countries)
+
+	// single generate file
+	targetFile = path.Join(*destinationDirectory, "sepa.go")
+	generateFunc(targetFile, generator.GenerateIsSEPA, countries.Countries)
 }
 
 func generateFunc(filename string, fn func(io.Writer, []registry.Country) error, countries []registry.Country) {

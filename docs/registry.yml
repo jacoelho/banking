@@ -8,6 +8,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:20
+    sepa: true
 
   - code: AE
     name: United Arab Emirates
@@ -15,6 +16,7 @@ countries:
     BBAN: 3!n16!n
     bank_code: 0:3
     account_number: 3:19
+    sepa: false
 
   - code: AL
     name: Albania
@@ -23,6 +25,7 @@ countries:
     branch_code: 3:7
     national_checksum: 7:8
     account_number: 8:24
+    sepa: false
 
   - code: AT
     name: Austria
@@ -30,6 +33,7 @@ countries:
     BBAN: 5!n11!n
     bank_code: 0:5
     account_number: 5:16
+    sepa: true
 
   - code: AZ
     name: Republic Of Azerbaijan
@@ -37,6 +41,7 @@ countries:
     BBAN: 4!a20!c
     bank_code: 0:4
     account_number: 4:24
+    sepa: false
 
   - code: BA
     name: Bosnia And Herzegovina
@@ -46,6 +51,7 @@ countries:
     branch_code: 3:6
     national_checksum: 14:16
     account_number: 6:14
+    sepa: false
 
   - code: BE
     name: Belgium
@@ -54,6 +60,7 @@ countries:
     bank_code: 0:3
     national_checksum: 10:12
     account_number: 3:10
+    sepa: true
 
   - code: BG
     name: Bulgaria
@@ -62,6 +69,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:18
+    sepa: true
 
   - code: BH
     name: Kingdom Of Bahrain
@@ -69,6 +77,7 @@ countries:
     BBAN: 4!a14!c
     bank_code: 0:4
     account_number: 4:18
+    sepa: false
 
   - code: BR
     name: Brazil
@@ -77,6 +86,7 @@ countries:
     bank_code: 0:8
     branch_code: 8:13
     account_number: 13:25
+    sepa: false
 
   - code: BY
     name: Belarus
@@ -84,6 +94,7 @@ countries:
     BBAN: 4!c4!n16!c
     bank_code: 0:4
     account_number: 4:24
+    sepa: false
 
   - code: CH
     name: Switzerland
@@ -91,6 +102,7 @@ countries:
     BBAN: 5!n12!c
     bank_code: 0:5
     account_number: 5:17
+    sepa: true
 
   - code: CR
     name: Costa Rica
@@ -98,6 +110,7 @@ countries:
     BBAN: 3!n14!n
     bank_code: 0:4
     account_number: 4:18
+    sepa: false
 
   - code: CY
     name: Cyprus
@@ -106,6 +119,7 @@ countries:
     bank_code: 0:3
     branch_code: 3:8
     account_number: 8:24
+    sepa: true
 
   - code: CZ
     name: Czech Republic
@@ -114,12 +128,14 @@ countries:
     bank_code: 0:4
     branch_code: 4:10
     account_number: 10:20
+    sepa: true
 
   - code: DE
     name: Germany
     IBAN: DE2!n8!n10!n
     bank_code: 0:8
     account_number: 8:18
+    sepa: true
 
   - code: DK
     name: Denmark
@@ -127,6 +143,7 @@ countries:
     BBAN: 4!n9!n1!n
     bank_code: 0:4
     account_number: 4:14
+    sepa: true
 
   - code: DO
     name: Dominican Republic
@@ -134,6 +151,7 @@ countries:
     BBAN: 4!c20!n
     bank_code: 0:4
     account_number: 4:24
+    sepa: false
 
   - code: EE
     name: Estonia
@@ -142,6 +160,7 @@ countries:
     bank_code: 0:2
     national_checksum: 15:16
     account_number: 2:15
+    sepa: true
 
   - code: EG
     name: Egypt
@@ -150,6 +169,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:25
+    sepa: false
 
   - code: ES
     name: Spain
@@ -159,6 +179,7 @@ countries:
     branch_code: 4:8
     national_checksum: 8:10
     account_number: 10:20
+    sepa: true
 
   - code: FI
     name: Finland
@@ -167,6 +188,7 @@ countries:
     bank_code: 0:3
     national_checksum: 13:14
     account_number: 3:13
+    sepa: true
 
   - code: FO
     name: Faroe Islands
@@ -175,6 +197,7 @@ countries:
     bank_code: 0:4
     national_checksum: 13:14
     account_number: 4:13
+    sepa: false
 
   - code: FR
     name: France
@@ -184,6 +207,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: GB
     name: United Kingdom
@@ -192,6 +216,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:10
     account_number: 10:18
+    sepa: true
 
   - code: GE
     name: Georgia
@@ -199,6 +224,7 @@ countries:
     BBAN: 2!a16!n
     bank_code: 0:2
     account_number: 2:18
+    sepa: false
 
   - code: GI
     name: Gibraltar
@@ -206,6 +232,7 @@ countries:
     BBAN: 4!a15!c
     bank_code: 0:4
     account_number: 4:19
+    sepa: true
 
   - code: GL
     name: Greenland
@@ -213,6 +240,7 @@ countries:
     BBAN: 4!n9!n1!n
     bank_code: 0:4
     account_number: 4:14
+    sepa: false
 
   - code: GR
     name: Greece
@@ -221,6 +249,7 @@ countries:
     bank_code: 0:3
     branch_code: 3:7
     account_number: 7:23
+    sepa: true
 
   - code: GT
     name: Guatemala
@@ -228,6 +257,7 @@ countries:
     BBAN: 4!c20!c
     bank_code: 0:4
     account_number: 4:24
+    sepa: false
 
   - code: HR
     name: Croatia
@@ -235,6 +265,7 @@ countries:
     BBAN: 7!n10!n
     bank_code: 0:7
     account_number: 7:17
+    sepa: true
 
   - code: HU
     name: Hungary
@@ -244,6 +275,7 @@ countries:
     branch_code: 3:8
     national_checksum: 23:24
     account_number: 8:23
+    sepa: true
 
   - code: IE
     name: Ireland
@@ -252,6 +284,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:10
     account_number: 10:18
+    sepa: true
 
   - code: IL
     name: Israel
@@ -260,6 +293,7 @@ countries:
     bank_code: 0:3
     branch_code: 3:6
     account_number: 6:19
+    sepa: false
 
   - code: IQ
     name: Iraq
@@ -268,6 +302,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:7
     account_number: 7:19
+    sepa: false
 
   - code: IS
     name: Iceland
@@ -276,6 +311,7 @@ countries:
     bank_code: 0:4
     branch_code: 6:12
     account_number: 12:22
+    sepa: true
 
   - code: IT
     name: Italy
@@ -285,6 +321,7 @@ countries:
     branch_code: 6:11
     national_checksum: 0:1
     account_number: 11:23
+    sepa: true
 
   - code: JO
     name: Jordan
@@ -293,6 +330,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:26
+    sepa: false
 
   - code: KW
     name: Kuwait
@@ -300,6 +338,7 @@ countries:
     BBAN: 4!a22!c
     bank_code: 0:4
     account_number: 4:26
+    sepa: false
 
   - code: KZ
     name: Kazakhstan
@@ -307,6 +346,7 @@ countries:
     BBAN: 3!n13!c
     bank_code: 0:3
     account_number: 3:16
+    sepa: false
 
   - code: LB
     name: Lebanon
@@ -314,6 +354,7 @@ countries:
     BBAN: 4!n20!c
     bank_code: 0:4
     account_number: 4:24
+    sepa: false
 
   - code: LC
     name: Saint Lucia
@@ -321,6 +362,7 @@ countries:
     BBAN: 4!a24!c
     bank_code: 0:4
     account_number: 4:28
+    sepa: false
 
   - code: LI
     name: Principality Of Liechtenstein
@@ -328,6 +370,7 @@ countries:
     BBAN: 5!n12!c
     bank_code: 0:5
     account_number: 5:17
+    sepa: true
 
   - code: LT
     name: Lithuania
@@ -335,6 +378,7 @@ countries:
     BBAN: 5!n11!n
     bank_code: 0:5
     account_number: 5:16
+    sepa: true
 
   - code: LU
     name: Luxembourg
@@ -343,6 +387,7 @@ countries:
     bank_code: 0:3
     national_checksum: 14:16
     account_number: 3:14
+    sepa: true
 
   - code: LV
     name: Latvia
@@ -350,6 +395,7 @@ countries:
     BBAN: 4!a13!c
     bank_code: 0:4
     account_number: 4:17
+    sepa: true
 
   - code: LY
     name: Libya
@@ -358,6 +404,7 @@ countries:
     bank_code: 0:3
     branch_code: 3:6
     account_number: 6:21
+    sepa: false
 
   - code: MC
     name: Monaco
@@ -367,6 +414,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: MD
     name: Moldova
@@ -374,6 +422,7 @@ countries:
     BBAN: 2!c18!c
     bank_code: 0:2
     account_number: 2:20
+    sepa: false
 
   - code: ME
     name: Montenegro
@@ -382,6 +431,7 @@ countries:
     bank_code: 0:3
     national_checksum: 16:18
     account_number: 3:18
+    sepa: false
 
   - code: MK
     name: Macedonia
@@ -390,6 +440,7 @@ countries:
     bank_code: 0:3
     national_checksum: 13:15
     account_number: 3:13
+    sepa: false
 
   - code: MR
     name: Mauritania
@@ -399,6 +450,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: false
 
   - code: MT
     name: Malta
@@ -407,6 +459,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:9
     account_number: 9:27
+    sepa: true
 
   - code: MU
     name: Mauritius
@@ -415,6 +468,7 @@ countries:
     bank_code: 0:6
     branch_code: 6:8
     account_number: 8:26
+    sepa: false
 
   - code: NL
     name: The Netherlands
@@ -422,6 +476,7 @@ countries:
     BBAN: 4!a10!n
     bank_code: 0:4
     account_number: 4:14
+    sepa: true
 
   - code: NO
     name: Norway
@@ -430,6 +485,7 @@ countries:
     bank_code: 0:4
     national_checksum: 10:11
     account_number: 4:10
+    sepa: true
 
   - code: PK
     name: Pakistan
@@ -437,6 +493,7 @@ countries:
     BBAN: 4!a16!c
     bank_code: 0:4
     account_number: 4:20
+    sepa: false
 
   - code: PL
     name: Poland
@@ -446,6 +503,7 @@ countries:
     branch_code: 3:7
     national_checksum: 7:8
     account_number: 8:24
+    sepa: true
 
   - code: PS
     name: State Of Palestine
@@ -453,6 +511,7 @@ countries:
     BBAN: 4!a21!c
     bank_code: 0:4
     account_number: 4:25
+    sepa: false
 
   - code: PT
     name: Portugal
@@ -462,6 +521,7 @@ countries:
     branch_code: 4:8
     national_checksum: 19:21
     account_number: 8:19
+    sepa: true
 
   - code: QA
     name: Qatar
@@ -470,6 +530,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:25
+    sepa: false
 
   - code: RO
     name: Romania
@@ -477,6 +538,7 @@ countries:
     BBAN: 4!a16!c
     bank_code: 0:4
     account_number: 4:20
+    sepa: true
 
   - code: RS
     name: Serbia
@@ -485,6 +547,7 @@ countries:
     bank_code: 0:3
     national_checksum: 16:18
     account_number: 3:16
+    sepa: false
 
   - code: SA
     name: Saudi Arabia
@@ -492,6 +555,7 @@ countries:
     BBAN: 2!n18!c
     bank_code: 0:2
     account_number: 2:20
+    sepa: false
 
   - code: SC
     name: Seychelles
@@ -500,6 +564,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:27
+    sepa: false
 
   - code: SD
     name: Sudan
@@ -509,6 +574,7 @@ countries:
     branch_code: 2:14
     # no account number
     # account_number:
+    sepa: false
 
   - code: SE
     name: Sweden
@@ -517,6 +583,7 @@ countries:
     bank_code: 0:3
     national_checksum: 19:20
     account_number: 3:20
+    sepa: true
 
   - code: SI
     name: Slovenia
@@ -526,6 +593,7 @@ countries:
     branch_code: 2:5
     national_checksum: 11:15
     account_number: 5:11
+    sepa: true
 
   - code: SK
     name: Slovak Republic
@@ -535,6 +603,7 @@ countries:
     branch_code: 4:10
     national_checksum: 17:20
     account_number: 10:17
+    sepa: true
 
   - code: SM
     name: San Marino
@@ -544,6 +613,7 @@ countries:
     branch_code: 6:11
     national_checksum: 0:1
     account_number: 11:22
+    sepa: true
 
   - code: ST
     name: Sao Tome And Principe
@@ -552,6 +622,7 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:21
+    sepa: false
 
   - code: SV
     name: El Salvador
@@ -559,6 +630,7 @@ countries:
     BBAN: 4!a20!n
     bank_code: 0:4
     account_number: 4:24
+    sepa: false
 
   - code: TL
     name: Timor Leste
@@ -568,6 +640,7 @@ countries:
     branch_code: 4:7
     national_checksum: 17:19
     account_number: 7:17
+    sepa: false
 
   - code: TN
     name: Tunisia
@@ -577,6 +650,7 @@ countries:
     branch_code: 2:5
     national_checksum: 18:20
     account_number: 5:18
+    sepa: false
 
   - code: TR
     name: Turkey
@@ -585,6 +659,7 @@ countries:
     bank_code: 0:5
     national_checksum: 5:6
     account_number: 6:22
+    sepa: false
 
   - code: UA
     name: Ukraine
@@ -592,6 +667,7 @@ countries:
     BBAN: 6!n19!c
     bank_code: 0:6
     account_number: 6:25
+    sepa: false
 
   - code: VA
     name: Vatican City State
@@ -599,6 +675,7 @@ countries:
     BBAN: 3!n15!n
     bank_code: 0:3
     account_number: 3:18
+    sepa: true
 
   - code: VG
     name: British Virgin Islands
@@ -606,6 +683,7 @@ countries:
     BBAN: 4!a16!n
     bank_code: 0:4
     account_number: 4:20
+    sepa: false
 
   - code: XK
     name: Republic Of Kosovo
@@ -614,6 +692,7 @@ countries:
     bank_code: 0:2
     branch_code: 2:4
     account_number: 4:16
+    sepa: false
 
   - code: GF
     name: French Guyana
@@ -623,6 +702,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: GP
     name: Guadeloupe
@@ -632,6 +712,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: MQ
     name: Martinique
@@ -641,6 +722,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: RE
     name: Reunion
@@ -650,6 +732,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: FP
     name: French Polynesia
@@ -659,6 +742,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: false
 
   - code: TF
     name: French Southern Territories
@@ -668,6 +752,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: false
 
   - code: YT
     name: Mayotte
@@ -677,6 +762,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: NC
     name: New Caledonia
@@ -686,6 +772,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: false
 
   - code: BL
     name: Saint Barthelemy
@@ -695,6 +782,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: MF
     name: Saint Martin
@@ -704,6 +792,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: true
 
   - code: PM
     name: Saint Pierre Et Miquelon
@@ -713,6 +802,7 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: false
 
   - code: WF
     name: Wallis And Futuna Islands
@@ -722,3 +812,4 @@ countries:
     branch_code: 5:10
     national_checksum: 21:23
     account_number: 10:21
+    sepa: false
