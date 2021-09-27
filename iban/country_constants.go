@@ -133,6 +133,8 @@ const (
 	sa = "SA"
 	// Country Code Seychelles
 	sc = "SC"
+	// Country Code Sudan
+	sd = "SD"
 	// Country Code Sweden
 	se = "SE"
 	// Country Code Slovenia

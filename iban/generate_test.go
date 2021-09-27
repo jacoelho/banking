@@ -1,4 +1,4 @@
-// +build validation
+//go:build validation
 
 package iban
 

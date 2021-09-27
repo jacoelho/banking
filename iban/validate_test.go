@@ -1,4 +1,4 @@
-// +build validation
+//go:build validation
 
 package iban
 
@@ -313,6 +313,10 @@ func TestValidateIBAN(t *testing.T) {
 		},
 		{
 			iban:    "VA59001123000012345678",
+			wantErr: false,
+		},
+		{
+			iban:    "SD2129010501234001",
 			wantErr: false,
 		},
 	}

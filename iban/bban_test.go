@@ -1,4 +1,4 @@
-// +build validation
+//go:build validation
 
 package iban
 
@@ -785,6 +785,28 @@ func TestBBAN(t *testing.T) {
 				BranchCode:       "",
 				NationalChecksum: "",
 				AccountNumber:    "3600900000002Z00AB00",
+			},
+		},
+		{
+			iban:    "SD2129010501234001",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "29010501234001",
+				BankCode:         "29",
+				BranchCode:       "010501234001",
+				NationalChecksum: "",
+				AccountNumber:    "",
+			},
+		},
+		{
+			iban:    "LY83002048000020100120361",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "002048000020100120361",
+				BankCode:         "002",
+				BranchCode:       "048",
+				NationalChecksum: "",
+				AccountNumber:    "000020100120361",
 			},
 		},
 	}

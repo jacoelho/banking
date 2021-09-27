@@ -1,5 +1,5 @@
 # hand edited to fix issues
-# release 88
+# release 90
 
 countries:
   - code: AD
@@ -355,9 +355,9 @@ countries:
     name: Libya
     IBAN: LY2!n3!n3!n15!n
     BBAN: 3!n3!n15!n
-    bank_code: 0:2
-    bank_code: 2:5
-    account_number: 5:20
+    bank_code: 0:3
+    branch_code: 3:6
+    account_number: 6:21
 
   - code: MC
     name: Monaco
@@ -500,6 +500,15 @@ countries:
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:27
+
+  - code: SD
+    name: Sudan
+    IBAN: SD2!n2!n12!n
+    BBAN: 2!n12!n
+    bank_code: 0:2
+    branch_code: 2:14
+    # no account number
+    # account_number:
 
   - code: SE
     name: Sweden
