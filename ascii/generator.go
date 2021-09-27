@@ -5,10 +5,10 @@ import (
 )
 
 const (
-	digits           = "0123456789"
-	lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz"
-	upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	alphaNumeric     = digits + lowerCaseLetters + upperCaseLetters
+	digits            = "0123456789"
+	lowerCaseLetters  = "abcdefghijklmnopqrstuvwxyz"
+	upperCaseLetters  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	alphaUpperNumeric = digits + upperCaseLetters
 )
 
 type RuneWriter interface {
@@ -28,7 +28,7 @@ func UpperCaseLetters(sb RuneWriter, length int) {
 }
 
 func AlphaNumeric(sb RuneWriter, length int) {
-	stringWithCharset(sb, alphaNumeric, length)
+	stringWithCharset(sb, alphaUpperNumeric, length)
 }
 
 func stringWithCharset(sb RuneWriter, charset string, length int) {
