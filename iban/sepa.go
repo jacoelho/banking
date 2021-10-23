@@ -40,6 +40,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Kingdom Of Bahrain
 	case bh:
 		return false, nil
+	// Country Code Burundi
+	case bi:
+		return false, nil
 	// Country Code Brazil
 	case br:
 		return false, nil

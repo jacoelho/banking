@@ -21,6 +21,8 @@ const (
 	bg = "BG"
 	// Country Code Kingdom Of Bahrain
 	bh = "BH"
+	// Country Code Burundi
+	bi = "BI"
 	// Country Code Brazil
 	br = "BR"
 	// Country Code Belarus
