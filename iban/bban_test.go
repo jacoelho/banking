@@ -793,9 +793,9 @@ func TestBBAN(t *testing.T) {
 			bban: BBAN{
 				BBAN:             "29010501234001",
 				BankCode:         "29",
-				BranchCode:       "010501234001",
+				BranchCode:       "",
 				NationalChecksum: "",
-				AccountNumber:    "",
+				AccountNumber:    "010501234001",
 			},
 		},
 		{
@@ -807,6 +807,17 @@ func TestBBAN(t *testing.T) {
 				BranchCode:       "048",
 				NationalChecksum: "",
 				AccountNumber:    "000020100120361",
+			},
+		},
+		{
+			iban:    "BI4210000100010000332045181",
+			wantErr: false,
+			bban: BBAN{
+				BBAN:             "10000100010000332045181",
+				BankCode:         "10000",
+				BranchCode:       "10001",
+				NationalChecksum: "",
+				AccountNumber:    "0000332045181",
 			},
 		},
 	}

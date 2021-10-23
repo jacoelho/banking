@@ -27,6 +27,8 @@ func Generate(countryCode string) (string, error) {
 		return generateBulgariaIBAN()
 	case bh:
 		return generateKingdomOfBahrainIBAN()
+	case bi:
+		return generateBurundiIBAN()
 	case br:
 		return generateBrazilIBAN()
 	case by:

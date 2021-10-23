@@ -49,8 +49,8 @@ func getSudanBBAN(iban string) (BBAN, error) {
 	return BBAN{
 		BBAN:             iban[4:18],
 		BankCode:         iban[4:6],
-		BranchCode:       iban[6:18],
+		BranchCode:       "",
 		NationalChecksum: "",
-		AccountNumber:    "",
+		AccountNumber:    iban[6:18],
 	}, nil
 }

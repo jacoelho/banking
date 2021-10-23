@@ -1,5 +1,5 @@
 # hand edited to fix issues
-# release 90
+# release 91
 
 countries:
   - code: AD
@@ -77,6 +77,15 @@ countries:
     BBAN: 4!a14!c
     bank_code: 0:4
     account_number: 4:18
+    sepa: false
+
+  - code: BI
+    name: Burundi
+    IBAN: BI2!n5!n5!n11!n2!n
+    BBAN: 5!n5!n11!n2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    account_number: 10:23
     sepa: false
 
   - code: BR
@@ -570,10 +579,8 @@ countries:
     name: Sudan
     IBAN: SD2!n2!n12!n
     BBAN: 2!n12!n
-    bank_code: 0:2
-    branch_code: 2:14
-    # no account number
-    # account_number:
+    bank_code: 0:2 
+    account_number: 2:14
     sepa: false
 
   - code: SE
