@@ -1,9 +1,9 @@
-//go:build validation
-
-package iban
+package iban_test
 
 import (
 	"testing"
+
+	"github.com/jacoelho/banking/iban"
 )
 
 func TestValidateIBAN(t *testing.T) {
@@ -323,12 +323,20 @@ func TestValidateIBAN(t *testing.T) {
 			iban:    "BI4210000100010000332045181",
 			wantErr: false,
 		},
+		{
+			iban:    "DJ2100010000000154000100186",
+			wantErr: false,
+		},
+		{
+			iban:    "RU0304452522540817810538091310419",
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		tt := tt
 
 		t.Run(tt.iban, func(t *testing.T) {
-			if err := Validate(tt.iban); (err != nil) != tt.wantErr {
+			if err := iban.Validate(tt.iban); (err != nil) != tt.wantErr {
 				t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})

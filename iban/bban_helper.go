@@ -48,6 +48,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getCzechRepublicBBAN(iban)
 	case de:
 		return getGermanyBBAN(iban)
+	case dj:
+		return getDjiboutiBBAN(iban)
 	case dk:
 		return getDenmarkBBAN(iban)
 	case do:
@@ -142,6 +144,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getRomaniaBBAN(iban)
 	case rs:
 		return getSerbiaBBAN(iban)
+	case ru:
+		return getRussiaBBAN(iban)
 	case sa:
 		return getSaudiArabiaBBAN(iban)
 	case sc:

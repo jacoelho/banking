@@ -37,6 +37,8 @@ const (
 	cz = "CZ"
 	// Country Code Germany
 	de = "DE"
+	// Country Code Djibouti
+	dj = "DJ"
 	// Country Code Denmark
 	dk = "DK"
 	// Country Code Dominican Republic
@@ -131,6 +133,8 @@ const (
 	ro = "RO"
 	// Country Code Serbia
 	rs = "RS"
+	// Country Code Russia
+	ru = "RU"
 	// Country Code Saudi Arabia
 	sa = "SA"
 	// Country Code Seychelles

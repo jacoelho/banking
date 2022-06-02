@@ -43,6 +43,8 @@ func Generate(countryCode string) (string, error) {
 		return generateCzechRepublicIBAN()
 	case de:
 		return generateGermanyIBAN()
+	case dj:
+		return generateDjiboutiIBAN()
 	case dk:
 		return generateDenmarkIBAN()
 	case do:
@@ -137,6 +139,8 @@ func Generate(countryCode string) (string, error) {
 		return generateRomaniaIBAN()
 	case rs:
 		return generateSerbiaIBAN()
+	case ru:
+		return generateRussiaIBAN()
 	case sa:
 		return generateSaudiArabiaIBAN()
 	case sc:
