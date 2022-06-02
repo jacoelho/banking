@@ -48,6 +48,8 @@ func Validate(iban string) error {
 		return validateCzechRepublicIBAN(iban)
 	case de:
 		return validateGermanyIBAN(iban)
+	case dj:
+		return validateDjiboutiIBAN(iban)
 	case dk:
 		return validateDenmarkIBAN(iban)
 	case do:
@@ -142,6 +144,8 @@ func Validate(iban string) error {
 		return validateRomaniaIBAN(iban)
 	case rs:
 		return validateSerbiaIBAN(iban)
+	case ru:
+		return validateRussiaIBAN(iban)
 	case sa:
 		return validateSaudiArabiaIBAN(iban)
 	case sc:

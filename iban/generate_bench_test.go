@@ -1,10 +1,14 @@
-package iban
+package iban_test
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/jacoelho/banking/iban"
+)
 
 func benchmarkGenerate(b *testing.B, input string) {
 	for i := 0; i < b.N; i++ {
-		if _, err := Generate(input); err != nil {
+		if _, err := iban.Generate(input); err != nil {
 			b.Fatal(err)
 		}
 	}

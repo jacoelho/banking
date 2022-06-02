@@ -24,10 +24,6 @@ test:
 bench:
 	go test -bench=. -benchmem ./... | tee benchmarks/$(DATE).bench
 
-.PHONY: validation
-validation:
-	go test -race -v -tags validation ./...
-
 .PHONY: fmt
 fmt:
 	go fmt ./...

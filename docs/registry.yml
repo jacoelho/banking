@@ -1,5 +1,5 @@
 # hand edited to fix issues
-# release 91
+# release 92
 
 countries:
   - code: AD
@@ -145,6 +145,15 @@ countries:
     bank_code: 0:8
     account_number: 8:18
     sepa: true
+
+  - code: DJ
+    name: Djibouti
+    IBAN: DJ2!n5!n5!n11!n2!n
+    BBAN: 5!n5!n11!n2!n
+    bank_code: 0:5
+    branch_code: 5:10
+    account_number: 10:23
+    sepa: no
 
   - code: DK
     name: Denmark
@@ -558,6 +567,15 @@ countries:
     account_number: 3:16
     sepa: false
 
+  - code: RU
+    name: Russia
+    IBAN: RU2!n9!n5!n15!c
+    BBAN: 9!n5!n15!c
+    bank_code: 0:9
+    branch_code: 9:14
+    account_number: 14:29
+    sepa: false
+
   - code: SA
     name: Saudi Arabia
     IBAN: SA2!n2!n18!c
@@ -579,7 +597,7 @@ countries:
     name: Sudan
     IBAN: SD2!n2!n12!n
     BBAN: 2!n12!n
-    bank_code: 0:2 
+    bank_code: 0:2
     account_number: 2:14
     sepa: false
 
