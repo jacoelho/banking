@@ -1,0 +1,34 @@
+on:
+  schedule:
+    - cron:  '0 0 * * SUN'
+
+name: Check for registry changes
+
+permissions:
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get current date and time
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+
+      - name: Fetch registry
+        run: curl -sL https://www.swift.com/resource/iban-registry-pdf -o registry.pdf
+
+      - name: Cache hash
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: registry.pdf
+          key: ${{ hashFiles('registry.pdf') }}
+
+      - name: Create issue
+        if: steps.cache.outputs.cache-hit != 'true'
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DATE: ${{ steps.date.outputs.date }}
+
