@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron:  '0 0 * * SUN'
+    - cron:  '*/5 * * * *'
 
 name: Check for registry changes
 
@@ -11,6 +11,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
+      - uses: 'actions/checkout@v3'
+
       - name: Get current date and time
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
