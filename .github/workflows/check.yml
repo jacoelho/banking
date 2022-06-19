@@ -1,6 +1,6 @@
 on:
   schedule:
-    - cron:  '*/5 * * * *'
+    - cron: "0 0 */3 * *"
 
 name: Check for registry changes
 
@@ -11,14 +11,10 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: 'actions/checkout@v3'
-
-      - name: Get current date and time
-        id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - uses: "actions/checkout@v3"
 
       - name: Fetch registry
-        run: curl -sL https://www.swift.com/resource/iban-registry-pdf -o registry.pdf
+        run: curl --fail -sL https://www.swift.com/resource/iban-registry-pdf -o registry.pdf
 
       - name: Cache hash
         id: cache
@@ -32,5 +28,3 @@ jobs:
         uses: JasonEtco/create-an-issue@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DATE: ${{ steps.date.outputs.date }}
-
