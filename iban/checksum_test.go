@@ -1,8 +1,68 @@
 package iban
 
 import (
+	"math/big"
+	"math/rand"
+	"reflect"
+	"strings"
 	"testing"
+	"testing/quick"
+	"time"
 )
+
+func BenchmarkCompute(b *testing.B) {
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		v := mod9710Chunked("105000997603123456789123")
+		_ = v
+	}
+}
+
+func BenchmarkBigIntMod9710(b *testing.B) {
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		v := bigIntMod9710("105000997603123456789123")
+		_ = v
+	}
+}
+
+func bigIntMod9710(s string) int {
+	n, ok := (&big.Int{}).SetString(s, 10)
+	if !ok {
+		panic("setString failed")
+	}
+	modulo := (&big.Int{}).SetInt64(97)
+	res := (&big.Int{}).Rem(n, modulo)
+
+	return int(res.Int64())
+}
+
+func randomString(r *rand.Rand, size int, alphabet string) string {
+	sb := new(strings.Builder)
+
+	for i := 0; i < size; i++ {
+		index := r.Intn(len(alphabet))
+		sb.WriteString(string(alphabet[index]))
+	}
+
+	return sb.String()
+}
+
+func TestModuloFunctions(t *testing.T) {
+	cfg := &quick.Config{
+		MaxCount: 1000,
+		Rand:     rand.New(rand.NewSource(time.Now().Unix())),
+		Values: func(values []reflect.Value, rand *rand.Rand) {
+			values[0] = reflect.ValueOf(randomString(rand, 50, "0123456789"))
+		},
+	}
+
+	if err := quick.CheckEqual(bigIntMod9710, mod9710Chunked, cfg); err != nil {
+		t.Errorf("test failed %v", err)
+	}
+}
 
 func TestChecksum(t *testing.T) {
 	tests := []struct {
@@ -17,6 +77,7 @@ func TestChecksum(t *testing.T) {
 		{iban: "GB83BARC20038474225535", want: "83"},
 		{iban: "IQ98NBIQ850123456789012", want: "98"},
 		{iban: "BR9700360305000010009795493P1", want: "97"},
+		{iban: "DK0206715394960066", want: "02"},
 	}
 	for _, tt := range tests {
 		tt := tt

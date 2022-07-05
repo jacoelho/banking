@@ -2,10 +2,10 @@ package iban
 
 import (
 	"fmt"
+	"strconv"
 	"unsafe"
 
 	"github.com/jacoelho/banking/pool"
-	"github.com/jacoelho/go-iso7064/iso7064"
 )
 
 func normalize(s string) string {
@@ -76,31 +76,68 @@ func normalize(s string) string {
 	return sb.String()
 }
 
+var paddings = [...]int{
+	1: 10,
+	2: 100,
+	3: 1000,
+	4: 10000,
+	5: 100000,
+	6: 1000000,
+	7: 10000000,
+	8: 100000000,
+	9: 1000000000,
+}
+
+// mod9710Chunked computes mod97-10 checksum in chucks
+func mod9710Chunked(s string) int {
+	var padding = 1000000000
+	var sum int
+
+	for i := 0; i < len(s); i += 9 {
+		end := i + 9
+
+		if end > len(s) {
+			end = len(s)
+			padding = paddings[len(s[i:end])]
+		}
+
+		v, err := strconv.Atoi(s[i:end])
+		if err != nil {
+			panic(err)
+		}
+
+		sum = (sum*padding + v) % 97
+	}
+
+	return sum
+}
+
 // checksum calculates checksum digits
 func checksum(iban string) string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
+	sb.Grow(len(iban))
+
 	_, _ = sb.WriteString(iban[4:])
-	_ = sb.WriteByte(iban[0])
-	_ = sb.WriteByte(iban[1])
+	_, _ = sb.WriteString(iban[:2])
+	_, _ = sb.WriteString("00")
 
-	digits := iso7064.Modulo97Radix10(normalize(sb.String()))
+	result := mod9710Chunked(normalize(sb.String()))
 
-	// The underlying rules for IBANs is that the account-servicing financial institution should issue an IBAN,
-	// as there are a number of areas where different IBANs could be generated from the same account and branch numbers
-	// that would satisfy the generic IBAN validation rules.
-	// In particular cases where 00 is a valid check digit, 97 will not be a valid check digit, likewise,
-	// if 01 is a valid check digit, 98 will not be a valid check digit, similarly with 02 and 99.
-	switch digits {
-	case "00":
-		return "97"
-	case "01":
-		return "98"
-	case "02":
+	// Check digits with the value of '01' or '00' are invalid.
+	// To resolve an anomaly in the algorithm,
+	// values '01' and '00' are equivalent to '98' and '99', respectively, and the latter must be used.
+	checkDigits := 98 - result
+	switch {
+	case checkDigits == 0:
 		return "99"
+	case checkDigits == 1:
+		return "98"
+	case checkDigits < 10:
+		return "0" + strconv.Itoa(checkDigits)
 	default:
-		return digits
+		return strconv.Itoa(checkDigits)
 	}
 }
 
