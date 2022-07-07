@@ -8,10 +8,11 @@ jobs:
 
       - uses: 'actions/setup-go@v3'
 
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
-
       - run: make ci-tidy
+
+      - run: make staticcheck
+
+      - run: make gcassert
 
       - run: cd registry && make -f ../Makefile
 
