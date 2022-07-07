@@ -1,10 +1,8 @@
 # disable default rules
 .SUFFIXES:
 MAKEFLAGS+=-r -R
-GOLINT_VERSION = v1.24.0
-DATE = $(shell date +%Y%m%d%H%M%S)
-
-export GOBIN=$(CURDIR)/bin
+GOBIN = $(shell go env GOPATH)/bin
+DATE  = $(shell date +%Y%m%d%H%M%S)
 
 default: build
 
@@ -18,7 +16,7 @@ generate:
 
 .PHONY: test
 test:
-	go test -race -v ./...
+	go test -race -shuffle=on -v ./...
 
 .PHONY: bench
 bench:
@@ -37,8 +35,16 @@ ci-tidy:
 	go mod tidy
 	git status --porcelain go.mod go.sum || { echo "Please run 'go mod tidy'."; exit 1; }
 
-.PHONY: lint
-lint:
-	docker run -t --rm -v $(CURDIR):/app -w /app golangci/golangci-lint:$(GOLINT_VERSION) golangci-lint run
-	docker run -t --rm -v $(CURDIR):/app -w /app/registry golangci/golangci-lint:$(GOLINT_VERSION) golangci-lint run
+$(GOBIN)/staticcheck:
+	go install honnef.co/go/tools/cmd/staticcheck@latest
 
+$(GOBIN)/gcassert:
+	go install github.com/jordanlewis/gcassert/cmd/gcassert@latest
+
+.PHONY: staticcheck
+staticcheck: $(GOBIN)/staticcheck
+	staticcheck ./...
+
+.PHONY: gcassert
+gcassert: $(GOBIN)/gcassert
+	gcassert ./...

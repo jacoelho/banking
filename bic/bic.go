@@ -2,6 +2,7 @@ package bic
 
 import (
 	"errors"
+
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/iso3166"
 )
