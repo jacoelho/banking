@@ -48,3 +48,4 @@ staticcheck: $(GOBIN)/staticcheck
 .PHONY: gcassert
 gcassert: $(GOBIN)/gcassert
 	gcassert ./...
+
