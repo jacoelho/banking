@@ -10,7 +10,7 @@ jobs:
 
       - run: make ci-tidy
 
-      - run: make staticheck
+      - run: make staticcheck
 
       - run: make gcassert
 
