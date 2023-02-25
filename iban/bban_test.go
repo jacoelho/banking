@@ -842,6 +842,17 @@ func TestBBAN(t *testing.T) {
 				AccountNumber:    "810538091310419",
 			},
 		},
+		{
+			iban:    "SO211000001001000100141",
+			wantErr: false,
+			bban: iban.BBAN{
+				BBAN:             "1000001001000100141",
+				BankCode:         "1000",
+				BranchCode:       "001",
+				NationalChecksum: "",
+				AccountNumber:    "001000100141",
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.iban,

@@ -64,6 +64,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Germany
 	case de:
 		return true, nil
+	// Country Code Djibouti
+	case dj:
+		return false, nil
 	// Country Code Denmark
 	case dk:
 		return true, nil
@@ -205,6 +208,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Serbia
 	case rs:
 		return false, nil
+	// Country Code Russia
+	case ru:
+		return false, nil
 	// Country Code Saudi Arabia
 	case sa:
 		return false, nil
@@ -226,6 +232,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code San Marino
 	case sm:
 		return true, nil
+	// Country Code Somalia
+	case so:
+		return false, nil
 	// Country Code Sao Tome And Principe
 	case st:
 		return false, nil

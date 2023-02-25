@@ -160,6 +160,8 @@ func Validate(iban string) error {
 		return validateSlovakRepublicIBAN(iban)
 	case sm:
 		return validateSanMarinoIBAN(iban)
+	case so:
+		return validateSomaliaIBAN(iban)
 	case st:
 		return validateSaoTomeAndPrincipeIBAN(iban)
 	case sv:
