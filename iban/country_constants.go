@@ -149,6 +149,8 @@ const (
 	sk = "SK"
 	// Country Code San Marino
 	sm = "SM"
+	// Country Code Somalia
+	so = "SO"
 	// Country Code Sao Tome And Principe
 	st = "ST"
 	// Country Code El Salvador

@@ -155,6 +155,8 @@ func Generate(countryCode string) (string, error) {
 		return generateSlovakRepublicIBAN()
 	case sm:
 		return generateSanMarinoIBAN()
+	case so:
+		return generateSomaliaIBAN()
 	case st:
 		return generateSaoTomeAndPrincipeIBAN()
 	case sv:

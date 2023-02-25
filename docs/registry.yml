@@ -1,5 +1,5 @@
 # hand edited to fix issues
-# release 92
+# release 93
 
 countries:
   - code: AD
@@ -153,7 +153,7 @@ countries:
     bank_code: 0:5
     branch_code: 5:10
     account_number: 10:23
-    sepa: no
+    sepa: false
 
   - code: DK
     name: Denmark
@@ -639,6 +639,15 @@ countries:
     national_checksum: 0:1
     account_number: 11:22
     sepa: true
+
+  - code: SO
+    name: Somalia
+    IBAN: SO2!n4!n3!n12!n
+    BBAN: 4!n3!n12!n
+    bank_code: 0:4
+    branch_code: 4:7
+    account_number: 7:19
+    sepa: false
 
   - code: ST
     name: Sao Tome And Principe

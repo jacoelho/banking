@@ -160,6 +160,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getSlovakRepublicBBAN(iban)
 	case sm:
 		return getSanMarinoBBAN(iban)
+	case so:
+		return getSomaliaBBAN(iban)
 	case st:
 		return getSaoTomeAndPrincipeBBAN(iban)
 	case sv:

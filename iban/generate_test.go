@@ -1,5 +1,3 @@
-//go:build validation
-
 package iban
 
 import "testing"
@@ -344,6 +342,10 @@ func TestGenerate(t *testing.T) {
 		{
 			name: "Ukraine",
 			fn:   generateUkraineIBAN,
+		},
+		{
+			name: "Somalia",
+			fn:   generateSomaliaIBAN,
 		},
 	}
 	for _, tt := range tests {

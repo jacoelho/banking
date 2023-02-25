@@ -237,6 +237,11 @@ func TestIsSEPACountry(t *testing.T) {
 			want:        false,
 			wantErr:     true,
 		},
+		{
+			countryCode: "SO",
+			want:        false,
+			wantErr:     false,
+		},
 	}
 	for _, tt := range tests {
 		tt := tt
