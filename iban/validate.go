@@ -120,12 +120,16 @@ func Validate(iban string) error {
 		return validateMontenegroIBAN(iban)
 	case mk:
 		return validateMacedoniaIBAN(iban)
+	case mn:
+		return validateMongoliaIBAN(iban)
 	case mr:
 		return validateMauritaniaIBAN(iban)
 	case mt:
 		return validateMaltaIBAN(iban)
 	case mu:
 		return validateMauritiusIBAN(iban)
+	case ni:
+		return validateNicaraguaIBAN(iban)
 	case nl:
 		return validateTheNetherlandsIBAN(iban)
 	case no:

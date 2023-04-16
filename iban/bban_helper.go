@@ -120,12 +120,16 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getMontenegroBBAN(iban)
 	case mk:
 		return getMacedoniaBBAN(iban)
+	case mn:
+		return getMongoliaBBAN(iban)
 	case mr:
 		return getMauritaniaBBAN(iban)
 	case mt:
 		return getMaltaBBAN(iban)
 	case mu:
 		return getMauritiusBBAN(iban)
+	case ni:
+		return getNicaraguaBBAN(iban)
 	case nl:
 		return getTheNetherlandsBBAN(iban)
 	case no:

@@ -1,5 +1,3 @@
-//go:build validation
-
 package iban
 
 import (
@@ -239,6 +237,16 @@ func TestIsSEPACountry(t *testing.T) {
 		},
 		{
 			countryCode: "SO",
+			want:        false,
+			wantErr:     false,
+		},
+		{
+			countryCode: "MN",
+			want:        false,
+			wantErr:     false,
+		},
+		{
+			countryCode: "NI",
 			want:        false,
 			wantErr:     false,
 		},

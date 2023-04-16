@@ -460,6 +460,14 @@ countries:
     account_number: 3:13
     sepa: false
 
+  - code: MN
+    name: Mongolia
+    IBAN: MN2!n4!n12!n
+    BBAN: 4!n12!n
+    bank_code: 0:4
+    account_number: 4:16
+    sepa: false
+
   - code: MR
     name: Mauritania
     IBAN: MR2!n5!n5!n11!n2!n
@@ -486,6 +494,14 @@ countries:
     bank_code: 0:6
     branch_code: 6:8
     account_number: 8:26
+    sepa: false
+
+  - code: NI
+    name: Nicaragua
+    IBAN: NI2!n4!a20!n
+    BBAN: 4!a20!n
+    bank_code: 0:4
+    account_number: 4:24
     sepa: false
 
   - code: NL

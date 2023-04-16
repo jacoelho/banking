@@ -172,6 +172,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Macedonia
 	case mk:
 		return false, nil
+	// Country Code Mongolia
+	case mn:
+		return false, nil
 	// Country Code Mauritania
 	case mr:
 		return false, nil
@@ -180,6 +183,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 		return true, nil
 	// Country Code Mauritius
 	case mu:
+		return false, nil
+	// Country Code Nicaragua
+	case ni:
 		return false, nil
 	// Country Code The Netherlands
 	case nl:

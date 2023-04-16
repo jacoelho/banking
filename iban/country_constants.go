@@ -109,12 +109,16 @@ const (
 	me = "ME"
 	// Country Code Macedonia
 	mk = "MK"
+	// Country Code Mongolia
+	mn = "MN"
 	// Country Code Mauritania
 	mr = "MR"
 	// Country Code Malta
 	mt = "MT"
 	// Country Code Mauritius
 	mu = "MU"
+	// Country Code Nicaragua
+	ni = "NI"
 	// Country Code The Netherlands
 	nl = "NL"
 	// Country Code Norway
