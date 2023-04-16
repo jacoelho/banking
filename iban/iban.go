@@ -2,6 +2,8 @@ package iban
 
 import "github.com/jacoelho/banking/pool"
 
+//go:generate banking-registry -registry-file ../docs/registry.yml -dst-directory .
+
 // PaperFormat returns iban in paper format
 // Follows EBS  204 - 5 IBAN Format  2) Paper Format
 func PaperFormat(iban string) string {

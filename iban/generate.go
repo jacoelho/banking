@@ -115,12 +115,16 @@ func Generate(countryCode string) (string, error) {
 		return generateMontenegroIBAN()
 	case mk:
 		return generateMacedoniaIBAN()
+	case mn:
+		return generateMongoliaIBAN()
 	case mr:
 		return generateMauritaniaIBAN()
 	case mt:
 		return generateMaltaIBAN()
 	case mu:
 		return generateMauritiusIBAN()
+	case ni:
+		return generateNicaraguaIBAN()
 	case nl:
 		return generateTheNetherlandsIBAN()
 	case no:
