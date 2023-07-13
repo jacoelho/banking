@@ -62,6 +62,8 @@ func Validate(iban string) error {
 		return validateSpainIBAN(iban)
 	case fi:
 		return validateFinlandIBAN(iban)
+	case fk:
+		return validateFalklandIslandsIBAN(iban)
 	case fo:
 		return validateFaroeIslandsIBAN(iban)
 	case fr:

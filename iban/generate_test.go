@@ -347,6 +347,10 @@ func TestGenerate(t *testing.T) {
 			name: "Somalia",
 			fn:   generateSomaliaIBAN,
 		},
+		{
+			name: "Falkland Islands",
+			fn:   generateFalklandIslandsIBAN,
+		},
 	}
 	for _, tt := range tests {
 		tt := tt
