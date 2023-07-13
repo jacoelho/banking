@@ -62,6 +62,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getSpainBBAN(iban)
 	case fi:
 		return getFinlandBBAN(iban)
+	case fk:
+		return getFalklandIslandsBBAN(iban)
 	case fo:
 		return getFaroeIslandsBBAN(iban)
 	case fr:

@@ -85,6 +85,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Finland
 	case fi:
 		return true, nil
+	// Country Code Falkland Islands
+	case fk:
+		return false, nil
 	// Country Code Faroe Islands
 	case fo:
 		return false, nil

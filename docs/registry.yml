@@ -1,5 +1,5 @@
 # hand edited to fix issues
-# release 93
+# release 95
 
 countries:
   - code: AD
@@ -207,6 +207,14 @@ countries:
     national_checksum: 13:14
     account_number: 3:13
     sepa: true
+
+  - code: FK
+    name: Falkland Islands
+    IBAN: FK2!n2!a12!n
+    BBAN: 2!a12!n
+    bank_code: 0:2
+    account_number: 2:14
+    sepa: false
 
   - code: FO
     name: Faroe Islands

@@ -51,6 +51,8 @@ const (
 	es = "ES"
 	// Country Code Finland
 	fi = "FI"
+	// Country Code Falkland Islands
+	fk = "FK"
 	// Country Code Faroe Islands
 	fo = "FO"
 	// Country Code France

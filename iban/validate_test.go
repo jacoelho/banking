@@ -343,6 +343,10 @@ func TestValidateIBAN(t *testing.T) {
 			iban:    "NI45BAPR00000013000003558124",
 			wantErr: false,
 		},
+		{
+			iban:    "FK88SC123456789012",
+			wantErr: false,
+		},
 	}
 	for _, tt := range tests {
 		tt := tt
