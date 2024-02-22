@@ -125,6 +125,8 @@ const (
 	nl = "NL"
 	// Country Code Norway
 	no = "NO"
+	// Country Code Oman
+	om = "OM"
 	// Country Code Pakistan
 	pk = "PK"
 	// Country Code Poland

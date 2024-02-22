@@ -136,6 +136,8 @@ func Validate(iban string) error {
 		return validateTheNetherlandsIBAN(iban)
 	case no:
 		return validateNorwayIBAN(iban)
+	case om:
+		return validateOmanIBAN(iban)
 	case pk:
 		return validatePakistanIBAN(iban)
 	case pl:
