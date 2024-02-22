@@ -131,6 +131,8 @@ func Generate(countryCode string) (string, error) {
 		return generateTheNetherlandsIBAN()
 	case no:
 		return generateNorwayIBAN()
+	case om:
+		return generateOmanIBAN()
 	case pk:
 		return generatePakistanIBAN()
 	case pl:

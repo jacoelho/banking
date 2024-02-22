@@ -1,5 +1,5 @@
 # hand edited to fix issues
-# release 95
+# release 96
 
 countries:
   - code: AD
@@ -528,6 +528,14 @@ countries:
     national_checksum: 10:11
     account_number: 4:10
     sepa: true
+
+  - code: OM
+    name: Oman
+    IBAN: OM2!n3!n16!c
+    BBAN: 3!n16!c
+    bank_code: 0:3
+    account_number: 3:19
+    sepa: false
 
   - code: PK
     name: Pakistan

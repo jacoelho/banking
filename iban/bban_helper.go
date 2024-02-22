@@ -136,6 +136,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getTheNetherlandsBBAN(iban)
 	case no:
 		return getNorwayBBAN(iban)
+	case om:
+		return getOmanBBAN(iban)
 	case pk:
 		return getPakistanBBAN(iban)
 	case pl:

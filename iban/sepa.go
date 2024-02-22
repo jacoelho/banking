@@ -196,6 +196,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Norway
 	case no:
 		return true, nil
+	// Country Code Oman
+	case om:
+		return false, nil
 	// Country Code Pakistan
 	case pk:
 		return false, nil
