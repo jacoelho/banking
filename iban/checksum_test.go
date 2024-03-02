@@ -10,20 +10,20 @@ import (
 	"time"
 )
 
-func BenchmarkCompute(b *testing.B) {
-	b.ReportAllocs()
-
-	for i := 0; i < b.N; i++ {
-		v := mod9710Chunked("105000997603123456789123")
-		_ = v
-	}
-}
-
 func BenchmarkBigIntMod9710(b *testing.B) {
 	b.ReportAllocs()
 
 	for i := 0; i < b.N; i++ {
 		v := bigIntMod9710("105000997603123456789123")
+		_ = v
+	}
+}
+
+func BenchmarkMod9710(b *testing.B) {
+	b.ReportAllocs()
+
+	for i := 0; i < b.N; i++ {
+		v := mod9710("105000997603123456789123")
 		_ = v
 	}
 }
@@ -59,7 +59,7 @@ func TestModuloFunctions(t *testing.T) {
 		},
 	}
 
-	if err := quick.CheckEqual(bigIntMod9710, mod9710Chunked, cfg); err != nil {
+	if err := quick.CheckEqual(bigIntMod9710, mod9710, cfg); err != nil {
 		t.Errorf("test failed %v", err)
 	}
 }
