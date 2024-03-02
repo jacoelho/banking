@@ -1,9 +1,5 @@
 package ascii
 
-func IsLowerCase(r rune) bool {
-	return 'a' <= r && r <= 'z'
-}
-
 func IsUpperCaseLetter(r rune) bool {
 	return 'A' <= r && r <= 'Z'
 }
@@ -13,7 +9,7 @@ func IsDigit(r rune) bool {
 }
 
 func IsAlphaNumeric(r rune) bool {
-	return IsDigit(r) || IsLowerCase(r) || IsUpperCaseLetter(r)
+	return IsDigit(r) || IsUpperCaseLetter(r)
 }
 
 func IsUpperAlphaNumeric(r rune) bool {

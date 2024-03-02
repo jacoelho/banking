@@ -8,70 +8,21 @@ import (
 	"github.com/jacoelho/banking/pool"
 )
 
+// normalize converts an IBAN to its digit representation.
 func normalize(s string) string {
 	sb := pool.BytesPool.Get()
-	sb.Grow(len(s))
-
 	defer sb.Free()
 
+	sb.Grow(len(s) * 2)
+
 	for _, r := range s {
-		switch r {
-		case 'A':
-			_, _ = sb.WriteString("10")
-		case 'B':
-			_, _ = sb.WriteString("11")
-		case 'C':
-			_, _ = sb.WriteString("12")
-		case 'D':
-			_, _ = sb.WriteString("13")
-		case 'E':
-			_, _ = sb.WriteString("14")
-		case 'F':
-			_, _ = sb.WriteString("15")
-		case 'G':
-			_, _ = sb.WriteString("16")
-		case 'H':
-			_, _ = sb.WriteString("17")
-		case 'I':
-			_, _ = sb.WriteString("18")
-		case 'J':
-			_, _ = sb.WriteString("19")
-		case 'K':
-			_, _ = sb.WriteString("20")
-		case 'L':
-			_, _ = sb.WriteString("21")
-		case 'M':
-			_, _ = sb.WriteString("22")
-		case 'N':
-			_, _ = sb.WriteString("23")
-		case 'O':
-			_, _ = sb.WriteString("24")
-		case 'P':
-			_, _ = sb.WriteString("25")
-		case 'Q':
-			_, _ = sb.WriteString("26")
-		case 'R':
-			_, _ = sb.WriteString("27")
-		case 'S':
-			_, _ = sb.WriteString("28")
-		case 'T':
-			_, _ = sb.WriteString("29")
-		case 'U':
-			_, _ = sb.WriteString("30")
-		case 'V':
-			_, _ = sb.WriteString("31")
-		case 'W':
-			_, _ = sb.WriteString("32")
-		case 'X':
-			_, _ = sb.WriteString("33")
-		case 'Y':
-			_, _ = sb.WriteString("34")
-		case 'Z':
-			_, _ = sb.WriteString("35")
-		default:
-			if '0' <= r && r <= '9' {
-				_, _ = sb.WriteRune(r)
-			}
+		if r >= 'A' && r <= 'Z' {
+			val := r - 'A' + 10
+
+			_, _ = sb.WriteRune('0' + val/10)
+			_, _ = sb.WriteRune('0' + val%10)
+		} else if r >= '0' && r <= '9' {
+			_, _ = sb.WriteRune(r)
 		}
 	}
 
@@ -94,21 +45,16 @@ func mod9710(number string) int {
 
 // checksum calculates checksum digits
 func checksum(iban string) string {
-	sb := pool.BytesPool.Get()
-	defer sb.Free()
+	rearrangedIBAN := iban[4:] + iban[:2] + "00"
 
-	sb.Grow(len(iban))
+	normalizedIBAN := normalize(rearrangedIBAN)
 
-	_, _ = sb.WriteString(iban[4:])
-	_, _ = sb.WriteString(iban[:2])
-	_, _ = sb.WriteString("00")
-
-	result := mod9710(normalize(sb.String()))
+	modulo := mod9710(normalizedIBAN)
 
 	// Check digits with the value of '01' or '00' are invalid.
 	// To resolve an anomaly in the algorithm,
 	// values '01' and '00' are equivalent to '98' and '99', respectively, and the latter must be used.
-	checkDigits := 98 - result
+	checkDigits := 98 - modulo
 	switch {
 	case checkDigits == 0:
 		return "99"
