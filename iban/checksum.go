@@ -10,6 +10,8 @@ import (
 
 func normalize(s string) string {
 	sb := pool.BytesPool.Get()
+	sb.Grow(len(s))
+
 	defer sb.Free()
 
 	for _, r := range s {
@@ -76,40 +78,18 @@ func normalize(s string) string {
 	return sb.String()
 }
 
-var paddings = [...]int{
-	1: 10,
-	2: 100,
-	3: 1000,
-	4: 10000,
-	5: 100000,
-	6: 1000000,
-	7: 10000000,
-	8: 100000000,
-	9: 1000000000,
-}
-
-// mod9710Chunked computes mod97-10 checksum in chucks
-func mod9710Chunked(s string) int {
-	var padding = 1000000000
-	var sum int
-
-	for i := 0; i < len(s); i += 9 {
-		end := i + 9
-
-		if end > len(s) {
-			end = len(s)
-			padding = paddings[len(s[i:end])]
-		}
-
-		v, err := strconv.Atoi(s[i:end])
-		if err != nil {
-			panic(err)
-		}
-
-		sum = (sum*padding + v) % 97
+func mod9710(number string) int {
+	if len(number)%2 != 0 {
+		number = "0" + number
 	}
 
-	return sum
+	remainder := 0
+	for i := 0; i < len(number); i += 2 {
+		chunk := int(number[i]-'0')*10 + int(number[i+1]-'0')
+		remainder = (remainder*100 + chunk) % 97
+	}
+
+	return remainder
 }
 
 // checksum calculates checksum digits
@@ -123,7 +103,7 @@ func checksum(iban string) string {
 	_, _ = sb.WriteString(iban[:2])
 	_, _ = sb.WriteString("00")
 
-	result := mod9710Chunked(normalize(sb.String()))
+	result := mod9710(normalize(sb.String()))
 
 	// Check digits with the value of '01' or '00' are invalid.
 	// To resolve an anomaly in the algorithm,
