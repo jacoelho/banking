@@ -310,6 +310,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Wallis And Futuna Islands
 	case wf:
 		return false, nil
+	// Country Code Yemen
+	case ye:
+		return false, nil
 	default:
 		return false, fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)
 	}

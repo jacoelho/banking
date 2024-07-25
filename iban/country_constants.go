@@ -201,4 +201,6 @@ const (
 	pm = "PM"
 	// Country Code Wallis And Futuna Islands
 	wf = "WF"
+	// Country Code Yemen
+	ye = "YE"
 )

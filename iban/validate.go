@@ -212,6 +212,8 @@ func Validate(iban string) error {
 		return validateSaintPierreEtMiquelonIBAN(iban)
 	case wf:
 		return validateWallisAndFutunaIslandsIBAN(iban)
+	case ye:
+		return validateYemenIBAN(iban)
 
 	default:
 		return fmt.Errorf("%s is not supported: %w", code, ErrValidation)

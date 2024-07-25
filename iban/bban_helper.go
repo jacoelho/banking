@@ -212,6 +212,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getSaintPierreEtMiquelonBBAN(iban)
 	case wf:
 		return getWallisAndFutunaIslandsBBAN(iban)
+	case ye:
+		return getYemenBBAN(iban)
 
 	default:
 		return BBAN{}, fmt.Errorf("%s is not supported: %w", code, ErrValidation)

@@ -207,6 +207,8 @@ func Generate(countryCode string) (string, error) {
 		return generateSaintPierreEtMiquelonIBAN()
 	case wf:
 		return generateWallisAndFutunaIslandsIBAN()
+	case ye:
+		return generateYemenIBAN()
 
 	default:
 		return "", fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)
