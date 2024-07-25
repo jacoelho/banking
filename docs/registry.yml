@@ -879,3 +879,12 @@ countries:
     national_checksum: 21:23
     account_number: 10:21
     sepa: false
+
+  - code: YE
+    name: Yemen
+    IBAN: YE2!n4!a4!n18!c
+    BBAN: 4!a4!n18!c
+    bank_code: 0:4
+    branch_code: 4:8
+    account_number: 8:26
+    sepa: false

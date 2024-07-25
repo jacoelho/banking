@@ -1,6 +1,8 @@
 package iban
 
-import "github.com/jacoelho/banking/pool"
+import (
+	"github.com/jacoelho/banking/pool"
+)
 
 //go:generate banking-registry -registry-file ../docs/registry.yml -dst-directory .
 
@@ -21,17 +23,17 @@ func chunkString(s string, chunkSize int, sep rune) string {
 	runes := []byte(s)
 
 	for i := 0; i < len(runes); i += chunkSize {
-		nn := i + chunkSize
-		if nn > len(runes) {
-			nn = len(runes)
-		}
-
 		if i > 0 {
-			_, _ = sb.WriteRune(sep)
+			sb.WriteRune(sep)
 		}
 
-		_, _ = sb.Write(runes[i:nn])
+		end := i + chunkSize
+		if end > len(runes) {
+			end = len(runes)
+		}
 
+		sb.Write(runes[i:end])
 	}
+
 	return sb.String()
 }
