@@ -1,6 +1,6 @@
 module github.com/jacoelho/banking/registry
 
-go 1.19
+go 1.23
 
 replace github.com/jacoelho/banking => ../
 
