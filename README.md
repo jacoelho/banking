@@ -12,7 +12,7 @@ go get -u github.com/jacoelho/banking
 
 ## IBAN
 
-Supports IBAN validation based on [swift rules](https://www.swift.com/sites/default/files/resources/iban_registry.txt).
+Supports IBAN validation based on [swift rules](https://www.swift.com/node/11971).
 
 ### Usage
 
