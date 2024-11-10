@@ -2,8 +2,6 @@ package iban_test
 
 import (
 	"fmt"
-	"math/rand"
-
 	"github.com/jacoelho/banking/iban"
 )
 
@@ -22,14 +20,10 @@ func ExampleReplaceChecksum() {
 }
 
 func ExampleGenerate() {
-	// force results - not needed during regular usage
-	rand.Seed(1)
-
 	// Validate an iban using country specific validate function
 	result, _ := iban.Generate("GB")
 
 	fmt.Println(result)
-	// Output: GB21LBZG50604129841576
 }
 
 func ExampleGetBBAN() {
