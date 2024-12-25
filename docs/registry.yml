@@ -173,8 +173,8 @@ countries:
 
   - code: EE
     name: Estonia
-    IBAN: EE2!n2!n2!n11!n1!n
-    BBAN: 2!n2!n11!n1!n
+    IBAN: EE2!n2!n14!n
+    BBAN: 2!n14!n
     bank_code: 0:2
     national_checksum: 15:16
     account_number: 2:15
@@ -281,6 +281,14 @@ countries:
     name: Guatemala
     IBAN: GT2!n4!c20!c
     BBAN: 4!c20!c
+    bank_code: 0:4
+    account_number: 4:24
+    sepa: false
+
+  - code: HN
+    name: Honduras
+    IBAN: HN2!n4!a20!n
+    BBAN: 4!a20!n
     bank_code: 0:4
     account_number: 4:24
     sepa: false

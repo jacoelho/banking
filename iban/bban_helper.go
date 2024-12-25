@@ -80,6 +80,8 @@ func GetBBAN(iban string) (BBAN, error) {
 		return getGreeceBBAN(iban)
 	case gt:
 		return getGuatemalaBBAN(iban)
+	case hn:
+		return getHondurasBBAN(iban)
 	case hr:
 		return getCroatiaBBAN(iban)
 	case hu:

@@ -69,6 +69,8 @@ const (
 	gr = "GR"
 	// Country Code Guatemala
 	gt = "GT"
+	// Country Code Honduras
+	hn = "HN"
 	// Country Code Croatia
 	hr = "HR"
 	// Country Code Hungary

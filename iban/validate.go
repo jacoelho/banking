@@ -80,6 +80,8 @@ func Validate(iban string) error {
 		return validateGreeceIBAN(iban)
 	case gt:
 		return validateGuatemalaIBAN(iban)
+	case hn:
+		return validateHondurasIBAN(iban)
 	case hr:
 		return validateCroatiaIBAN(iban)
 	case hu:
