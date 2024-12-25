@@ -112,6 +112,9 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	// Country Code Guatemala
 	case gt:
 		return false, nil
+	// Country Code Honduras
+	case hn:
+		return false, nil
 	// Country Code Croatia
 	case hr:
 		return true, nil

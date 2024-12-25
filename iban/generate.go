@@ -75,6 +75,8 @@ func Generate(countryCode string) (string, error) {
 		return generateGreeceIBAN()
 	case gt:
 		return generateGuatemalaIBAN()
+	case hn:
+		return generateHondurasIBAN()
 	case hr:
 		return generateCroatiaIBAN()
 	case hu:
