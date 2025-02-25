@@ -15,20 +15,22 @@ jobs:
 
       - name: Fetch registry
         run: |
-          curl --fail -Ls \
-          -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:130.0) Gecko/20100101 Firefox/130.0' \
-          -H 'Accept: */*' \
+          curl --fail -Ls -b cookies.txt -o registry.pdf \
+          'https://www.swift.com/resource/iban-registry-pdf' \
+          -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:135.0) Gecko/20100101 Firefox/135.0' \
+          -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8' \
           -H 'Accept-Language: en-GB,en;q=0.5' \
           -H 'Accept-Encoding: gzip, deflate, br, zstd' \
+          -H 'Referer: https://www.google.com/' \
+          -H 'Upgrade-Insecure-Requests: 1' \
+          -H 'Sec-Fetch-Dest: document' \
+          -H 'Sec-Fetch-Mode: navigate' \
+          -H 'Sec-Fetch-Site: cross-site' \
+          -H 'Sec-Fetch-User: ?1' \
           -H 'Connection: keep-alive' \
-          -H 'Referer: https://www.google.com' \
-          -H 'Sec-Fetch-Dest: script' \
-          -H 'Sec-Fetch-Mode: no-cors' \
-          -H 'Sec-Fetch-Site: same-origin' \
+          -H 'Priority: u=0, i' \
           -H 'Pragma: no-cache' \
-          -H 'Cache-Control: no-cache' \
-          -H 'TE: trailers' \
-          https://www.swift.com/node/9606 -o registry.pdf
+          -H 'Cache-Control: no-cache'
 
       - name: Cache hash
         id: cache
