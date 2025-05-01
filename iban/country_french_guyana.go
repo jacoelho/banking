@@ -18,15 +18,15 @@ func validateFrenchGuyanaIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: GF, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:14]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[2:14]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 12, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[14:25]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+	if subject := iban[14:25]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 14, length: 11, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[25:27]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[25:27]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 25, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 

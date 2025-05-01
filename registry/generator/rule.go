@@ -26,9 +26,9 @@ func templateFunctions() template.FuncMap {
 				case rule.AlphaNumeric:
 					fn = "ascii.IsAlphaNumeric"
 				case rule.UpperCaseLetters:
-					fn = "ascii.IsUpperCaseLetter"
+					fn = "ascii.IsUpperCase"
 				}
-				return fmt.Sprintf(`!ascii.Every(%s, %s)`, s, fn)
+				return fmt.Sprintf(`!%s(%s)`, fn, s)
 			}
 			return `invalid code fix me`
 		},

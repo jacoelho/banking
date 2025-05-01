@@ -18,15 +18,15 @@ func validateBrazilIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: BR, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:27]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[2:27]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 25, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[27:28]; !ascii.Every(subject, ascii.IsUpperCaseLetter) {
+	if subject := iban[27:28]; !ascii.IsUpperCase(subject) {
 		return fmt.Errorf("range rule, start pos: 27, length: 1, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[28:29]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+	if subject := iban[28:29]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 28, length: 1, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 

@@ -18,11 +18,11 @@ func validateSaudiArabiaIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: SA, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:6]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[2:6]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[6:24]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+	if subject := iban[6:24]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 6, length: 18, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
