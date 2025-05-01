@@ -18,11 +18,11 @@ func validatePrincipalityOfLiechtensteinIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: LI, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:9]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[2:9]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 7, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[9:21]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+	if subject := iban[9:21]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 9, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 

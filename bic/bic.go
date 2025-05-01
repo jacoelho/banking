@@ -67,9 +67,9 @@ func (b BIC) IsValid() bool {
 	}
 
 	if !(iso3166.IsCountryCode(b.CountryCode) &&
-		ascii.Every(b.BusinessPartyPrefix, ascii.IsUpperCaseLetter) &&
-		ascii.Every(b.BusinessPartySuffix, ascii.IsUpperAlphaNumeric) &&
-		ascii.Every(b.BranchCode, ascii.IsUpperAlphaNumeric)) {
+		ascii.IsUpperCase(b.BusinessPartyPrefix) &&
+		ascii.IsUpperAlphaNumeric(b.BusinessPartySuffix) &&
+		ascii.IsUpperAlphaNumeric(b.BranchCode)) {
 		return false
 	}
 

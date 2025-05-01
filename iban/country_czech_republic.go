@@ -18,7 +18,7 @@ func validateCzechRepublicIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: CZ, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:24]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[2:24]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 22, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 

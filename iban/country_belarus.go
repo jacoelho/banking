@@ -18,19 +18,19 @@ func validateBelarusIBAN(iban string) error {
 		return fmt.Errorf("static value rule, pos: 0, expected value: BY, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[2:4]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[2:4]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[4:8]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+	if subject := iban[4:8]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[8:12]; !ascii.Every(subject, ascii.IsDigit) {
+	if subject := iban[8:12]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 8, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
 
-	if subject := iban[12:28]; !ascii.Every(subject, ascii.IsAlphaNumeric) {
+	if subject := iban[12:28]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 12, length: 16, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
 
