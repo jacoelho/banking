@@ -490,7 +490,7 @@ func TestBBAN(t *testing.T) {
 				BankCode:         "505",
 				BranchCode:       "",
 				NationalChecksum: "51",
-				AccountNumber:    "000012345678951"},
+				AccountNumber:    "0000123456789"},
 		},
 		{
 			iban:    "NL91ABNA0417164300",
@@ -660,7 +660,7 @@ func TestBBAN(t *testing.T) {
 				BankCode:         "500",
 				BranchCode:       "",
 				NationalChecksum: "6",
-				AccountNumber:    "00000058398257466"},
+				AccountNumber:    "0000005839825746"},
 		},
 		{
 			iban:    "CH9300762011623852957",

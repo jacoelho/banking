@@ -51,6 +51,6 @@ func getMontenegroBBAN(iban string) (BBAN, error) {
 		BankCode:         iban[4:7],
 		BranchCode:       "",
 		NationalChecksum: iban[20:22],
-		AccountNumber:    iban[7:22],
+		AccountNumber:    iban[7:20],
 	}, nil
 }

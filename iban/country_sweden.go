@@ -51,6 +51,6 @@ func getSwedenBBAN(iban string) (BBAN, error) {
 		BankCode:         iban[4:7],
 		BranchCode:       "",
 		NationalChecksum: iban[23:24],
-		AccountNumber:    iban[7:24],
+		AccountNumber:    iban[7:23],
 	}, nil
 }
