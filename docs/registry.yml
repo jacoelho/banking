@@ -464,7 +464,7 @@ countries:
     BBAN: 3!n13!n2!n
     bank_code: 0:3
     national_checksum: 16:18
-    account_number: 3:18
+    account_number: 3:16
     sepa: false
 
   - code: MK
@@ -647,7 +647,7 @@ countries:
     BBAN: 3!n16!n1!n
     bank_code: 0:3
     national_checksum: 19:20
-    account_number: 3:20
+    account_number: 3:19
     sepa: true
 
   - code: SI
