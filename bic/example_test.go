@@ -2,6 +2,7 @@ package bic_test
 
 import (
 	"fmt"
+
 	"github.com/jacoelho/banking/bic"
 )
 

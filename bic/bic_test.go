@@ -1,9 +1,10 @@
 package bic_test
 
 import (
-	"github.com/jacoelho/banking/bic"
 	"reflect"
 	"testing"
+
+	"github.com/jacoelho/banking/bic"
 )
 
 func TestParse(t *testing.T) {
