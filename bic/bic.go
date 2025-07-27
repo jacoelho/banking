@@ -2,6 +2,7 @@ package bic
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/iso3166"
@@ -28,7 +29,7 @@ func (b BIC) isSameBranchCode(o BIC) bool {
 		return true
 	}
 
-	return b.BranchCode == o.CountryCode
+	return b.BranchCode == o.BranchCode
 }
 
 // SameInstitution checks if two bic belong to the same institutions
@@ -46,13 +47,24 @@ func (b BIC) SameInstitution(other BIC) bool {
 
 // BIC8 returns the bic formatted as bic with length 8.
 func (b BIC) BIC8() string {
-	return b.BusinessPartyPrefix + b.CountryCode + b.BusinessPartySuffix
+	var sb strings.Builder
+	sb.Grow(8)
+	sb.WriteString(b.BusinessPartyPrefix)
+	sb.WriteString(b.CountryCode)
+	sb.WriteString(b.BusinessPartySuffix)
+	return sb.String()
 }
 
 // Implements fmt.Stringer
 // returns the bic in bic 11 format.
 func (b BIC) String() string {
-	return b.BIC8() + b.BranchCode
+	var sb strings.Builder
+	sb.Grow(11)
+	sb.WriteString(b.BusinessPartyPrefix)
+	sb.WriteString(b.CountryCode)
+	sb.WriteString(b.BusinessPartySuffix)
+	sb.WriteString(b.BranchCode)
+	return sb.String()
 }
 
 // IsValid returns if a bic is valid.

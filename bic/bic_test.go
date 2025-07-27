@@ -1,9 +1,10 @@
 package bic_test
 
 import (
-	"github.com/jacoelho/banking/bic"
 	"reflect"
 	"testing"
+
+	"github.com/jacoelho/banking/bic"
 )
 
 func TestParse(t *testing.T) {
@@ -295,6 +296,54 @@ func TestSameInstitution(t *testing.T) {
 			},
 			right: bic.BIC{
 				BusinessPartyPrefix: "ABCD",
+			},
+			want: false,
+		},
+		{
+			name: "different specific branch codes",
+			left: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "123",
+			},
+			right: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "456",
+			},
+			want: false,
+		},
+		{
+			name: "same specific branch codes",
+			left: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "ABC",
+			},
+			right: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "ABC",
+			},
+			want: true,
+		},
+		{
+			name: "different business party suffix",
+			left: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "XXX",
+			},
+			right: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "C2",
+				BranchCode:          "XXX",
 			},
 			want: false,
 		},

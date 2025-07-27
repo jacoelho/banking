@@ -36,6 +36,7 @@ func mod9710(number string) int {
 
 	remainder := 0
 	for i := 0; i < len(number); i += 2 {
+		_ = number[i+1]
 		chunk := int(number[i]-'0')*10 + int(number[i+1]-'0')
 		remainder = (remainder*100 + chunk) % 97
 	}
@@ -79,5 +80,5 @@ func ReplaceChecksum(iban string) (string, error) {
 
 	raw[2], raw[3] = check[0], check[1]
 
-	return *(*string)(unsafe.Pointer(&raw)), nil
+	return unsafe.String(unsafe.SliceData(raw), len(raw)), nil
 }

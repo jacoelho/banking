@@ -20,19 +20,13 @@ func chunkString(s string, chunkSize int, sep rune) string {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 
-	runes := []byte(s)
-
-	for i := 0; i < len(runes); i += chunkSize {
+	for i := 0; i < len(s); i += chunkSize {
 		if i > 0 {
 			sb.WriteRune(sep)
 		}
 
-		end := i + chunkSize
-		if end > len(runes) {
-			end = len(runes)
-		}
-
-		sb.Write(runes[i:end])
+		end := min(i+chunkSize, len(s))
+		sb.WriteString(s[i:end])
 	}
 
 	return sb.String()
