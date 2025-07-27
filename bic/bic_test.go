@@ -299,6 +299,54 @@ func TestSameInstitution(t *testing.T) {
 			},
 			want: false,
 		},
+		{
+			name: "different specific branch codes",
+			left: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "123",
+			},
+			right: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "456",
+			},
+			want: false,
+		},
+		{
+			name: "same specific branch codes",
+			left: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "ABC",
+			},
+			right: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "ABC",
+			},
+			want: true,
+		},
+		{
+			name: "different business party suffix",
+			left: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "B1",
+				BranchCode:          "XXX",
+			},
+			right: bic.BIC{
+				BusinessPartyPrefix: "ABCD",
+				CountryCode:         "BE",
+				BusinessPartySuffix: "C2",
+				BranchCode:          "XXX",
+			},
+			want: false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
