@@ -2,83 +2,103 @@ package iban
 
 import (
 	"fmt"
-	"strconv"
 	"unsafe"
-
-	"github.com/jacoelho/banking/pool"
 )
 
-// normalize converts an IBAN to its digit representation.
-func normalize(s string) string {
-	sb := pool.BytesPool.Get()
-	defer sb.Free()
-
-	sb.Grow(len(s) * 2)
-
-	for _, r := range s {
-		if r >= 'A' && r <= 'Z' {
-			val := r - 'A' + 10
-
-			_, _ = sb.WriteRune('0' + val/10)
-			_, _ = sb.WriteRune('0' + val%10)
-		} else if r >= '0' && r <= '9' {
-			_, _ = sb.WriteRune(r)
-		}
-	}
-
-	return sb.String()
-}
-
-func mod9710(number string) int {
-	if len(number)%2 != 0 {
-		number = "0" + number
-	}
-
-	remainder := 0
-	for i := 0; i < len(number); i += 2 {
-		_ = number[i+1]
-		chunk := int(number[i]-'0')*10 + int(number[i+1]-'0')
-		remainder = (remainder*100 + chunk) % 97
-	}
-
-	return remainder
-}
-
-// checksum calculates checksum digits
-func checksum(iban string) string {
-	rearrangedIBAN := iban[4:] + iban[:2] + "00"
-
-	normalizedIBAN := normalize(rearrangedIBAN)
-
-	modulo := mod9710(normalizedIBAN)
-
-	// Check digits with the value of '01' or '00' are invalid.
-	// To resolve an anomaly in the algorithm,
-	// values '01' and '00' are equivalent to '98' and '99', respectively, and the latter must be used.
-	checkDigits := 98 - modulo
-	switch {
-	case checkDigits == 0:
-		return "99"
-	case checkDigits == 1:
-		return "98"
-	case checkDigits < 10:
-		return "0" + strconv.Itoa(checkDigits)
-	default:
-		return strconv.Itoa(checkDigits)
-	}
-}
-
-// ReplaceChecksum returns input iban with the correct check digits
+// ReplaceChecksum returns the IBAN with corrected check digits.
 func ReplaceChecksum(iban string) (string, error) {
 	if len(iban) < 4 {
 		return "", fmt.Errorf("invalid iban length: %w", ErrValidation)
 	}
 
-	raw := []byte(iban)
+	result := []byte(iban)
+	calculateCheckDigits(iban, result[2:4])
 
-	check := checksum(iban)
+	return unsafe.String(unsafe.SliceData(result), len(result)), nil
+}
 
-	raw[2], raw[3] = check[0], check[1]
+// calculateCheckDigits calculates IBAN check digits and writes them to checkBuf.
+func calculateCheckDigits(iban string, checkBuf []byte) {
+	normalizedBuf := make([]byte, len(iban)*2)
+	normalizedLen := normalizeRearrangedIBAN(iban, normalizedBuf)
+	normalizedBuf = normalizedBuf[:normalizedLen]
 
-	return unsafe.String(unsafe.SliceData(raw), len(raw)), nil
+	modulo := mod9710(normalizedBuf, normalizedLen)
+	checkDigits := 98 - modulo
+	formatCheckDigits(checkDigits, checkBuf)
+}
+
+// checksum calculates and returns the IBAN check digits as a string.
+func checksum(iban string) string {
+	var checkBuf [2]byte
+	calculateCheckDigits(iban, checkBuf[:])
+	return string(checkBuf[:])
+}
+
+// normalizeChar converts a character to its numeric representation (A-Z:10-35, 0-9:0-9) and returns new position.
+func normalizeChar(c byte, buf []byte, pos int) int {
+	if c >= 'A' && c <= 'Z' {
+		val := c - 'A' + 10
+		buf[pos] = '0' + val/10
+		buf[pos+1] = '0' + val%10
+		return pos + 2
+	} else if c >= '0' && c <= '9' {
+		buf[pos] = c
+		return pos + 1
+	}
+	return pos
+}
+
+// normalizeRearrangedIBAN rearranges IBAN to "bban+countrycode+00" format and converts to digits.
+func normalizeRearrangedIBAN(iban string, buf []byte) int {
+	pos := 0
+
+	for i := 4; i < len(iban); i++ {
+		pos = normalizeChar(iban[i], buf, pos)
+	}
+
+	for i := range 2 {
+		pos = normalizeChar(iban[i], buf, pos)
+	}
+
+	buf[pos] = '0'
+	buf[pos+1] = '0'
+	pos += 2
+
+	return pos
+}
+
+// mod9710 calculates modulo 97 for IBAN checksum using 12-digit chunking.
+func mod9710(digits []byte, length int) int {
+	remainder := uint64(0)
+
+	for i := 0; i < length; i += 12 {
+		chunkSize := min(12, length-i)
+		chunk := uint64(0)
+		remainderMultiplier := uint64(1)
+
+		for j := range chunkSize {
+			digit := uint64(digits[i+chunkSize-1-j] - '0')
+			chunk += digit * remainderMultiplier
+			remainderMultiplier *= 10
+		}
+
+		remainder = (remainder*remainderMultiplier + chunk) % 97
+	}
+
+	return int(remainder)
+}
+
+// formatCheckDigits formats check digits with IBAN rules: 0 as 99, 1 as 98, others as-is.
+func formatCheckDigits(checkDigits int, buf []byte) {
+	switch {
+	case checkDigits == 0:
+		buf[0], buf[1] = '9', '9'
+	case checkDigits == 1:
+		buf[0], buf[1] = '9', '8'
+	case checkDigits < 10:
+		buf[0], buf[1] = '0', '0'+byte(checkDigits)
+	default:
+		buf[0], buf[1] = '0'+byte(checkDigits/10), '0'+byte(checkDigits%10)
+	}
 }

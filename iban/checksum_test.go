@@ -21,9 +21,10 @@ func BenchmarkBigIntMod9710(b *testing.B) {
 
 func BenchmarkMod9710(b *testing.B) {
 	b.ReportAllocs()
+	digits := []byte("105000997603123456789123")
 
 	for i := 0; i < b.N; i++ {
-		v := mod9710("105000997603123456789123")
+		v := mod9710(digits, len(digits))
 		_ = v
 	}
 }
@@ -59,9 +60,14 @@ func TestModuloFunctions(t *testing.T) {
 		},
 	}
 
-	if err := quick.CheckEqual(bigIntMod9710, mod9710, cfg); err != nil {
-		t.Errorf("test failed %v", err)
+	mod9710Wrapper := func(s string) int {
+		return mod9710([]byte(s), len(s))
 	}
+
+	if err := quick.CheckEqual(bigIntMod9710, mod9710Wrapper, cfg); err != nil {
+		t.Errorf("mod9710 test failed %v", err)
+	}
+
 }
 
 func TestChecksum(t *testing.T) {
@@ -128,3 +134,10 @@ func benchmarkIBANChecksum(b *testing.B, input string) {
 
 func BenchmarkIBANChecksumAL(b *testing.B) { benchmarkIBANChecksum(b, "AL47212110090000000235698741") }
 func BenchmarkIBANChecksumGB(b *testing.B) { benchmarkIBANChecksum(b, "GB26MIDL40051512345674") }
+
+func BenchmarkReplaceChecksum(b *testing.B) {
+	b.ReportAllocs()
+	for i := 0; i < b.N; i++ {
+		_, _ = ReplaceChecksum("GB00BUKB20201555555555")
+	}
+}
