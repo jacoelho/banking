@@ -43,7 +43,7 @@ func bigIntMod9710(s string) int {
 func randomString(r *rand.Rand, size int, alphabet string) string {
 	sb := new(strings.Builder)
 
-	for i := 0; i < size; i++ {
+	for range size {
 		index := r.Intn(len(alphabet))
 		sb.WriteString(string(alphabet[index]))
 	}
@@ -87,7 +87,6 @@ func TestChecksum(t *testing.T) {
 		{iban: "NI45BAPR00000013000003558124", want: "45"},
 	}
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.iban, func(t *testing.T) {
 			t.Parallel()
 			if got := checksum(tt.iban); got != tt.want {
@@ -116,7 +115,6 @@ func TestReplaceChecksum(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		tt := tt
 		t.Run(tt.iban, func(t *testing.T) {
 			t.Parallel()
 			if got, _ := ReplaceChecksum(tt.iban); got != tt.want {

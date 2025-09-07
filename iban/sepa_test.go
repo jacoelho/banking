@@ -252,7 +252,6 @@ func TestIsSEPACountry(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-		tt := tt
 
 		t.Run(tt.countryCode, func(t *testing.T) {
 			got, err := IsSEPACountryCode(tt.countryCode)
