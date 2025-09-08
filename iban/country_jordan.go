@@ -13,31 +13,24 @@ func validateJordanIBAN(iban string) error {
 	if len(iban) != 30 {
 		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}
-
 	if subject := iban[0:2]; subject != "JO" {
 		return fmt.Errorf("static value rule, pos: 0, expected value: JO, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[4:8]; !ascii.IsUpperCase(subject) {
 		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[8:12]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 8, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[12:30]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 12, length: 18, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
-
 	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
-
 	return nil
 }
 
@@ -45,13 +38,11 @@ func validateJordanIBAN(iban string) error {
 func generateJordanIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-
 	sb.WriteString("JO")
 	ascii.Digits(sb, 2)
 	ascii.UpperCaseLetters(sb, 4)
 	ascii.Digits(sb, 4)
 	ascii.AlphaNumeric(sb, 18)
-
 	return ReplaceChecksum(sb.String())
 }
 
@@ -60,12 +51,5 @@ func getJordanBBAN(iban string) (BBAN, error) {
 	if len(iban) != 30 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
 	}
-
-	return BBAN{
-		BBAN:             iban[4:30],
-		BankCode:         iban[4:8],
-		BranchCode:       iban[8:12],
-		NationalChecksum: "",
-		AccountNumber:    iban[12:30],
-	}, nil
+	return BBAN{BBAN: iban[4:30], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: "", AccountNumber: iban[12:30]}, nil
 }

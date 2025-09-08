@@ -13,31 +13,24 @@ func validateSanMarinoIBAN(iban string) error {
 	if len(iban) != 27 {
 		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
-
 	if subject := iban[0:2]; subject != "SM" {
 		return fmt.Errorf("static value rule, pos: 0, expected value: SM, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[4:5]; !ascii.IsUpperCase(subject) {
 		return fmt.Errorf("range rule, start pos: 4, length: 1, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[5:15]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 5, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[15:27]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 15, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
-
 	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
-
 	return nil
 }
 
@@ -45,13 +38,11 @@ func validateSanMarinoIBAN(iban string) error {
 func generateSanMarinoIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-
 	sb.WriteString("SM")
 	ascii.Digits(sb, 2)
 	ascii.UpperCaseLetters(sb, 1)
 	ascii.Digits(sb, 10)
 	ascii.AlphaNumeric(sb, 12)
-
 	return ReplaceChecksum(sb.String())
 }
 
@@ -60,12 +51,5 @@ func getSanMarinoBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
 	}
-
-	return BBAN{
-		BBAN:             iban[4:27],
-		BankCode:         iban[5:10],
-		BranchCode:       iban[10:15],
-		NationalChecksum: iban[4:5],
-		AccountNumber:    iban[15:26],
-	}, nil
+	return BBAN{BBAN: iban[4:27], BankCode: iban[5:10], BranchCode: iban[10:15], NationalChecksum: iban[4:5], AccountNumber: iban[15:26]}, nil
 }

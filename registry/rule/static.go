@@ -2,8 +2,6 @@ package rule
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 )
 
 var _ Rule = (*StaticRule)(nil)
@@ -27,16 +25,4 @@ func (s *StaticRule) Type() string {
 
 func (s *StaticRule) String() string {
 	return fmt.Sprintf("static value rule, pos: %d, expected value: %s", s.StartPosition, s.Value)
-}
-
-func (s *StaticRule) WriteTo(sb *strings.Builder) {
-	sb.WriteString("if staticValue := banking[")
-	sb.WriteString(strconv.Itoa(s.StartPosition))
-	sb.WriteString(":")
-	sb.WriteString(strconv.Itoa(s.StartPosition + len(s.Value)))
-	sb.WriteString("]; staticValue != \"")
-	sb.WriteString(s.Value)
-	sb.WriteString("\" {\n")
-	sb.WriteString(`return errors.New("invalid value")`)
-	sb.WriteString("\n}")
 }

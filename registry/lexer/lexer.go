@@ -15,6 +15,7 @@ type Lexer struct {
 	input *strings.Reader
 }
 
+// New creates a new lexer for the given input string
 func New(input string) *Lexer {
 	return &Lexer{
 		input: strings.NewReader(input),
@@ -45,7 +46,7 @@ func (l *Lexer) scanUpperCaseLetters() token.Token {
 			break
 		}
 
-		if !ascii.IsUpperCaseLetter(r) {
+		if !ascii.IsUpperCase(string(r)) {
 			l.unread()
 			break
 		}
@@ -71,7 +72,7 @@ func (l *Lexer) scanDigit() token.Token {
 			break
 		}
 
-		if !ascii.IsDigit(r) {
+		if !ascii.IsDigit(string(r)) {
 			l.unread()
 			break
 		}
@@ -96,13 +97,13 @@ func (l *Lexer) scanSymbol() token.Token {
 
 func (l *Lexer) Scan() token.Token {
 	switch ch := l.read(); {
-	case ascii.IsDigit(ch):
+	case ascii.IsDigit(string(ch)):
 		l.unread()
 		return l.scanDigit()
-	case ascii.IsUpperCaseLetter(ch):
+	case ascii.IsUpperCase(string(ch)):
 		l.unread()
 		return l.scanUpperCaseLetters()
-	case ascii.IsLowerCase(ch):
+	case ch >= 'a' && ch <= 'z':
 		l.unread()
 		return l.scanSymbol()
 	case ch == '!':

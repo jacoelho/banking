@@ -1,10 +1,10 @@
 package main
 
 import (
+	"errors"
 	"flag"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"path"
 	"strings"
@@ -15,11 +15,17 @@ import (
 	"github.com/jacoelho/banking/registry/generator"
 )
 
+// File permissions constants
+const (
+	dirPerm  = 0700 // Directory permission: rwx------
+	filePerm = 0600 // File permission: rw-------
+)
+
 func createDirectory(dirName string) error {
 	stat, err := os.Stat(dirName)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return os.MkdirAll(dirName, 0700)
+			return os.MkdirAll(dirName, dirPerm)
 		}
 		return err
 	}
@@ -31,84 +37,123 @@ func createDirectory(dirName string) error {
 	return nil
 }
 
+func validateFlags(fileName, destDir string) error {
+	if fileName == "" {
+		return errors.New("registry-file flag is required")
+	}
+	if destDir == "" {
+		return errors.New("dst-directory flag is required")
+	}
+	return nil
+}
+
+func run(fileName, destDir string) error {
+	if err := createDirectory(destDir); err != nil {
+		return fmt.Errorf("failed to create directory: %w", err)
+	}
+
+	f, err := os.Open(fileName)
+	if err != nil {
+		return fmt.Errorf("failed to open registry file: %w", err)
+	}
+	defer f.Close()
+
+	var countries registry.Countries
+	if err := yaml.NewDecoder(f).Decode(&countries); err != nil {
+		return fmt.Errorf("failed to decode registry file: %w", err)
+	}
+
+	for _, country := range countries.Countries {
+		targetFileName := "country_" + strings.ReplaceAll(strings.ToLower(country.Name), " ", "_") + ".go"
+		targetFile := path.Join(destDir, targetFileName)
+
+		if err := generateCountryFile(targetFile, country); err != nil {
+			return fmt.Errorf("failed to generate code for %s: %w", country.Name, err)
+		}
+	}
+
+	// Generate aggregate files
+	files := []struct {
+		name string
+		fn   func(io.Writer, []registry.Country) error
+	}{
+		{"validate.go", generator.GenerateValidate},
+		{"generate.go", generator.GenerateGenerate},
+		{"bban_helper.go", generator.GenerateGetBBAN},
+		{"sepa.go", generator.GenerateIsSEPA},
+	}
+
+	for _, file := range files {
+		targetFile := path.Join(destDir, file.name)
+		if err := generateFunc(targetFile, file.fn, countries.Countries); err != nil {
+			return fmt.Errorf("failed to generate %s: %w", file.name, err)
+		}
+	}
+
+	return nil
+}
+
 func main() {
 	fileName := flag.String("registry-file", "", "registry file (yaml format)")
 	destinationDirectory := flag.String("dst-directory", "iban", "destination directory")
 
 	flag.Parse()
 
-	if *fileName == "" || *destinationDirectory == "" {
-		log.Fatal("missing flags")
+	if err := validateFlags(*fileName, *destinationDirectory); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		flag.Usage()
+		os.Exit(1)
 	}
 
-	if err := createDirectory(*destinationDirectory); err != nil {
-		log.Fatal(err)
+	if err := run(*fileName, *destinationDirectory); err != nil {
+		fmt.Fprintf(os.Stderr, "Error: %v\n", err)
+		os.Exit(1)
 	}
-
-	f, err := os.Open(*fileName)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer f.Close()
-
-	var countries registry.Countries
-	if err := yaml.NewDecoder(f).Decode(&countries); err != nil {
-		log.Fatal(err)
-	}
-
-	for _, country := range countries.Countries {
-		targetFileName := "country_" + strings.ReplaceAll(strings.ToLower(country.Name), " ", "_") + ".go"
-		targetFile := path.Join(*destinationDirectory, targetFileName)
-
-		writer, err := os.OpenFile(targetFile, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if err := generator.GenerateCodeForCountry(writer, country); err != nil {
-			writer.Close()
-			if errRemove := os.Remove(targetFileName); errRemove != nil {
-				log.Fatalf("while handling %s, got %s", err, errRemove)
-			}
-			log.Fatal(err)
-		}
-
-		writer.Close()
-	}
-
-	// single validate file
-	targetFile := path.Join(*destinationDirectory, "validate.go")
-	generateFunc(targetFile, generator.GenerateValidate, countries.Countries)
-
-	// single generate file
-	targetFile = path.Join(*destinationDirectory, "generate.go")
-	generateFunc(targetFile, generator.GenerateGenerate, countries.Countries)
-
-	// single generate file
-	targetFile = path.Join(*destinationDirectory, "bban_helper.go")
-	generateFunc(targetFile, generator.GenerateGetBBAN, countries.Countries)
-
-	// single generate file
-	targetFile = path.Join(*destinationDirectory, "country_constants.go")
-	generateFunc(targetFile, generator.GenerateConstants, countries.Countries)
-
-	// single generate file
-	targetFile = path.Join(*destinationDirectory, "sepa.go")
-	generateFunc(targetFile, generator.GenerateIsSEPA, countries.Countries)
 }
 
-func generateFunc(filename string, fn func(io.Writer, []registry.Country) error, countries []registry.Country) {
-	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR|os.O_TRUNC, 0600)
+// generateCountryFile generates code for a single country with proper resource management
+func generateCountryFile(filename string, country registry.Country) error {
+	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR|os.O_TRUNC, filePerm)
 	if err != nil {
-		log.Fatal(err)
+		return fmt.Errorf("failed to create file %s: %w", filename, err)
 	}
-	if err := fn(writer, countries); err != nil {
-		writer.Close()
-		if errRemove := os.Remove(filename); errRemove != nil {
-			log.Fatalf("while handling %s, got %s", err, errRemove)
+	defer func() {
+		if closeErr := writer.Close(); closeErr != nil {
+			// Log but don't override the main error
+			fmt.Fprintf(os.Stderr, "Warning: failed to close file %s: %v\n", filename, closeErr)
 		}
-		log.Fatal(err)
+	}()
+
+	if err := generator.GenerateCodeForCountry(writer, country); err != nil {
+		// Remove incomplete file on error
+		if rmErr := os.Remove(filename); rmErr != nil {
+			return fmt.Errorf("failed to generate code and failed to cleanup %s: %w (cleanup error: %v)", filename, err, rmErr)
+		}
+		return err
 	}
 
-	writer.Close()
+	return nil
+}
+
+// generateFunc generates aggregate files with proper resource management
+func generateFunc(filename string, fn func(io.Writer, []registry.Country) error, countries []registry.Country) error {
+	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR|os.O_TRUNC, filePerm)
+	if err != nil {
+		return fmt.Errorf("failed to create file %s: %w", filename, err)
+	}
+	defer func() {
+		if closeErr := writer.Close(); closeErr != nil {
+			fmt.Fprintf(os.Stderr, "Warning: failed to close file %s: %v\n", filename, closeErr)
+		}
+	}()
+
+	if err := fn(writer, countries); err != nil {
+		// Remove incomplete file on error
+		if rmErr := os.Remove(filename); rmErr != nil {
+			return fmt.Errorf("failed to generate content and failed to cleanup %s: %w (cleanup error: %v)", filename, err, rmErr)
+		}
+		return err
+	}
+
+	return nil
 }

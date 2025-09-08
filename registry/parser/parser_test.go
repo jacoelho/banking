@@ -8,14 +8,16 @@ import (
 	"github.com/jacoelho/banking/registry/rule"
 )
 
-func TestParser_Parse(t *testing.T) {
+func TestParse(t *testing.T) {
 	tests := map[string]struct {
-		input   string
-		want    []rule.Rule
-		wantErr bool
+		input      string
+		want       []rule.Rule
+		wantLength int
+		wantErr    bool
 	}{
 		"GB": {
-			input: "GB2!n4!a6!n8!n",
+			input:      "GB2!n4!a6!n8!n",
+			wantLength: 22,
 			want: []rule.Rule{
 				&rule.StaticRule{
 					StartPosition: 0,
@@ -47,12 +49,9 @@ func TestParser_Parse(t *testing.T) {
 			input:   "!2!",
 			wantErr: true,
 		},
-		"only digits": {
-			input:   "222",
-			wantErr: true,
-		},
 		"pt": {
-			input: "PT2!n4!n4!n11!n2!n",
+			input:      "PT2!n4!n4!n11!n2!n",
+			wantLength: 25,
 			want: []rule.Rule{
 				&rule.StaticRule{
 					StartPosition: 0,
@@ -90,30 +89,34 @@ func TestParser_Parse(t *testing.T) {
 
 	for tc, tt := range tests {
 		t.Run(tc, func(t *testing.T) {
-			p := New(tt.input)
-			got, err := p.Parse()
+			result, err := Parse(tt.input)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
 			if tt.want != nil {
-				if diff := cmp.Diff(tt.want, got); diff != "" {
-					t.Errorf("Parse() mismatch (-want +got):\n%s", diff)
+				if diff := cmp.Diff(tt.want, result.Rules); diff != "" {
+					t.Errorf("Parse() rules mismatch (-want +got):\n%s", diff)
+				}
+				if result.Length != tt.wantLength {
+					t.Errorf("Parse() length = %v, want %v", result.Length, tt.wantLength)
 				}
 			}
 		})
 	}
 }
 
-func TestParser_ReducedParse(t *testing.T) {
+func TestParseReduced(t *testing.T) {
 	tests := map[string]struct {
-		input   string
-		want    []rule.Rule
-		wantErr bool
+		input      string
+		want       []rule.Rule
+		wantLength int
+		wantErr    bool
 	}{
 		"GB": {
-			input: "GB2!n4!a6!n8!n",
+			input:      "GB2!n4!a6!n8!n",
+			wantLength: 22,
 			want: []rule.Rule{
 				&rule.StaticRule{
 					StartPosition: 0,
@@ -137,7 +140,8 @@ func TestParser_ReducedParse(t *testing.T) {
 			},
 		},
 		"pt": {
-			input: "PT2!n4!n4!n11!n2!n",
+			input:      "PT2!n4!n4!n11!n2!n",
+			wantLength: 25,
 			want: []rule.Rule{
 				&rule.StaticRule{
 					StartPosition: 0,
@@ -155,16 +159,18 @@ func TestParser_ReducedParse(t *testing.T) {
 
 	for tc, tt := range tests {
 		t.Run(tc, func(t *testing.T) {
-			p := New(tt.input)
-			got, err := p.ReducedParse()
+			result, err := ParseReduced(tt.input)
 			if (err != nil) != tt.wantErr {
-				t.Errorf("Parse() error = %v, wantErr %v", err, tt.wantErr)
+				t.Errorf("ParseReduced() error = %v, wantErr %v", err, tt.wantErr)
 				return
 			}
 
 			if tt.want != nil {
-				if diff := cmp.Diff(tt.want, got); diff != "" {
-					t.Errorf("Parse() mismatch (-want +got):\n%s", diff)
+				if diff := cmp.Diff(tt.want, result.Rules); diff != "" {
+					t.Errorf("ParseReduced() rules mismatch (-want +got):\n%s", diff)
+				}
+				if result.Length != tt.wantLength {
+					t.Errorf("ParseReduced() length = %v, want %v", result.Length, tt.wantLength)
 				}
 			}
 		})

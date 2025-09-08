@@ -32,7 +32,7 @@ func AlphaNumeric(sb RuneWriter, length int) {
 }
 
 func stringWithCharset(sb RuneWriter, charset string, length int) {
-	for i := 0; i < length; i++ {
+	for range length {
 		_, _ = sb.WriteRune(rune(charset[rand.Intn(len(charset))]))
 	}
 }
