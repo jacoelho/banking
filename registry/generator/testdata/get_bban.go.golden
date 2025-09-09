@@ -10,11 +10,11 @@ func GetBBAN(iban string) (BBAN, error) {
 	}
 	code := iban[0:2]
 	switch code {
-	case al:
+	case "AL":
 		return getAlbaniaBBAN(iban)
-	case de:
+	case "DE":
 		return getGermanyBBAN(iban)
-	case gb:
+	case "GB":
 		return getUnitedKingdomBBAN(iban)
 	default:
 		return BBAN{}, fmt.Errorf("%s is not supported: %w", code, ErrValidation)

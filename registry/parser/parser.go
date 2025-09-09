@@ -29,7 +29,6 @@ func ParseReduced(input string) (*ParseResult, error) {
 	}, nil
 }
 
-// parseStream processes tokens from lexer into rules
 func parseStream(lex *lexer.Lexer) (*ParseResult, error) {
 	var rules []rule.Rule
 	pos := 0
@@ -55,7 +54,6 @@ func parseStream(lex *lexer.Lexer) (*ParseResult, error) {
 	}, nil
 }
 
-// parseToken handles parsing of individual tokens
 func parseToken(tok token.Token, lex *lexer.Lexer, pos int) (rule.Rule, int, error) {
 	switch tok.Type {
 	case token.STRING:
@@ -68,7 +66,6 @@ func parseToken(tok token.Token, lex *lexer.Lexer, pos int) (rule.Rule, int, err
 	}
 }
 
-// parseStatic creates a static rule from a string token
 func parseStatic(tok token.Token, pos int) (rule.Rule, int, error) {
 	return &rule.StaticRule{
 		StartPosition: pos,
@@ -76,8 +73,6 @@ func parseStatic(tok token.Token, pos int) (rule.Rule, int, error) {
 	}, pos + len(tok.Literal), nil
 }
 
-// parseRange creates a range rule from integer, bang, and symbol tokens
-// If the pattern doesn't match range format, treats integer as static
 func parseRange(lengthTok token.Token, lex *lexer.Lexer, pos int) (rule.Rule, int, error) {
 	length, err := strconv.Atoi(lengthTok.Literal)
 	if err != nil {
@@ -106,7 +101,6 @@ func parseRange(lengthTok token.Token, lex *lexer.Lexer, pos int) (rule.Rule, in
 	}, pos + length, nil
 }
 
-// parseRangeType converts symbol to range rule type
 func parseRangeType(symbol string) (rule.RangeRuleType, error) {
 	switch symbol {
 	case "a":
@@ -120,7 +114,6 @@ func parseRangeType(symbol string) (rule.RangeRuleType, error) {
 	}
 }
 
-// consolidateRules merges adjacent rules of the same type
 func consolidateRules(rules []rule.Rule) []rule.Rule {
 	if len(rules) <= 1 {
 		return rules
@@ -142,7 +135,6 @@ func consolidateRules(rules []rule.Rule) []rule.Rule {
 	return result
 }
 
-// tryMergeRules attempts to merge two adjacent rules
 func tryMergeRules(prev, curr rule.Rule) rule.Rule {
 	switch p := prev.(type) {
 	case *rule.RangeRule:

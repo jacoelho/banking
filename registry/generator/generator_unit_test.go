@@ -30,7 +30,6 @@ func TestGenerateCodeForCountry_Internal(t *testing.T) {
 
 	// Test that code generation produces syntactically valid output
 	t.Run("generated code is syntactically valid", func(t *testing.T) {
-		// Generate code for the country
 		var buf bytes.Buffer
 		err := GenerateCodeForCountry(&buf, country)
 		if err != nil {
@@ -154,14 +153,12 @@ func TestGenerateCompleteFile_Internal(t *testing.T) {
 	}
 
 	t.Run("complete file generation", func(t *testing.T) {
-		// Generate template-based output for comparison
 		var templateBuf bytes.Buffer
 		err := GenerateValidate(&templateBuf, countries)
 		if err != nil {
 			t.Fatalf("Template generation failed: %v", err)
 		}
 
-		// Generate AST-based output
 		var astBuf bytes.Buffer
 		err = GenerateValidate(&astBuf, countries)
 		if err != nil {

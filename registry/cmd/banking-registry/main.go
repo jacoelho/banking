@@ -72,7 +72,6 @@ func run(fileName, destDir string) error {
 		}
 	}
 
-	// Generate aggregate files
 	files := []struct {
 		name string
 		fn   func(io.Writer, []registry.Country) error
@@ -111,7 +110,6 @@ func main() {
 	}
 }
 
-// generateCountryFile generates code for a single country with proper resource management
 func generateCountryFile(filename string, country registry.Country) error {
 	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR|os.O_TRUNC, filePerm)
 	if err != nil {
@@ -135,7 +133,6 @@ func generateCountryFile(filename string, country registry.Country) error {
 	return nil
 }
 
-// generateFunc generates aggregate files with proper resource management
 func generateFunc(filename string, fn func(io.Writer, []registry.Country) error, countries []registry.Country) error {
 	writer, err := os.OpenFile(filename, os.O_CREATE|os.O_RDWR|os.O_TRUNC, filePerm)
 	if err != nil {

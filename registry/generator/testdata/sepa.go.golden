@@ -9,11 +9,11 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 		return false, fmt.Errorf("unexpected country code length: %w", ErrValidation)
 	}
 	switch countryCode {
-	case al:
+	case "AL":
 		return false, nil
-	case de:
+	case "DE":
 		return true, nil
-	case gb:
+	case "GB":
 		return false, nil
 	default:
 		return false, fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)

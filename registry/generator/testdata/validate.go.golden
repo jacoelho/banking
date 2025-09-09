@@ -10,11 +10,11 @@ func Validate(iban string) error {
 	}
 	code := iban[0:2]
 	switch code {
-	case al:
+	case "AL":
 		return validateAlbaniaIBAN(iban)
-	case de:
+	case "DE":
 		return validateGermanyIBAN(iban)
-	case gb:
+	case "GB":
 		return validateUnitedKingdomIBAN(iban)
 	default:
 		return fmt.Errorf("%s is not supported: %w", code, ErrValidation)

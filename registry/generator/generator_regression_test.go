@@ -90,7 +90,6 @@ func TestGeneratedCodeSyntax(t *testing.T) {
 	}
 
 	t.Run("generated code compiles successfully", func(t *testing.T) {
-		// Generate code
 		var buf bytes.Buffer
 		err := GenerateCodeForCountry(&buf, country)
 		if err != nil {

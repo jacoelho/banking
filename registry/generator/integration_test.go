@@ -12,7 +12,6 @@ import (
 	"github.com/jacoelho/banking/registry"
 )
 
-// Integration tests that verify the generated code compiles and has correct structure
 func TestGeneratedCodeCompilation(t *testing.T) {
 	country := registry.Country{
 		Code:             "GB",
@@ -33,14 +32,12 @@ func TestGeneratedCodeCompilation(t *testing.T) {
 			t.Fatalf("GenerateCodeForCountry failed: %v", err)
 		}
 
-		// Parse the generated Go code to ensure it's valid
 		fset := token.NewFileSet()
 		file, err := parser.ParseFile(fset, "test.go", buf.String(), parser.ParseComments)
 		if err != nil {
 			t.Fatalf("Generated code is not valid Go: %v\n%s", err, buf.String())
 		}
 
-		// Check that we have the expected functions
 		expectedFuncs := []string{
 			"validateUnitedKingdomIBAN",
 			"generateUnitedKingdomIBAN",
@@ -70,14 +67,12 @@ func TestGeneratedCodeCompilation(t *testing.T) {
 			t.Fatalf("GenerateValidate failed: %v", err)
 		}
 
-		// Parse the generated Go code
 		fset := token.NewFileSet()
 		file, err := parser.ParseFile(fset, "validate.go", buf.String(), parser.ParseComments)
 		if err != nil {
 			t.Fatalf("Generated validate code is not valid Go: %v\n%s", err, buf.String())
 		}
 
-		// Check for the main Validate function
 		foundValidate := false
 		ast.Inspect(file, func(n ast.Node) bool {
 			if fn, ok := n.(*ast.FuncDecl); ok && fn.Name.Name == "Validate" {
@@ -128,7 +123,6 @@ func TestGeneratedCodeStructure(t *testing.T) {
 					t.Fatalf("%s failed: %v", gen.name, err)
 				}
 
-				// Ensure generated code is valid Go
 				fset := token.NewFileSet()
 				_, err = parser.ParseFile(fset, gen.name+".go", buf.String(), parser.ParseComments)
 				if err != nil {
@@ -181,7 +175,6 @@ func TestGenerateCodeForCountryEdgeCases(t *testing.T) {
 		}
 
 		generated := buf.String()
-		// Function names should have spaces removed
 		if !strings.Contains(generated, "validateUnitedStatesIBAN") {
 			t.Error("Function name does not handle spaces correctly")
 		}
@@ -205,7 +198,6 @@ func TestGenerateCodeForCountryEdgeCases(t *testing.T) {
 			t.Fatalf("GenerateCodeForCountry failed: %v", err)
 		}
 
-		// Should not crash and should produce valid Go code
 		fset := token.NewFileSet()
 		_, err = parser.ParseFile(fset, "test.go", buf.String(), parser.ParseComments)
 		if err != nil {

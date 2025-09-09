@@ -9,11 +9,11 @@ func Generate(countryCode string) (string, error) {
 		return "", fmt.Errorf("unexpected country code length: %w", ErrValidation)
 	}
 	switch countryCode {
-	case al:
+	case "AL":
 		return generateAlbaniaIBAN()
-	case de:
+	case "DE":
 		return generateGermanyIBAN()
-	case gb:
+	case "GB":
 		return generateUnitedKingdomIBAN()
 	default:
 		return "", fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)
