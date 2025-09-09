@@ -2,221 +2,217 @@
 
 package iban
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // Validate an IBAN
 func Validate(iban string) error {
 	if len(iban) < 2 {
 		return fmt.Errorf("unexpected iban length: %w", ErrValidation)
 	}
-
 	code := iban[0:2]
 	switch code {
-	case ad:
+	case "AD":
 		return validateAndorraIBAN(iban)
-	case ae:
+	case "AE":
 		return validateUnitedArabEmiratesIBAN(iban)
-	case al:
+	case "AL":
 		return validateAlbaniaIBAN(iban)
-	case at:
+	case "AT":
 		return validateAustriaIBAN(iban)
-	case az:
+	case "AZ":
 		return validateRepublicOfAzerbaijanIBAN(iban)
-	case ba:
+	case "BA":
 		return validateBosniaAndHerzegovinaIBAN(iban)
-	case be:
+	case "BE":
 		return validateBelgiumIBAN(iban)
-	case bg:
+	case "BG":
 		return validateBulgariaIBAN(iban)
-	case bh:
+	case "BH":
 		return validateKingdomOfBahrainIBAN(iban)
-	case bi:
+	case "BI":
 		return validateBurundiIBAN(iban)
-	case br:
+	case "BR":
 		return validateBrazilIBAN(iban)
-	case by:
+	case "BY":
 		return validateBelarusIBAN(iban)
-	case ch:
+	case "CH":
 		return validateSwitzerlandIBAN(iban)
-	case cr:
+	case "CR":
 		return validateCostaRicaIBAN(iban)
-	case cy:
+	case "CY":
 		return validateCyprusIBAN(iban)
-	case cz:
+	case "CZ":
 		return validateCzechRepublicIBAN(iban)
-	case de:
+	case "DE":
 		return validateGermanyIBAN(iban)
-	case dj:
+	case "DJ":
 		return validateDjiboutiIBAN(iban)
-	case dk:
+	case "DK":
 		return validateDenmarkIBAN(iban)
-	case do:
+	case "DO":
 		return validateDominicanRepublicIBAN(iban)
-	case ee:
+	case "EE":
 		return validateEstoniaIBAN(iban)
-	case eg:
+	case "EG":
 		return validateEgyptIBAN(iban)
-	case es:
+	case "ES":
 		return validateSpainIBAN(iban)
-	case fi:
+	case "FI":
 		return validateFinlandIBAN(iban)
-	case fk:
+	case "FK":
 		return validateFalklandIslandsIBAN(iban)
-	case fo:
+	case "FO":
 		return validateFaroeIslandsIBAN(iban)
-	case fr:
+	case "FR":
 		return validateFranceIBAN(iban)
-	case gb:
+	case "GB":
 		return validateUnitedKingdomIBAN(iban)
-	case ge:
+	case "GE":
 		return validateGeorgiaIBAN(iban)
-	case gi:
+	case "GI":
 		return validateGibraltarIBAN(iban)
-	case gl:
+	case "GL":
 		return validateGreenlandIBAN(iban)
-	case gr:
+	case "GR":
 		return validateGreeceIBAN(iban)
-	case gt:
+	case "GT":
 		return validateGuatemalaIBAN(iban)
-	case hn:
+	case "HN":
 		return validateHondurasIBAN(iban)
-	case hr:
+	case "HR":
 		return validateCroatiaIBAN(iban)
-	case hu:
+	case "HU":
 		return validateHungaryIBAN(iban)
-	case ie:
+	case "IE":
 		return validateIrelandIBAN(iban)
-	case il:
+	case "IL":
 		return validateIsraelIBAN(iban)
-	case iq:
+	case "IQ":
 		return validateIraqIBAN(iban)
-	case is:
+	case "IS":
 		return validateIcelandIBAN(iban)
-	case it:
+	case "IT":
 		return validateItalyIBAN(iban)
-	case jo:
+	case "JO":
 		return validateJordanIBAN(iban)
-	case kw:
+	case "KW":
 		return validateKuwaitIBAN(iban)
-	case kz:
+	case "KZ":
 		return validateKazakhstanIBAN(iban)
-	case lb:
+	case "LB":
 		return validateLebanonIBAN(iban)
-	case lc:
+	case "LC":
 		return validateSaintLuciaIBAN(iban)
-	case li:
+	case "LI":
 		return validatePrincipalityOfLiechtensteinIBAN(iban)
-	case lt:
+	case "LT":
 		return validateLithuaniaIBAN(iban)
-	case lu:
+	case "LU":
 		return validateLuxembourgIBAN(iban)
-	case lv:
+	case "LV":
 		return validateLatviaIBAN(iban)
-	case ly:
+	case "LY":
 		return validateLibyaIBAN(iban)
-	case mc:
+	case "MC":
 		return validateMonacoIBAN(iban)
-	case md:
+	case "MD":
 		return validateMoldovaIBAN(iban)
-	case me:
+	case "ME":
 		return validateMontenegroIBAN(iban)
-	case mk:
+	case "MK":
 		return validateMacedoniaIBAN(iban)
-	case mn:
+	case "MN":
 		return validateMongoliaIBAN(iban)
-	case mr:
+	case "MR":
 		return validateMauritaniaIBAN(iban)
-	case mt:
+	case "MT":
 		return validateMaltaIBAN(iban)
-	case mu:
+	case "MU":
 		return validateMauritiusIBAN(iban)
-	case ni:
+	case "NI":
 		return validateNicaraguaIBAN(iban)
-	case nl:
+	case "NL":
 		return validateTheNetherlandsIBAN(iban)
-	case no:
+	case "NO":
 		return validateNorwayIBAN(iban)
-	case om:
+	case "OM":
 		return validateOmanIBAN(iban)
-	case pk:
+	case "PK":
 		return validatePakistanIBAN(iban)
-	case pl:
+	case "PL":
 		return validatePolandIBAN(iban)
-	case ps:
+	case "PS":
 		return validateStateOfPalestineIBAN(iban)
-	case pt:
+	case "PT":
 		return validatePortugalIBAN(iban)
-	case qa:
+	case "QA":
 		return validateQatarIBAN(iban)
-	case ro:
+	case "RO":
 		return validateRomaniaIBAN(iban)
-	case rs:
+	case "RS":
 		return validateSerbiaIBAN(iban)
-	case ru:
+	case "RU":
 		return validateRussiaIBAN(iban)
-	case sa:
+	case "SA":
 		return validateSaudiArabiaIBAN(iban)
-	case sc:
+	case "SC":
 		return validateSeychellesIBAN(iban)
-	case sd:
+	case "SD":
 		return validateSudanIBAN(iban)
-	case se:
+	case "SE":
 		return validateSwedenIBAN(iban)
-	case si:
+	case "SI":
 		return validateSloveniaIBAN(iban)
-	case sk:
+	case "SK":
 		return validateSlovakRepublicIBAN(iban)
-	case sm:
+	case "SM":
 		return validateSanMarinoIBAN(iban)
-	case so:
+	case "SO":
 		return validateSomaliaIBAN(iban)
-	case st:
+	case "ST":
 		return validateSaoTomeAndPrincipeIBAN(iban)
-	case sv:
+	case "SV":
 		return validateElSalvadorIBAN(iban)
-	case tl:
+	case "TL":
 		return validateTimorLesteIBAN(iban)
-	case tn:
+	case "TN":
 		return validateTunisiaIBAN(iban)
-	case tr:
+	case "TR":
 		return validateTurkeyIBAN(iban)
-	case ua:
+	case "UA":
 		return validateUkraineIBAN(iban)
-	case va:
+	case "VA":
 		return validateVaticanCityStateIBAN(iban)
-	case vg:
+	case "VG":
 		return validateBritishVirginIslandsIBAN(iban)
-	case xk:
+	case "XK":
 		return validateRepublicOfKosovoIBAN(iban)
-	case gf:
+	case "GF":
 		return validateFrenchGuyanaIBAN(iban)
-	case gp:
+	case "GP":
 		return validateGuadeloupeIBAN(iban)
-	case mq:
+	case "MQ":
 		return validateMartiniqueIBAN(iban)
-	case re:
+	case "RE":
 		return validateReunionIBAN(iban)
-	case fp:
+	case "FP":
 		return validateFrenchPolynesiaIBAN(iban)
-	case tf:
+	case "TF":
 		return validateFrenchSouthernTerritoriesIBAN(iban)
-	case yt:
+	case "YT":
 		return validateMayotteIBAN(iban)
-	case nc:
+	case "NC":
 		return validateNewCaledoniaIBAN(iban)
-	case bl:
+	case "BL":
 		return validateSaintBarthelemyIBAN(iban)
-	case mf:
+	case "MF":
 		return validateSaintMartinIBAN(iban)
-	case pm:
+	case "PM":
 		return validateSaintPierreEtMiquelonIBAN(iban)
-	case wf:
+	case "WF":
 		return validateWallisAndFutunaIslandsIBAN(iban)
-	case ye:
+	case "YE":
 		return validateYemenIBAN(iban)
-
 	default:
 		return fmt.Errorf("%s is not supported: %w", code, ErrValidation)
 	}

@@ -10,9 +10,10 @@ default: build
 build: test
 	go install -v ./...
 
-banking-registry: $(GOBIN)/banking-registry)
+$(GOBIN)/banking-registry:
 	cd registry; go install ./cmd/banking-registry
 
+.PHONY: generate
 generate: $(GOBIN)/banking-registry
 	go generate -v ./...
 

@@ -13,23 +13,18 @@ func validateUkraineIBAN(iban string) error {
 	if len(iban) != 29 {
 		return fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}
-
 	if subject := iban[0:2]; subject != "UA" {
 		return fmt.Errorf("static value rule, pos: 0, expected value: UA, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[2:10]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 8, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[10:29]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 10, length: 19, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
-
 	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
-
 	return nil
 }
 
@@ -37,11 +32,9 @@ func validateUkraineIBAN(iban string) error {
 func generateUkraineIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-
 	sb.WriteString("UA")
 	ascii.Digits(sb, 8)
 	ascii.AlphaNumeric(sb, 19)
-
 	return ReplaceChecksum(sb.String())
 }
 
@@ -50,12 +43,5 @@ func getUkraineBBAN(iban string) (BBAN, error) {
 	if len(iban) != 29 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}
-
-	return BBAN{
-		BBAN:             iban[4:29],
-		BankCode:         iban[4:10],
-		BranchCode:       "",
-		NationalChecksum: "",
-		AccountNumber:    iban[10:29],
-	}, nil
+	return BBAN{BBAN: iban[4:29], BankCode: iban[4:10], BranchCode: "", NationalChecksum: "", AccountNumber: iban[10:29]}, nil
 }

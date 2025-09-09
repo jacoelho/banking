@@ -9,153 +9,149 @@ import (
 	"github.com/jacoelho/banking/registry/token"
 )
 
-// Parser parses ISO 13616 IBAN grammar into rules
-type Parser struct {
-	lexer        *lexer.Lexer
-	pos          int
-	errors       []error
-	currentToken token.Token
-	peekToken    token.Token
+// Parse parses an IBAN structure string into rules.
+// The input should match ISO 13616 grammar, e.g: "3!n3!n8!n2!n"
+func Parse(input string) (*ParseResult, error) {
+	lex := lexer.New(input)
+	return parseStream(lex)
 }
 
-// New creates a string Parser
-// input should match ISO 13616 grammer, eg: `3!n3!n8!n2!n`
-func New(input string) *Parser {
-	p := &Parser{
-		lexer: lexer.New(input),
-	}
-
-	p.nextToken()
-	p.nextToken()
-
-	return p
-}
-
-func (p *Parser) nextToken() {
-	p.currentToken = p.peekToken
-	p.peekToken = p.lexer.Scan()
-}
-
-func (p *Parser) isCurrentTokenType(t token.ItemType) bool {
-	return p.currentToken.Type == t
-}
-
-func (p *Parser) isPeekTokenType(t token.ItemType) bool {
-	return p.peekToken.Type == t
-}
-
-func (p *Parser) expectPeek(t token.ItemType) bool {
-	if !p.isPeekTokenType(t) {
-		p.errors = append(p.errors, fmt.Errorf("expect next token to be '%v', got '%s'", t, p.peekToken.String()))
-		return false
-	}
-
-	p.nextToken()
-	return true
-}
-
-func (p *Parser) ReducedParse() ([]rule.Rule, error) {
-	rules, err := p.Parse()
+// ParseReduced parses an IBAN structure and consolidates adjacent rules of the same type.
+func ParseReduced(input string) (*ParseResult, error) {
+	result, err := Parse(input)
 	if err != nil {
 		return nil, err
 	}
 
-	if len(rules) == 1 {
-		return rules, nil
-	}
-
-	i := 1
-	for _, r := range rules[1:] {
-		switch cur := r.(type) {
-		case *rule.RangeRule:
-			if prev, ok := rules[i-1].(*rule.RangeRule); ok && cur.Format == prev.Format {
-				prev.Length += cur.Length
-				continue
-			}
-		case *rule.StaticRule:
-			if prev, ok := rules[i-1].(*rule.StaticRule); ok {
-				prev.Value += cur.Value
-				continue
-			}
-		}
-		rules[i] = r
-		i++
-	}
-
-	return rules[:i], nil
+	return &ParseResult{
+		Rules:  consolidateRules(result.Rules),
+		Length: result.Length,
+	}, nil
 }
 
-func (p *Parser) Parse() ([]rule.Rule, error) {
+func parseStream(lex *lexer.Lexer) (*ParseResult, error) {
 	var rules []rule.Rule
-	for !p.isCurrentTokenType(token.EOF) {
-		r := p.parseRule()
-		if r != nil {
-			rules = append(rules, r)
+	pos := 0
+
+	for {
+		tok := lex.Scan()
+		if tok.Type == token.EOF {
+			break
 		}
 
-		p.nextToken()
+		r, newPos, err := parseToken(tok, lex, pos)
+		if err != nil {
+			return nil, newParseError(pos, tok, "", err.Error())
+		}
+
+		rules = append(rules, r)
+		pos = newPos
 	}
 
-	if p.errors != nil {
-		return nil, fmt.Errorf("parsing error %v", p.errors)
-	}
-
-	return rules, nil
+	return &ParseResult{
+		Rules:  rules,
+		Length: pos,
+	}, nil
 }
 
-func (p *Parser) parseRule() rule.Rule {
-	switch p.currentToken.Type {
+func parseToken(tok token.Token, lex *lexer.Lexer, pos int) (rule.Rule, int, error) {
+	switch tok.Type {
 	case token.STRING:
-		return p.parseStatic()
+		return parseStatic(tok, pos)
 	case token.INTEGER:
-		return p.parseRange()
+		// Try to parse as range rule (INTEGER ! SYMBOL)
+		return parseRange(tok, lex, pos)
 	default:
-		return nil
+		return nil, pos, fmt.Errorf("unexpected token type %s", tok.String())
 	}
 }
 
-func (p *Parser) parseStatic() *rule.StaticRule {
-	currentPost := p.pos
-
-	p.pos += len(p.currentToken.Literal)
+func parseStatic(tok token.Token, pos int) (rule.Rule, int, error) {
 	return &rule.StaticRule{
-		StartPosition: currentPost,
-		Value:         p.currentToken.Literal,
-	}
+		StartPosition: pos,
+		Value:         tok.Literal,
+	}, pos + len(tok.Literal), nil
 }
 
-func (p *Parser) parseRange() *rule.RangeRule {
-	length, err := strconv.Atoi(p.currentToken.Literal)
+func parseRange(lengthTok token.Token, lex *lexer.Lexer, pos int) (rule.Rule, int, error) {
+	length, err := strconv.Atoi(lengthTok.Literal)
 	if err != nil {
-		return nil
+		return nil, pos, fmt.Errorf("invalid range length: %w", err)
 	}
 
-	if !p.expectPeek(token.BANG) {
-		return nil
+	bangTok := lex.Scan()
+	if bangTok.Type != token.BANG {
+		return nil, pos, fmt.Errorf("expected '!' after range length, got %s", bangTok.String())
 	}
 
-	if !p.expectPeek(token.SYMBOL) {
-		return nil
+	symbolTok := lex.Scan()
+	if symbolTok.Type != token.SYMBOL {
+		return nil, pos, fmt.Errorf("expected range type symbol, got %s", symbolTok.String())
 	}
 
-	var rangeType rule.RangeRuleType
-	switch p.currentToken.Literal {
-	case "a":
-		rangeType = rule.UpperCaseLetters
-	case "n":
-		rangeType = rule.Digit
-	case "c":
-		rangeType = rule.AlphaNumeric
-	default:
-		return nil
+	rangeType, err := parseRangeType(symbolTok.Literal)
+	if err != nil {
+		return nil, pos, err
 	}
-
-	currentPost := p.pos
-	p.pos += length
 
 	return &rule.RangeRule{
-		StartPosition: currentPost,
+		StartPosition: pos,
 		Length:        length,
 		Format:        rangeType,
+	}, pos + length, nil
+}
+
+func parseRangeType(symbol string) (rule.RangeRuleType, error) {
+	switch symbol {
+	case "a":
+		return rule.UpperCaseLetters, nil
+	case "n":
+		return rule.Digit, nil
+	case "c":
+		return rule.AlphaNumeric, nil
+	default:
+		return 0, fmt.Errorf("unknown range type: %s", symbol)
 	}
+}
+
+func consolidateRules(rules []rule.Rule) []rule.Rule {
+	if len(rules) <= 1 {
+		return rules
+	}
+
+	result := make([]rule.Rule, 1, len(rules))
+	result[0] = rules[0]
+
+	for _, current := range rules[1:] {
+		last := result[len(result)-1]
+
+		if merged := tryMergeRules(last, current); merged != nil {
+			result[len(result)-1] = merged
+		} else {
+			result = append(result, current)
+		}
+	}
+
+	return result
+}
+
+func tryMergeRules(prev, curr rule.Rule) rule.Rule {
+	switch p := prev.(type) {
+	case *rule.RangeRule:
+		if c, ok := curr.(*rule.RangeRule); ok && p.Format == c.Format {
+			return &rule.RangeRule{
+				StartPosition: p.StartPosition,
+				Length:        p.Length + c.Length,
+				Format:        p.Format,
+			}
+		}
+	case *rule.StaticRule:
+		if c, ok := curr.(*rule.StaticRule); ok {
+			return &rule.StaticRule{
+				StartPosition: p.StartPosition,
+				Value:         p.Value + c.Value,
+			}
+		}
+	}
+	return nil
 }

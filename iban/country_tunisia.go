@@ -13,19 +13,15 @@ func validateTunisiaIBAN(iban string) error {
 	if len(iban) != 24 {
 		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}
-
 	if subject := iban[0:2]; subject != "TN" {
 		return fmt.Errorf("static value rule, pos: 0, expected value: TN, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[2:24]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 22, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
-
 	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
-
 	return nil
 }
 
@@ -33,10 +29,8 @@ func validateTunisiaIBAN(iban string) error {
 func generateTunisiaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-
 	sb.WriteString("TN")
 	ascii.Digits(sb, 22)
-
 	return ReplaceChecksum(sb.String())
 }
 
@@ -45,12 +39,5 @@ func getTunisiaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
 	}
-
-	return BBAN{
-		BBAN:             iban[4:24],
-		BankCode:         iban[4:6],
-		BranchCode:       iban[6:9],
-		NationalChecksum: iban[22:24],
-		AccountNumber:    iban[9:22],
-	}, nil
+	return BBAN{BBAN: iban[4:24], BankCode: iban[4:6], BranchCode: iban[6:9], NationalChecksum: iban[22:24], AccountNumber: iban[9:22]}, nil
 }

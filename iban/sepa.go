@@ -2,330 +2,223 @@
 
 package iban
 
-import (
-	"fmt"
-)
+import "fmt"
 
 // IsSEPACountryCode returns if a country code is a SEPA member
 func IsSEPACountryCode(countryCode string) (bool, error) {
 	if len(countryCode) != 2 {
 		return false, fmt.Errorf("unexpected country code length: %w", ErrValidation)
 	}
-
 	switch countryCode {
-	// Country Code Andorra
-	case ad:
+	case "AD":
 		return true, nil
-	// Country Code United Arab Emirates
-	case ae:
+	case "AE":
 		return false, nil
-	// Country Code Albania
-	case al:
+	case "AL":
 		return false, nil
-	// Country Code Austria
-	case at:
+	case "AT":
 		return true, nil
-	// Country Code Republic Of Azerbaijan
-	case az:
+	case "AZ":
 		return false, nil
-	// Country Code Bosnia And Herzegovina
-	case ba:
+	case "BA":
 		return false, nil
-	// Country Code Belgium
-	case be:
+	case "BE":
 		return true, nil
-	// Country Code Bulgaria
-	case bg:
+	case "BG":
 		return true, nil
-	// Country Code Kingdom Of Bahrain
-	case bh:
+	case "BH":
 		return false, nil
-	// Country Code Burundi
-	case bi:
+	case "BI":
 		return false, nil
-	// Country Code Brazil
-	case br:
+	case "BR":
 		return false, nil
-	// Country Code Belarus
-	case by:
+	case "BY":
 		return false, nil
-	// Country Code Switzerland
-	case ch:
+	case "CH":
 		return true, nil
-	// Country Code Costa Rica
-	case cr:
+	case "CR":
 		return false, nil
-	// Country Code Cyprus
-	case cy:
+	case "CY":
 		return true, nil
-	// Country Code Czech Republic
-	case cz:
+	case "CZ":
 		return true, nil
-	// Country Code Germany
-	case de:
+	case "DE":
 		return true, nil
-	// Country Code Djibouti
-	case dj:
+	case "DJ":
 		return false, nil
-	// Country Code Denmark
-	case dk:
+	case "DK":
 		return true, nil
-	// Country Code Dominican Republic
-	case do:
+	case "DO":
 		return false, nil
-	// Country Code Estonia
-	case ee:
+	case "EE":
 		return true, nil
-	// Country Code Egypt
-	case eg:
+	case "EG":
 		return false, nil
-	// Country Code Spain
-	case es:
+	case "ES":
 		return true, nil
-	// Country Code Finland
-	case fi:
+	case "FI":
 		return true, nil
-	// Country Code Falkland Islands
-	case fk:
+	case "FK":
 		return false, nil
-	// Country Code Faroe Islands
-	case fo:
+	case "FO":
 		return false, nil
-	// Country Code France
-	case fr:
+	case "FR":
 		return true, nil
-	// Country Code United Kingdom
-	case gb:
+	case "GB":
 		return true, nil
-	// Country Code Georgia
-	case ge:
+	case "GE":
 		return false, nil
-	// Country Code Gibraltar
-	case gi:
+	case "GI":
 		return true, nil
-	// Country Code Greenland
-	case gl:
+	case "GL":
 		return false, nil
-	// Country Code Greece
-	case gr:
+	case "GR":
 		return true, nil
-	// Country Code Guatemala
-	case gt:
+	case "GT":
 		return false, nil
-	// Country Code Honduras
-	case hn:
+	case "HN":
 		return false, nil
-	// Country Code Croatia
-	case hr:
+	case "HR":
 		return true, nil
-	// Country Code Hungary
-	case hu:
+	case "HU":
 		return true, nil
-	// Country Code Ireland
-	case ie:
+	case "IE":
 		return true, nil
-	// Country Code Israel
-	case il:
+	case "IL":
 		return false, nil
-	// Country Code Iraq
-	case iq:
+	case "IQ":
 		return false, nil
-	// Country Code Iceland
-	case is:
+	case "IS":
 		return true, nil
-	// Country Code Italy
-	case it:
+	case "IT":
 		return true, nil
-	// Country Code Jordan
-	case jo:
+	case "JO":
 		return false, nil
-	// Country Code Kuwait
-	case kw:
+	case "KW":
 		return false, nil
-	// Country Code Kazakhstan
-	case kz:
+	case "KZ":
 		return false, nil
-	// Country Code Lebanon
-	case lb:
+	case "LB":
 		return false, nil
-	// Country Code Saint Lucia
-	case lc:
+	case "LC":
 		return false, nil
-	// Country Code Principality Of Liechtenstein
-	case li:
+	case "LI":
 		return true, nil
-	// Country Code Lithuania
-	case lt:
+	case "LT":
 		return true, nil
-	// Country Code Luxembourg
-	case lu:
+	case "LU":
 		return true, nil
-	// Country Code Latvia
-	case lv:
+	case "LV":
 		return true, nil
-	// Country Code Libya
-	case ly:
+	case "LY":
 		return false, nil
-	// Country Code Monaco
-	case mc:
+	case "MC":
 		return true, nil
-	// Country Code Moldova
-	case md:
+	case "MD":
 		return false, nil
-	// Country Code Montenegro
-	case me:
+	case "ME":
 		return false, nil
-	// Country Code Macedonia
-	case mk:
+	case "MK":
 		return false, nil
-	// Country Code Mongolia
-	case mn:
+	case "MN":
 		return false, nil
-	// Country Code Mauritania
-	case mr:
+	case "MR":
 		return false, nil
-	// Country Code Malta
-	case mt:
+	case "MT":
 		return true, nil
-	// Country Code Mauritius
-	case mu:
+	case "MU":
 		return false, nil
-	// Country Code Nicaragua
-	case ni:
+	case "NI":
 		return false, nil
-	// Country Code The Netherlands
-	case nl:
+	case "NL":
 		return true, nil
-	// Country Code Norway
-	case no:
+	case "NO":
 		return true, nil
-	// Country Code Oman
-	case om:
+	case "OM":
 		return false, nil
-	// Country Code Pakistan
-	case pk:
+	case "PK":
 		return false, nil
-	// Country Code Poland
-	case pl:
+	case "PL":
 		return true, nil
-	// Country Code State Of Palestine
-	case ps:
+	case "PS":
 		return false, nil
-	// Country Code Portugal
-	case pt:
+	case "PT":
 		return true, nil
-	// Country Code Qatar
-	case qa:
+	case "QA":
 		return false, nil
-	// Country Code Romania
-	case ro:
+	case "RO":
 		return true, nil
-	// Country Code Serbia
-	case rs:
+	case "RS":
 		return false, nil
-	// Country Code Russia
-	case ru:
+	case "RU":
 		return false, nil
-	// Country Code Saudi Arabia
-	case sa:
+	case "SA":
 		return false, nil
-	// Country Code Seychelles
-	case sc:
+	case "SC":
 		return false, nil
-	// Country Code Sudan
-	case sd:
+	case "SD":
 		return false, nil
-	// Country Code Sweden
-	case se:
+	case "SE":
 		return true, nil
-	// Country Code Slovenia
-	case si:
+	case "SI":
 		return true, nil
-	// Country Code Slovak Republic
-	case sk:
+	case "SK":
 		return true, nil
-	// Country Code San Marino
-	case sm:
+	case "SM":
 		return true, nil
-	// Country Code Somalia
-	case so:
+	case "SO":
 		return false, nil
-	// Country Code Sao Tome And Principe
-	case st:
+	case "ST":
 		return false, nil
-	// Country Code El Salvador
-	case sv:
+	case "SV":
 		return false, nil
-	// Country Code Timor Leste
-	case tl:
+	case "TL":
 		return false, nil
-	// Country Code Tunisia
-	case tn:
+	case "TN":
 		return false, nil
-	// Country Code Turkey
-	case tr:
+	case "TR":
 		return false, nil
-	// Country Code Ukraine
-	case ua:
+	case "UA":
 		return false, nil
-	// Country Code Vatican City State
-	case va:
+	case "VA":
 		return true, nil
-	// Country Code British Virgin Islands
-	case vg:
+	case "VG":
 		return false, nil
-	// Country Code Republic Of Kosovo
-	case xk:
+	case "XK":
 		return false, nil
-	// Country Code French Guyana
-	case gf:
+	case "GF":
 		return true, nil
-	// Country Code Guadeloupe
-	case gp:
+	case "GP":
 		return true, nil
-	// Country Code Martinique
-	case mq:
+	case "MQ":
 		return true, nil
-	// Country Code Reunion
-	case re:
+	case "RE":
 		return true, nil
-	// Country Code French Polynesia
-	case fp:
+	case "FP":
 		return false, nil
-	// Country Code French Southern Territories
-	case tf:
+	case "TF":
 		return false, nil
-	// Country Code Mayotte
-	case yt:
+	case "YT":
 		return true, nil
-	// Country Code New Caledonia
-	case nc:
+	case "NC":
 		return false, nil
-	// Country Code Saint Barthelemy
-	case bl:
+	case "BL":
 		return true, nil
-	// Country Code Saint Martin
-	case mf:
+	case "MF":
 		return true, nil
-	// Country Code Saint Pierre Et Miquelon
-	case pm:
+	case "PM":
 		return false, nil
-	// Country Code Wallis And Futuna Islands
-	case wf:
+	case "WF":
 		return false, nil
-	// Country Code Yemen
-	case ye:
+	case "YE":
 		return false, nil
 	default:
 		return false, fmt.Errorf("%s is not supported: %w", countryCode, ErrValidation)
 	}
 }
-
-// IsSEPA returns if an iban country is a SEPA member
 func IsSEPA(iban string) (bool, error) {
 	if len(iban) < 2 {
 		return false, fmt.Errorf("unexpected iban length: %w", ErrValidation)
 	}
-
 	return IsSEPACountryCode(iban[0:2])
 }

@@ -13,27 +13,21 @@ func validateBrazilIBAN(iban string) error {
 	if len(iban) != 29 {
 		return fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}
-
 	if subject := iban[0:2]; subject != "BR" {
 		return fmt.Errorf("static value rule, pos: 0, expected value: BR, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[2:27]; !ascii.IsDigit(subject) {
 		return fmt.Errorf("range rule, start pos: 2, length: 25, expected type Digit, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[27:28]; !ascii.IsUpperCase(subject) {
 		return fmt.Errorf("range rule, start pos: 27, length: 1, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
 	}
-
 	if subject := iban[28:29]; !ascii.IsAlphaNumeric(subject) {
 		return fmt.Errorf("range rule, start pos: 28, length: 1, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
 	}
-
 	if c := checksum(iban); c != iban[2:4] {
 		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
 	}
-
 	return nil
 }
 
@@ -41,12 +35,10 @@ func validateBrazilIBAN(iban string) error {
 func generateBrazilIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-
 	sb.WriteString("BR")
 	ascii.Digits(sb, 25)
 	ascii.UpperCaseLetters(sb, 1)
 	ascii.AlphaNumeric(sb, 1)
-
 	return ReplaceChecksum(sb.String())
 }
 
@@ -55,12 +47,5 @@ func getBrazilBBAN(iban string) (BBAN, error) {
 	if len(iban) != 29 {
 		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
 	}
-
-	return BBAN{
-		BBAN:             iban[4:29],
-		BankCode:         iban[4:12],
-		BranchCode:       iban[12:17],
-		NationalChecksum: "",
-		AccountNumber:    iban[17:29],
-	}, nil
+	return BBAN{BBAN: iban[4:29], BankCode: iban[4:12], BranchCode: iban[12:17], NationalChecksum: "", AccountNumber: iban[17:29]}, nil
 }
