@@ -4,6 +4,7 @@ package iban
 
 import "fmt"
 
+// IsSEPACountryCode returns if a country code is a SEPA member
 func IsSEPACountryCode(countryCode string) (bool, error) {
 	if len(countryCode) != 2 {
 		return false, fmt.Errorf("unexpected country code length: %w", ErrValidation)
