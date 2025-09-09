@@ -13,7 +13,6 @@ import (
 
 var updateGolden = flag.Bool("update-golden", false, "update golden files")
 
-// Sample test countries to generate golden files
 var testCountries = []registry.Country{
 	{
 		Code:             "AL",

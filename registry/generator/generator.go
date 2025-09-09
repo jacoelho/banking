@@ -736,6 +736,7 @@ func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 	cases = append(cases, defaultCase)
 
 	generateFunc := &ast.FuncDecl{
+		Doc:  &ast.CommentGroup{List: []*ast.Comment{{Text: "// Generate IBAN based on ISO 3166-1 country code"}}},
 		Name: ast.NewIdent("Generate"),
 		Type: &ast.FuncType{
 			Params: &ast.FieldList{
@@ -990,6 +991,7 @@ func GenerateIsSEPA(w io.Writer, countries []registry.Country) error {
 	})
 
 	isSEPACountryCodeFunc := &ast.FuncDecl{
+		Doc:  &ast.CommentGroup{List: []*ast.Comment{{Text: "// IsSEPACountryCode returns if a country code is a SEPA member"}}},
 		Name: ast.NewIdent("IsSEPACountryCode"),
 		Type: &ast.FuncType{
 			Params: &ast.FieldList{

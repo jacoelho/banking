@@ -15,10 +15,9 @@ import (
 	"github.com/jacoelho/banking/registry/generator"
 )
 
-// File permissions constants
 const (
-	dirPerm  = 0700 // Directory permission: rwx------
-	filePerm = 0600 // File permission: rw-------
+	dirPerm  = 0700
+	filePerm = 0600
 )
 
 func createDirectory(dirName string) error {
@@ -123,7 +122,6 @@ func generateCountryFile(filename string, country registry.Country) error {
 	}()
 
 	if err := generator.GenerateCodeForCountry(writer, country); err != nil {
-		// Remove incomplete file on error
 		if rmErr := os.Remove(filename); rmErr != nil {
 			return fmt.Errorf("failed to generate code and failed to cleanup %s: %w (cleanup error: %v)", filename, err, rmErr)
 		}
@@ -145,7 +143,6 @@ func generateFunc(filename string, fn func(io.Writer, []registry.Country) error,
 	}()
 
 	if err := fn(writer, countries); err != nil {
-		// Remove incomplete file on error
 		if rmErr := os.Remove(filename); rmErr != nil {
 			return fmt.Errorf("failed to generate content and failed to cleanup %s: %w (cleanup error: %v)", filename, err, rmErr)
 		}
