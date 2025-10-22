@@ -54,6 +54,6 @@ gcassert: $(GOBIN)/gcassert
 
 .PHONY: wasm
 wasm:
-	GOOS=js GOARCH=wasm go build -ldflags="-s -w" -o page/iban.wasm ./cmd/wasmiban
-	cp $$(go env GOROOT)/lib/wasm/wasm_exec.js page/
+	GOOS=js GOARCH=wasm go build -ldflags="-s -w" -o docs/iban.wasm ./cmd/wasmiban
+	cp $$(go env GOROOT)/lib/wasm/wasm_exec.js docs/
 
