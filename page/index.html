@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IBAN Validator</title>
+    <style>
+        :root {
+            --primary: #667eea;
+            --primary-dark: #764ba2;
+            --success-bg: #d4edda;
+            --success-border: #28a745;
+            --error-bg: #f8d7da;
+            --error-border: #dc3545;
+            --warning-bg: #fff3cd;
+            --warning-border: #ffc107;
+            --mono-font: 'Courier New', monospace;
+            --radius: 5px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            max-width: 750px;
+            width: 100%;
+            padding: 40px;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: var(--radius);
+            font-size: 16px;
+            font-family: var(--mono-font);
+            text-transform: uppercase;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: var(--radius);
+            display: none;
+        }
+
+        #result.valid,
+        #result.invalid {
+            display: block;
+        }
+
+        #result.valid {
+            background: var(--success-bg);
+            border: 2px solid var(--success-border);
+        }
+
+        #result.invalid {
+            background: var(--error-bg);
+            border: 2px solid var(--error-border);
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .flag {
+            font-size: 32px;
+            margin-right: 12px;
+        }
+
+        .result-item {
+            margin: 10px 0;
+            padding: 8px 0;
+        }
+
+        .result-label {
+            font-weight: 600;
+            color: #555;
+            display: inline-block;
+            min-width: 140px;
+        }
+
+        .result-value,
+        .corrected-value {
+            font-family: var(--mono-font);
+            color: #222;
+        }
+
+        .corrected {
+            background: var(--warning-bg);
+            border: 2px solid var(--warning-border);
+            padding: 15px;
+            border-radius: var(--radius);
+            margin-top: 15px;
+        }
+
+        .corrected-label {
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 5px;
+        }
+
+        .corrected-value {
+            font-size: 18px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--primary);
+        }
+
+        .error-message {
+            color: #721c24;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(114, 28, 36, 0.05);
+            border-radius: 4px;
+            border-left: 3px solid var(--error-border);
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IBAN Validator</h1>
+        <p class="subtitle">Validate International Bank Account Numbers</p>
+
+        <div id="loading" class="loading">
+            Loading validator...
+        </div>
+
+        <div id="app" style="display: none;">
+            <div class="input-group">
+                <label for="iban">Enter IBAN:</label>
+                <input
+                    type="text"
+                    id="iban"
+                    placeholder="GB29 NWBK 6016 1331 9268 19"
+                    autocomplete="off"
+                    spellcheck="false"
+                >
+            </div>
+
+            <div id="result"></div>
+        </div>
+
+        <footer>
+            Powered by <a href="https://github.com/jacoelho/banking" target="_blank">banking</a> library
+            <br>
+            <small style="color: #bbb; font-size: 11px;">
+                This page only performs structural validation. It does not verify that IBANs exist or are valid for transactions.
+            </small>
+        </footer>
+    </div>
+
+    <script src="wasm_exec.js"></script>
+    <script>
+        const go = new Go();
+
+        WebAssembly.instantiateStreaming(fetch("iban.wasm"), go.importObject)
+            .then((result) => {
+                go.run(result.instance);
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+
+                const input = document.getElementById('iban');
+                const resultDiv = document.getElementById('result');
+
+                input.addEventListener('input', validateInput);
+                input.focus();
+            })
+            .catch((err) => {
+                document.getElementById('loading').innerHTML =
+                    '<div style="color: #dc3545;">Failed to load WASM module. Please refresh the page.</div>' +
+                    '<div style="color: #999; margin-top: 10px; font-size: 11px;">' + err + '</div>';
+            });
+
+        function validateInput() {
+            const input = document.getElementById('iban');
+            const resultDiv = document.getElementById('result');
+            const ibanValue = input.value.replace(/\s/g, '').toUpperCase();
+
+            if (ibanValue.length < 2) {
+                resultDiv.style.display = 'none';
+                return;
+            }
+
+            try {
+                const resultJson = validateIBAN(ibanValue) ?? "{}";
+                const result = JSON.parse(resultJson);
+
+                if (typeof result !== 'object' || result === null) {
+                    throw new Error('Invalid response format');
+                }
+
+                displayResult(result);
+            } catch (err) {
+                resultDiv.className = 'invalid';
+                resultDiv.innerHTML = '<div class="error-message">Validation error: ' + err + '</div>';
+                resultDiv.style.display = 'block';
+            }
+        }
+
+        function displayResult(result) {
+            const resultDiv = document.getElementById('result');
+            const data = result.data || {};
+
+            if (!result.error) {
+                resultDiv.className = 'valid';
+                resultDiv.innerHTML = `
+                    <div class="result-header">
+                        <span class="flag">${getFlag(data.countryCode)}</span>
+                        <span>Valid IBAN</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Country:</span>
+                        <span class="result-value">${data.countryCode}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Formatted:</span>
+                        <span class="result-value">${data.formattedIban}</span>
+                    </div>
+                    ${data.bankCode ? `
+                    <div class="result-item">
+                        <span class="result-label">Bank Code:</span>
+                        <span class="result-value">${data.bankCode}</span>
+                    </div>
+                    ` : ''}
+                    ${data.branchCode ? `
+                    <div class="result-item">
+                        <span class="result-label">Branch Code:</span>
+                        <span class="result-value">${data.branchCode}</span>
+                    </div>
+                    ` : ''}
+                    ${data.accountNumber ? `
+                    <div class="result-item">
+                        <span class="result-label">Account Number:</span>
+                        <span class="result-value">${data.accountNumber}</span>
+                    </div>
+                    ` : ''}
+                `;
+            } else {
+                resultDiv.className = 'invalid';
+                let html = `
+                    <div class="result-header">
+                        <span class="flag">${data.countryCode ? getFlag(data.countryCode) : '❌'}</span>
+                        <span>Invalid IBAN</span>
+                    </div>
+                `;
+
+                if (result.error) {
+                    html += `<div class="error-message">${result.error}</div>`;
+                }
+
+                if (data.correctedIban) {
+                    html += `
+                        <div class="corrected">
+                            <div class="corrected-label">Corrected IBAN (with valid checksum):</div>
+                            <div class="corrected-value">${data.correctedIban}</div>
+                        </div>
+                    `;
+                }
+
+                resultDiv.innerHTML = html;
+            }
+
+            resultDiv.style.display = 'block';
+        }
+
+        function getFlag(countryCode) {
+            if (!countryCode || countryCode.length !== 2) return '';
+
+            if (!/^[A-Z]{2}$/.test(countryCode)) return '';
+
+            const codePoints = countryCode
+                .toUpperCase()
+                .split('')
+                .map(char => 127397 + char.charCodeAt());
+            return String.fromCodePoint(...codePoints);
+        }
+    </script>
+</body>
+</html>
