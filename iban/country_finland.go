@@ -3,28 +3,25 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateFinlandIBAN validates Finland IBAN
 func validateFinlandIBAN(iban string) error {
 	if len(iban) != 18 {
-		return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 18, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "FI" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: FI, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "FI", Actual: subject}
 	}
 	if subject := iban[2:18]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 16, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateFinlandIBAN generates Finland IBAN
 func generateFinlandIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -33,11 +30,10 @@ func generateFinlandIBAN() (string, error) {
 	ascii.Digits(sb, 16)
 	return ReplaceChecksum(sb.String())
 }
-
 // getFinlandBBAN retrieves BBAN structure from Finland IBAN
 func getFinlandBBAN(iban string) (BBAN, error) {
 	if len(iban) != 18 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 18, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:18], BankCode: iban[4:7], BranchCode: "", NationalChecksum: iban[17:18], AccountNumber: iban[7:17]}, nil
 }

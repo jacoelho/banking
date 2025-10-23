@@ -3,28 +3,25 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateSaoTomeAndPrincipeIBAN validates Sao Tome And Principe IBAN
 func validateSaoTomeAndPrincipeIBAN(iban string) error {
 	if len(iban) != 25 {
-		return fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 25, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "ST" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: ST, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "ST", Actual: subject}
 	}
 	if subject := iban[2:25]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 23, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 23, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateSaoTomeAndPrincipeIBAN generates Sao Tome And Principe IBAN
 func generateSaoTomeAndPrincipeIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -33,11 +30,10 @@ func generateSaoTomeAndPrincipeIBAN() (string, error) {
 	ascii.Digits(sb, 23)
 	return ReplaceChecksum(sb.String())
 }
-
 // getSaoTomeAndPrincipeBBAN retrieves BBAN structure from Sao Tome And Principe IBAN
 func getSaoTomeAndPrincipeBBAN(iban string) (BBAN, error) {
 	if len(iban) != 25 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 25: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 25, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:25], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: "", AccountNumber: iban[12:25]}, nil
 }

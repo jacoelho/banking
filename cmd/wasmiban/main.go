@@ -4,10 +4,8 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
-	"regexp"
-	"strconv"
-	"strings"
 	"syscall/js"
 
 	"github.com/jacoelho/banking/iban"
@@ -29,73 +27,61 @@ type ValidationData struct {
 	NationalChecksum string `json:"nationalChecksum,omitempty"`
 }
 
-var (
-	lengthRegex       = regexp.MustCompile(`want: (\d+)`)
-	countryCodeRegex  = regexp.MustCompile(`expected value: ([A-Z]{2})`)
-	notSupportedRegex = regexp.MustCompile(`^([A-Z0-9]+) is not supported`)
-	rangeRuleRegex    = regexp.MustCompile(`range rule, start pos: (\d+), length: (\d+), expected type (\w+)`)
-)
-
 func humanizeError(err error) string {
 	if err == nil {
 		return ""
 	}
 
-	errMsg := err.Error()
+	// Check for length errors
+	var lengthErr *iban.ErrValidationLength
+	if errors.As(err, &lengthErr) {
+		return fmt.Sprintf("Invalid length (expected %d characters)", lengthErr.Expected)
+	}
 
-	switch {
-	case strings.Contains(errMsg, "incorrect checksum"):
+	// Check for checksum errors
+	var checksumErr *iban.ErrValidationChecksum
+	if errors.As(err, &checksumErr) {
 		return "Invalid checksum"
+	}
 
-	case strings.Contains(errMsg, "unexpected length"):
-		if matches := lengthRegex.FindStringSubmatch(errMsg); len(matches) > 1 {
-			return fmt.Sprintf("Invalid length (expected %s characters)", matches[1])
+	// Check for range errors
+	var rangeErr *iban.ErrValidationRange
+	if errors.As(err, &rangeErr) {
+		endPos := rangeErr.Position + rangeErr.Length - 1
+
+		var typeDesc string
+		switch rangeErr.Expected {
+		case iban.CharacterTypeDigit:
+			typeDesc = "only digits"
+		case iban.CharacterTypeUpperCase:
+			typeDesc = "only letters"
+		case iban.CharacterTypeAlphaNumeric:
+			typeDesc = "letters and digits"
+		default:
+			typeDesc = rangeErr.Expected.String()
 		}
-		return "Invalid IBAN length"
 
-	case strings.Contains(errMsg, "range rule"):
-		if matches := rangeRuleRegex.FindStringSubmatch(errMsg); len(matches) > 3 {
-			startPos := matches[1]
-			length := matches[2]
-			expectedType := matches[3]
+		return fmt.Sprintf("Invalid characters between position %d and %d - %s allowed",
+			rangeErr.Position, endPos, typeDesc)
+	}
 
-			start, _ := strconv.Atoi(startPos)
-			len, _ := strconv.Atoi(length)
-			endPos := start + len - 1
-
-			var typeDesc string
-			switch expectedType {
-			case "Digit":
-				typeDesc = "only digits"
-			case "UpperCaseLetters":
-				typeDesc = "only letters"
-			case "AlphaNumeric":
-				typeDesc = "letters and digits"
-			default:
-				typeDesc = expectedType
-			}
-
-			return fmt.Sprintf("Invalid characters between position %s and %d - %s allowed", startPos, endPos, typeDesc)
-		}
-		return "Invalid format"
-
-	case strings.Contains(errMsg, "static value rule"):
-		if strings.Contains(errMsg, "pos: 0") {
-			if matches := countryCodeRegex.FindStringSubmatch(errMsg); len(matches) > 1 {
-				return fmt.Sprintf("Invalid country code (expected %s)", matches[1])
-			}
+	// Check for static value errors (e.g., country code)
+	var staticErr *iban.ErrValidationStaticValue
+	if errors.As(err, &staticErr) {
+		if staticErr.Position == 0 {
+			return fmt.Sprintf("Invalid country code (expected %s)", staticErr.Expected)
 		}
 		return "Invalid format - expected specific value"
-
-	case strings.Contains(errMsg, "is not supported"):
-		if matches := notSupportedRegex.FindStringSubmatch(errMsg); len(matches) > 1 {
-			return fmt.Sprintf("Country code '%s' is not supported", matches[1])
-		}
-		return "Country code not supported"
-
-	default:
-		return strings.TrimSuffix(strings.TrimSpace(errMsg), ": validation error")
 	}
+
+	// Check for unsupported country
+	var unsupportedErr *iban.ErrUnsupportedCountry
+	if errors.As(err, &unsupportedErr) {
+		return fmt.Sprintf("Country code '%s' is not supported", unsupportedErr.CountryCode)
+	}
+
+	// Fallback for unknown errors
+	return err.Error()
 }
 
 func marshalResponse(error string, data *ValidationData) string {
@@ -132,7 +118,8 @@ func validateIBAN(this js.Value, args []js.Value) any {
 	if err != nil {
 		data.FormattedIBAN = iban.PaperFormat(ibanStr)
 
-		if strings.Contains(err.Error(), "incorrect checksum") {
+		var checksumErr *iban.ErrValidationChecksum
+		if errors.As(err, &checksumErr) {
 			if corrected, corrErr := iban.ReplaceChecksum(ibanStr); corrErr == nil {
 				data.CorrectedIBAN = iban.PaperFormat(corrected)
 			}

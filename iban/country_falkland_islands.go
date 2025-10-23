@@ -3,34 +3,31 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateFalklandIslandsIBAN validates Falkland Islands IBAN
 func validateFalklandIslandsIBAN(iban string) error {
 	if len(iban) != 18 {
-		return fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 18, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "FK" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: FK, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "FK", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[4:6]; !ascii.IsUpperCase(subject) {
-		return fmt.Errorf("range rule, start pos: 4, length: 2, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 4, Length: 2, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
 	if subject := iban[6:18]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 6, length: 12, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 6, Length: 12, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateFalklandIslandsIBAN generates Falkland Islands IBAN
 func generateFalklandIslandsIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -41,11 +38,10 @@ func generateFalklandIslandsIBAN() (string, error) {
 	ascii.Digits(sb, 12)
 	return ReplaceChecksum(sb.String())
 }
-
 // getFalklandIslandsBBAN retrieves BBAN structure from Falkland Islands IBAN
 func getFalklandIslandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 18 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 18: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 18, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:18], BankCode: iban[4:6], BranchCode: "", NationalChecksum: "", AccountNumber: iban[6:18]}, nil
 }

@@ -3,28 +3,25 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateAustriaIBAN validates Austria IBAN
 func validateAustriaIBAN(iban string) error {
 	if len(iban) != 20 {
-		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 20, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "AT" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: AT, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "AT", Actual: subject}
 	}
 	if subject := iban[2:20]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 18, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 18, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateAustriaIBAN generates Austria IBAN
 func generateAustriaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -33,11 +30,10 @@ func generateAustriaIBAN() (string, error) {
 	ascii.Digits(sb, 18)
 	return ReplaceChecksum(sb.String())
 }
-
 // getAustriaBBAN retrieves BBAN structure from Austria IBAN
 func getAustriaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 20, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:20], BankCode: iban[4:9], BranchCode: "", NationalChecksum: "", AccountNumber: iban[9:20]}, nil
 }

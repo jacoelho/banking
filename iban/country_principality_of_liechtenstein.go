@@ -3,31 +3,28 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validatePrincipalityOfLiechtensteinIBAN validates Principality Of Liechtenstein IBAN
 func validatePrincipalityOfLiechtensteinIBAN(iban string) error {
 	if len(iban) != 21 {
-		return fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 21, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "LI" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: LI, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "LI", Actual: subject}
 	}
 	if subject := iban[2:9]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 7, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 7, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[9:21]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 9, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 9, Length: 12, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generatePrincipalityOfLiechtensteinIBAN generates Principality Of Liechtenstein IBAN
 func generatePrincipalityOfLiechtensteinIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -37,11 +34,10 @@ func generatePrincipalityOfLiechtensteinIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 12)
 	return ReplaceChecksum(sb.String())
 }
-
 // getPrincipalityOfLiechtensteinBBAN retrieves BBAN structure from Principality Of Liechtenstein IBAN
 func getPrincipalityOfLiechtensteinBBAN(iban string) (BBAN, error) {
 	if len(iban) != 21 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 21: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 21, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:21], BankCode: iban[4:9], BranchCode: "", NationalChecksum: "", AccountNumber: iban[9:21]}, nil
 }

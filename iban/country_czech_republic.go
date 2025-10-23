@@ -3,28 +3,25 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateCzechRepublicIBAN validates Czech Republic IBAN
 func validateCzechRepublicIBAN(iban string) error {
 	if len(iban) != 24 {
-		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "CZ" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: CZ, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "CZ", Actual: subject}
 	}
 	if subject := iban[2:24]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 22, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 22, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateCzechRepublicIBAN generates Czech Republic IBAN
 func generateCzechRepublicIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -33,11 +30,10 @@ func generateCzechRepublicIBAN() (string, error) {
 	ascii.Digits(sb, 22)
 	return ReplaceChecksum(sb.String())
 }
-
 // getCzechRepublicBBAN retrieves BBAN structure from Czech Republic IBAN
 func getCzechRepublicBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:24], BankCode: iban[4:8], BranchCode: iban[8:14], NationalChecksum: "", AccountNumber: iban[14:24]}, nil
 }
