@@ -3,34 +3,31 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateKingdomOfBahrainIBAN validates Kingdom Of Bahrain IBAN
 func validateKingdomOfBahrainIBAN(iban string) error {
 	if len(iban) != 22 {
-		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "BH" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: BH, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "BH", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[4:8]; !ascii.IsUpperCase(subject) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 4, Length: 4, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
 	if subject := iban[8:22]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 8, length: 14, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 8, Length: 14, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateKingdomOfBahrainIBAN generates Kingdom Of Bahrain IBAN
 func generateKingdomOfBahrainIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -41,11 +38,10 @@ func generateKingdomOfBahrainIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 14)
 	return ReplaceChecksum(sb.String())
 }
-
 // getKingdomOfBahrainBBAN retrieves BBAN structure from Kingdom Of Bahrain IBAN
 func getKingdomOfBahrainBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:22], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:22]}, nil
 }

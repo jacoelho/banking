@@ -3,34 +3,31 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateBritishVirginIslandsIBAN validates British Virgin Islands IBAN
 func validateBritishVirginIslandsIBAN(iban string) error {
 	if len(iban) != 24 {
-		return fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "VG" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: VG, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "VG", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[4:8]; !ascii.IsUpperCase(subject) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 4, Length: 4, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
 	if subject := iban[8:24]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 8, length: 16, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 8, Length: 16, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateBritishVirginIslandsIBAN generates British Virgin Islands IBAN
 func generateBritishVirginIslandsIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -41,11 +38,10 @@ func generateBritishVirginIslandsIBAN() (string, error) {
 	ascii.Digits(sb, 16)
 	return ReplaceChecksum(sb.String())
 }
-
 // getBritishVirginIslandsBBAN retrieves BBAN structure from British Virgin Islands IBAN
 func getBritishVirginIslandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 24: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:24], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:24]}, nil
 }

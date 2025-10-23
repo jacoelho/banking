@@ -3,34 +3,31 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateElSalvadorIBAN validates El Salvador IBAN
 func validateElSalvadorIBAN(iban string) error {
 	if len(iban) != 28 {
-		return fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 28, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "SV" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: SV, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "SV", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[4:8]; !ascii.IsUpperCase(subject) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 4, Length: 4, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
 	if subject := iban[8:28]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 8, length: 20, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 8, Length: 20, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateElSalvadorIBAN generates El Salvador IBAN
 func generateElSalvadorIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -41,11 +38,10 @@ func generateElSalvadorIBAN() (string, error) {
 	ascii.Digits(sb, 20)
 	return ReplaceChecksum(sb.String())
 }
-
 // getElSalvadorBBAN retrieves BBAN structure from El Salvador IBAN
 func getElSalvadorBBAN(iban string) (BBAN, error) {
 	if len(iban) != 28 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 28: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 28, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:28], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:28]}, nil
 }

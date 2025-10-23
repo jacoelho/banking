@@ -3,28 +3,25 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateVaticanCityStateIBAN validates Vatican City State IBAN
 func validateVaticanCityStateIBAN(iban string) error {
 	if len(iban) != 22 {
-		return fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "VA" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: VA, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "VA", Actual: subject}
 	}
 	if subject := iban[2:22]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 20, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 20, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateVaticanCityStateIBAN generates Vatican City State IBAN
 func generateVaticanCityStateIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -33,11 +30,10 @@ func generateVaticanCityStateIBAN() (string, error) {
 	ascii.Digits(sb, 20)
 	return ReplaceChecksum(sb.String())
 }
-
 // getVaticanCityStateBBAN retrieves BBAN structure from Vatican City State IBAN
 func getVaticanCityStateBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 22: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:22], BankCode: iban[4:7], BranchCode: "", NationalChecksum: "", AccountNumber: iban[7:22]}, nil
 }

@@ -3,31 +3,28 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateKazakhstanIBAN validates Kazakhstan IBAN
 func validateKazakhstanIBAN(iban string) error {
 	if len(iban) != 20 {
-		return fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 20, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "KZ" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: KZ, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "KZ", Actual: subject}
 	}
 	if subject := iban[2:7]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 5, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[7:20]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 7, length: 13, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 7, Length: 13, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateKazakhstanIBAN generates Kazakhstan IBAN
 func generateKazakhstanIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -37,11 +34,10 @@ func generateKazakhstanIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 13)
 	return ReplaceChecksum(sb.String())
 }
-
 // getKazakhstanBBAN retrieves BBAN structure from Kazakhstan IBAN
 func getKazakhstanBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 20: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 20, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:20], BankCode: iban[4:7], BranchCode: "", NationalChecksum: "", AccountNumber: iban[7:20]}, nil
 }

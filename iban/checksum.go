@@ -1,14 +1,13 @@
 package iban
 
 import (
-	"fmt"
 	"unsafe"
 )
 
 // ReplaceChecksum returns the IBAN with corrected check digits.
 func ReplaceChecksum(iban string) (string, error) {
 	if len(iban) < 4 {
-		return "", fmt.Errorf("invalid iban length: %w", ErrValidation)
+		return "", &ErrValidationLength{Expected: 4, Actual: len(iban)}
 	}
 
 	result := []byte(iban)

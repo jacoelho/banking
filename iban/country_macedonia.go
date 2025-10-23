@@ -3,34 +3,31 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateMacedoniaIBAN validates Macedonia IBAN
 func validateMacedoniaIBAN(iban string) error {
 	if len(iban) != 19 {
-		return fmt.Errorf("unexpected length, want: 19: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 19, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "MK" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: MK, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "MK", Actual: subject}
 	}
 	if subject := iban[2:7]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 5, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 5, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[7:17]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 7, length: 10, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 7, Length: 10, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if subject := iban[17:19]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 17, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 17, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateMacedoniaIBAN generates Macedonia IBAN
 func generateMacedoniaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -41,11 +38,10 @@ func generateMacedoniaIBAN() (string, error) {
 	ascii.Digits(sb, 2)
 	return ReplaceChecksum(sb.String())
 }
-
 // getMacedoniaBBAN retrieves BBAN structure from Macedonia IBAN
 func getMacedoniaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 19 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 19: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 19, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:19], BankCode: iban[4:7], BranchCode: "", NationalChecksum: iban[17:19], AccountNumber: iban[7:17]}, nil
 }

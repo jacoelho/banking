@@ -42,7 +42,6 @@ func GenerateCodeForCountry(w io.Writer, country registry.Country) error {
 	file.Decls = append(file.Decls, &ast.GenDecl{
 		Tok: token.IMPORT,
 		Specs: []ast.Spec{
-			&ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: `"fmt"`}},
 			&ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: `"github.com/jacoelho/banking/pool"`}},
 			&ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: `"github.com/jacoelho/banking/ascii"`}},
 		},
@@ -116,14 +115,23 @@ func generateValidationFunction(countryName, funcName string, rules []rule.Rule,
 			List: []ast.Stmt{
 				&ast.ReturnStmt{
 					Results: []ast.Expr{
-						&ast.CallExpr{
-							Fun: &ast.SelectorExpr{
-								X:   ast.NewIdent("fmt"),
-								Sel: ast.NewIdent("Errorf"),
-							},
-							Args: []ast.Expr{
-								&ast.BasicLit{Kind: token.STRING, Value: fmt.Sprintf(`"unexpected length, want: %d: %%w"`, length)},
-								ast.NewIdent("ErrValidation"),
+						&ast.UnaryExpr{
+							Op: token.AND,
+							X: &ast.CompositeLit{
+								Type: ast.NewIdent("ErrValidationLength"),
+								Elts: []ast.Expr{
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Expected"),
+										Value: &ast.BasicLit{Kind: token.INT, Value: fmt.Sprintf("%d", length)},
+									},
+									&ast.KeyValueExpr{
+										Key: ast.NewIdent("Actual"),
+										Value: &ast.CallExpr{
+											Fun:  ast.NewIdent("len"),
+											Args: []ast.Expr{ast.NewIdent("iban")},
+										},
+									},
+								},
 							},
 						},
 					},
@@ -176,14 +184,24 @@ func generateValidationFunction(countryName, funcName string, rules []rule.Rule,
 			List: []ast.Stmt{
 				&ast.ReturnStmt{
 					Results: []ast.Expr{
-						&ast.CallExpr{
-							Fun: &ast.SelectorExpr{
-								X:   ast.NewIdent("fmt"),
-								Sel: ast.NewIdent("Errorf"),
-							},
-							Args: []ast.Expr{
-								&ast.BasicLit{Kind: token.STRING, Value: `"incorrect checksum: %w"`},
-								ast.NewIdent("ErrValidation"),
+						&ast.UnaryExpr{
+							Op: token.AND,
+							X: &ast.CompositeLit{
+								Type: ast.NewIdent("ErrValidationChecksum"),
+								Elts: []ast.Expr{
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Expected"),
+										Value: ast.NewIdent("c"),
+									},
+									&ast.KeyValueExpr{
+										Key: ast.NewIdent("Actual"),
+										Value: &ast.SliceExpr{
+											X:    ast.NewIdent("iban"),
+											Low:  &ast.BasicLit{Kind: token.INT, Value: "2"},
+											High: &ast.BasicLit{Kind: token.INT, Value: "4"},
+										},
+									},
+								},
 							},
 						},
 					},
@@ -224,15 +242,24 @@ func generateStaticValidation(r *rule.StaticRule) (ast.Stmt, error) {
 			List: []ast.Stmt{
 				&ast.ReturnStmt{
 					Results: []ast.Expr{
-						&ast.CallExpr{
-							Fun: &ast.SelectorExpr{
-								X:   ast.NewIdent("fmt"),
-								Sel: ast.NewIdent("Errorf"),
-							},
-							Args: []ast.Expr{
-								&ast.BasicLit{Kind: token.STRING, Value: fmt.Sprintf(`"%s, found %%s: %%w"`, r.String())},
-								ast.NewIdent("subject"),
-								ast.NewIdent("ErrValidation"),
+						&ast.UnaryExpr{
+							Op: token.AND,
+							X: &ast.CompositeLit{
+								Type: ast.NewIdent("ErrValidationStaticValue"),
+								Elts: []ast.Expr{
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Position"),
+										Value: &ast.BasicLit{Kind: token.INT, Value: fmt.Sprintf("%d", r.StartPosition)},
+									},
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Expected"),
+										Value: &ast.BasicLit{Kind: token.STRING, Value: fmt.Sprintf(`"%s"`, r.Value)},
+									},
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Actual"),
+										Value: ast.NewIdent("subject"),
+									},
+								},
 							},
 						},
 					},
@@ -245,13 +272,17 @@ func generateStaticValidation(r *rule.StaticRule) (ast.Stmt, error) {
 // generateRangeValidation creates range rule validation
 func generateRangeValidation(r *rule.RangeRule) (ast.Stmt, error) {
 	var funcName string
+	var charType string
 	switch r.Format {
 	case rule.Digit:
 		funcName = "IsDigit"
+		charType = "CharacterTypeDigit"
 	case rule.UpperCaseLetters:
 		funcName = "IsUpperCase"
+		charType = "CharacterTypeUpperCase"
 	case rule.AlphaNumeric:
 		funcName = "IsAlphaNumeric"
+		charType = "CharacterTypeAlphaNumeric"
 	default:
 		return nil, fmt.Errorf("unknown range rule format: %v", r.Format)
 	}
@@ -282,15 +313,28 @@ func generateRangeValidation(r *rule.RangeRule) (ast.Stmt, error) {
 			List: []ast.Stmt{
 				&ast.ReturnStmt{
 					Results: []ast.Expr{
-						&ast.CallExpr{
-							Fun: &ast.SelectorExpr{
-								X:   ast.NewIdent("fmt"),
-								Sel: ast.NewIdent("Errorf"),
-							},
-							Args: []ast.Expr{
-								&ast.BasicLit{Kind: token.STRING, Value: fmt.Sprintf(`"%s, found %%s: %%w"`, r.String())},
-								ast.NewIdent("subject"),
-								ast.NewIdent("ErrValidation"),
+						&ast.UnaryExpr{
+							Op: token.AND,
+							X: &ast.CompositeLit{
+								Type: ast.NewIdent("ErrValidationRange"),
+								Elts: []ast.Expr{
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Position"),
+										Value: &ast.BasicLit{Kind: token.INT, Value: fmt.Sprintf("%d", r.StartPosition)},
+									},
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Length"),
+										Value: &ast.BasicLit{Kind: token.INT, Value: fmt.Sprintf("%d", r.Length)},
+									},
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Expected"),
+										Value: ast.NewIdent(charType),
+									},
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Actual"),
+										Value: ast.NewIdent("subject"),
+									},
+								},
 							},
 						},
 					},
@@ -455,14 +499,23 @@ func generateBBANFunction(countryName, funcName string, country registry.Country
 				&ast.ReturnStmt{
 					Results: []ast.Expr{
 						&ast.CompositeLit{Type: ast.NewIdent("BBAN")},
-						&ast.CallExpr{
-							Fun: &ast.SelectorExpr{
-								X:   ast.NewIdent("fmt"),
-								Sel: ast.NewIdent("Errorf"),
-							},
-							Args: []ast.Expr{
-								&ast.BasicLit{Kind: token.STRING, Value: fmt.Sprintf(`"unexpected length, want: %d: %%w"`, length)},
-								ast.NewIdent("ErrValidation"),
+						&ast.UnaryExpr{
+							Op: token.AND,
+							X: &ast.CompositeLit{
+								Type: ast.NewIdent("ErrValidationLength"),
+								Elts: []ast.Expr{
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Expected"),
+										Value: &ast.BasicLit{Kind: token.INT, Value: fmt.Sprintf("%d", length)},
+									},
+									&ast.KeyValueExpr{
+										Key: ast.NewIdent("Actual"),
+										Value: &ast.CallExpr{
+											Fun:  ast.NewIdent("len"),
+											Args: []ast.Expr{ast.NewIdent("iban")},
+										},
+									},
+								},
 							},
 						},
 					},
@@ -550,13 +603,6 @@ func GenerateValidate(w io.Writer, countries []registry.Country) error {
 		Name: ast.NewIdent("iban"),
 	}
 
-	file.Decls = append(file.Decls, &ast.GenDecl{
-		Tok: token.IMPORT,
-		Specs: []ast.Spec{
-			&ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: `"fmt"`}},
-		},
-	})
-
 	validateFunc := &ast.FuncDecl{
 		Name: ast.NewIdent("Validate"),
 		Type: &ast.FuncType{
@@ -593,11 +639,23 @@ func GenerateValidate(w io.Writer, countries []registry.Country) error {
 			List: []ast.Stmt{
 				&ast.ReturnStmt{
 					Results: []ast.Expr{
-						&ast.CallExpr{
-							Fun: &ast.SelectorExpr{X: ast.NewIdent("fmt"), Sel: ast.NewIdent("Errorf")},
-							Args: []ast.Expr{
-								&ast.BasicLit{Kind: token.STRING, Value: `"unexpected iban length: %w"`},
-								ast.NewIdent("ErrValidation"),
+						&ast.UnaryExpr{
+							Op: token.AND,
+							X: &ast.CompositeLit{
+								Type: ast.NewIdent("ErrValidationLength"),
+								Elts: []ast.Expr{
+									&ast.KeyValueExpr{
+										Key:   ast.NewIdent("Expected"),
+										Value: &ast.BasicLit{Kind: token.INT, Value: "2"},
+									},
+									&ast.KeyValueExpr{
+										Key: ast.NewIdent("Actual"),
+										Value: &ast.CallExpr{
+											Fun:  ast.NewIdent("len"),
+											Args: []ast.Expr{ast.NewIdent("iban")},
+										},
+									},
+								},
 							},
 						},
 					},
@@ -647,12 +705,16 @@ func GenerateValidate(w io.Writer, countries []registry.Country) error {
 		Body: []ast.Stmt{
 			&ast.ReturnStmt{
 				Results: []ast.Expr{
-					&ast.CallExpr{
-						Fun: &ast.SelectorExpr{X: ast.NewIdent("fmt"), Sel: ast.NewIdent("Errorf")},
-						Args: []ast.Expr{
-							&ast.BasicLit{Kind: token.STRING, Value: `"%s is not supported: %w"`},
-							ast.NewIdent("code"),
-							ast.NewIdent("ErrValidation"),
+					&ast.UnaryExpr{
+						Op: token.AND,
+						X: &ast.CompositeLit{
+							Type: ast.NewIdent("ErrUnsupportedCountry"),
+							Elts: []ast.Expr{
+								&ast.KeyValueExpr{
+									Key:   ast.NewIdent("CountryCode"),
+									Value: ast.NewIdent("code"),
+								},
+							},
 						},
 					},
 				},
@@ -688,13 +750,6 @@ func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 		Name: ast.NewIdent("iban"),
 	}
 
-	file.Decls = append(file.Decls, &ast.GenDecl{
-		Tok: token.IMPORT,
-		Specs: []ast.Spec{
-			&ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: `"fmt"`}},
-		},
-	})
-
 	cases := make([]ast.Stmt, 0, len(countries)+1)
 	for _, country := range countries {
 		caseClause := &ast.CaseClause{
@@ -718,15 +773,16 @@ func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 			&ast.ReturnStmt{
 				Results: []ast.Expr{
 					&ast.BasicLit{Kind: token.STRING, Value: `""`},
-					&ast.CallExpr{
-						Fun: &ast.SelectorExpr{
-							X:   ast.NewIdent("fmt"),
-							Sel: ast.NewIdent("Errorf"),
-						},
-						Args: []ast.Expr{
-							&ast.BasicLit{Kind: token.STRING, Value: `"%s is not supported: %w"`},
-							ast.NewIdent("countryCode"),
-							ast.NewIdent("ErrValidation"),
+					&ast.UnaryExpr{
+						Op: token.AND,
+						X: &ast.CompositeLit{
+							Type: ast.NewIdent("ErrUnsupportedCountry"),
+							Elts: []ast.Expr{
+								&ast.KeyValueExpr{
+									Key:   ast.NewIdent("CountryCode"),
+									Value: ast.NewIdent("countryCode"),
+								},
+							},
 						},
 					},
 				},
@@ -767,14 +823,23 @@ func GenerateGenerate(w io.Writer, countries []registry.Country) error {
 							&ast.ReturnStmt{
 								Results: []ast.Expr{
 									&ast.BasicLit{Kind: token.STRING, Value: `""`},
-									&ast.CallExpr{
-										Fun: &ast.SelectorExpr{
-											X:   ast.NewIdent("fmt"),
-											Sel: ast.NewIdent("Errorf"),
-										},
-										Args: []ast.Expr{
-											&ast.BasicLit{Kind: token.STRING, Value: `"unexpected country code length: %w"`},
-											ast.NewIdent("ErrValidation"),
+									&ast.UnaryExpr{
+										Op: token.AND,
+										X: &ast.CompositeLit{
+											Type: ast.NewIdent("ErrValidationLength"),
+											Elts: []ast.Expr{
+												&ast.KeyValueExpr{
+													Key:   ast.NewIdent("Expected"),
+													Value: &ast.BasicLit{Kind: token.INT, Value: "2"},
+												},
+												&ast.KeyValueExpr{
+													Key: ast.NewIdent("Actual"),
+													Value: &ast.CallExpr{
+														Fun:  ast.NewIdent("len"),
+														Args: []ast.Expr{ast.NewIdent("countryCode")},
+													},
+												},
+											},
 										},
 									},
 								},
@@ -808,13 +873,6 @@ func GenerateGetBBAN(w io.Writer, countries []registry.Country) error {
 		Name: ast.NewIdent("iban"),
 	}
 
-	file.Decls = append(file.Decls, &ast.GenDecl{
-		Tok: token.IMPORT,
-		Specs: []ast.Spec{
-			&ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: `"fmt"`}},
-		},
-	})
-
 	cases := make([]ast.Stmt, 0, len(countries)+1)
 	for _, country := range countries {
 		caseClause := &ast.CaseClause{
@@ -838,15 +896,16 @@ func GenerateGetBBAN(w io.Writer, countries []registry.Country) error {
 			&ast.ReturnStmt{
 				Results: []ast.Expr{
 					&ast.CompositeLit{Type: ast.NewIdent("BBAN")},
-					&ast.CallExpr{
-						Fun: &ast.SelectorExpr{
-							X:   ast.NewIdent("fmt"),
-							Sel: ast.NewIdent("Errorf"),
-						},
-						Args: []ast.Expr{
-							&ast.BasicLit{Kind: token.STRING, Value: `"%s is not supported: %w"`},
-							ast.NewIdent("code"),
-							ast.NewIdent("ErrValidation"),
+					&ast.UnaryExpr{
+						Op: token.AND,
+						X: &ast.CompositeLit{
+							Type: ast.NewIdent("ErrUnsupportedCountry"),
+							Elts: []ast.Expr{
+								&ast.KeyValueExpr{
+									Key:   ast.NewIdent("CountryCode"),
+									Value: ast.NewIdent("code"),
+								},
+							},
 						},
 					},
 				},
@@ -891,14 +950,23 @@ func GenerateGetBBAN(w io.Writer, countries []registry.Country) error {
 							&ast.ReturnStmt{
 								Results: []ast.Expr{
 									&ast.CompositeLit{Type: ast.NewIdent("BBAN")},
-									&ast.CallExpr{
-										Fun: &ast.SelectorExpr{
-											X:   ast.NewIdent("fmt"),
-											Sel: ast.NewIdent("Errorf"),
-										},
-										Args: []ast.Expr{
-											&ast.BasicLit{Kind: token.STRING, Value: `"unexpected iban length: %w"`},
-											ast.NewIdent("ErrValidation"),
+									&ast.UnaryExpr{
+										Op: token.AND,
+										X: &ast.CompositeLit{
+											Type: ast.NewIdent("ErrValidationLength"),
+											Elts: []ast.Expr{
+												&ast.KeyValueExpr{
+													Key:   ast.NewIdent("Expected"),
+													Value: &ast.BasicLit{Kind: token.INT, Value: "2"},
+												},
+												&ast.KeyValueExpr{
+													Key: ast.NewIdent("Actual"),
+													Value: &ast.CallExpr{
+														Fun:  ast.NewIdent("len"),
+														Args: []ast.Expr{ast.NewIdent("iban")},
+													},
+												},
+											},
 										},
 									},
 								},
@@ -944,13 +1012,6 @@ func GenerateIsSEPA(w io.Writer, countries []registry.Country) error {
 		Decls: []ast.Decl{},
 	}
 
-	file.Decls = append(file.Decls, &ast.GenDecl{
-		Tok: token.IMPORT,
-		Specs: []ast.Spec{
-			&ast.ImportSpec{Path: &ast.BasicLit{Kind: token.STRING, Value: `"fmt"`}},
-		},
-	})
-
 	var countryCases []ast.Stmt
 	for _, country := range countries {
 		countryCases = append(countryCases, &ast.CaseClause{
@@ -974,15 +1035,16 @@ func GenerateIsSEPA(w io.Writer, countries []registry.Country) error {
 			&ast.ReturnStmt{
 				Results: []ast.Expr{
 					ast.NewIdent("false"),
-					&ast.CallExpr{
-						Fun: &ast.SelectorExpr{
-							X:   ast.NewIdent("fmt"),
-							Sel: ast.NewIdent("Errorf"),
-						},
-						Args: []ast.Expr{
-							&ast.BasicLit{Kind: token.STRING, Value: `"%s is not supported: %w"`},
-							ast.NewIdent("countryCode"),
-							ast.NewIdent("ErrValidation"),
+					&ast.UnaryExpr{
+						Op: token.AND,
+						X: &ast.CompositeLit{
+							Type: ast.NewIdent("ErrUnsupportedCountry"),
+							Elts: []ast.Expr{
+								&ast.KeyValueExpr{
+									Key:   ast.NewIdent("CountryCode"),
+									Value: ast.NewIdent("countryCode"),
+								},
+							},
 						},
 					},
 				},
@@ -1025,14 +1087,23 @@ func GenerateIsSEPA(w io.Writer, countries []registry.Country) error {
 							&ast.ReturnStmt{
 								Results: []ast.Expr{
 									ast.NewIdent("false"),
-									&ast.CallExpr{
-										Fun: &ast.SelectorExpr{
-											X:   ast.NewIdent("fmt"),
-											Sel: ast.NewIdent("Errorf"),
-										},
-										Args: []ast.Expr{
-											&ast.BasicLit{Kind: token.STRING, Value: `"unexpected country code length: %w"`},
-											ast.NewIdent("ErrValidation"),
+									&ast.UnaryExpr{
+										Op: token.AND,
+										X: &ast.CompositeLit{
+											Type: ast.NewIdent("ErrValidationLength"),
+											Elts: []ast.Expr{
+												&ast.KeyValueExpr{
+													Key:   ast.NewIdent("Expected"),
+													Value: &ast.BasicLit{Kind: token.INT, Value: "2"},
+												},
+												&ast.KeyValueExpr{
+													Key: ast.NewIdent("Actual"),
+													Value: &ast.CallExpr{
+														Fun:  ast.NewIdent("len"),
+														Args: []ast.Expr{ast.NewIdent("countryCode")},
+													},
+												},
+											},
 										},
 									},
 								},
@@ -1082,14 +1153,23 @@ func GenerateIsSEPA(w io.Writer, countries []registry.Country) error {
 							&ast.ReturnStmt{
 								Results: []ast.Expr{
 									ast.NewIdent("false"),
-									&ast.CallExpr{
-										Fun: &ast.SelectorExpr{
-											X:   ast.NewIdent("fmt"),
-											Sel: ast.NewIdent("Errorf"),
-										},
-										Args: []ast.Expr{
-											&ast.BasicLit{Kind: token.STRING, Value: `"unexpected iban length: %w"`},
-											ast.NewIdent("ErrValidation"),
+									&ast.UnaryExpr{
+										Op: token.AND,
+										X: &ast.CompositeLit{
+											Type: ast.NewIdent("ErrValidationLength"),
+											Elts: []ast.Expr{
+												&ast.KeyValueExpr{
+													Key:   ast.NewIdent("Expected"),
+													Value: &ast.BasicLit{Kind: token.INT, Value: "2"},
+												},
+												&ast.KeyValueExpr{
+													Key: ast.NewIdent("Actual"),
+													Value: &ast.CallExpr{
+														Fun:  ast.NewIdent("len"),
+														Args: []ast.Expr{ast.NewIdent("iban")},
+													},
+												},
+											},
 										},
 									},
 								},

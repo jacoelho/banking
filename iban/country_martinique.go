@@ -3,34 +3,31 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateMartiniqueIBAN validates Martinique IBAN
 func validateMartiniqueIBAN(iban string) error {
 	if len(iban) != 27 {
-		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "MQ" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: MQ, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "MQ", Actual: subject}
 	}
 	if subject := iban[2:14]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 12, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 12, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[14:25]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 14, length: 11, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 14, Length: 11, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if subject := iban[25:27]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 25, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 25, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateMartiniqueIBAN generates Martinique IBAN
 func generateMartiniqueIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -41,11 +38,10 @@ func generateMartiniqueIBAN() (string, error) {
 	ascii.Digits(sb, 2)
 	return ReplaceChecksum(sb.String())
 }
-
 // getMartiniqueBBAN retrieves BBAN structure from Martinique IBAN
 func getMartiniqueBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: iban[9:14], NationalChecksum: iban[25:27], AccountNumber: iban[14:25]}, nil
 }

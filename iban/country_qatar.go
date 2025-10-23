@@ -3,34 +3,31 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateQatarIBAN validates Qatar IBAN
 func validateQatarIBAN(iban string) error {
 	if len(iban) != 29 {
-		return fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 29, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "QA" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: QA, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "QA", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[4:8]; !ascii.IsUpperCase(subject) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 4, Length: 4, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
 	if subject := iban[8:29]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 8, length: 21, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 8, Length: 21, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateQatarIBAN generates Qatar IBAN
 func generateQatarIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -41,11 +38,10 @@ func generateQatarIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 21)
 	return ReplaceChecksum(sb.String())
 }
-
 // getQatarBBAN retrieves BBAN structure from Qatar IBAN
 func getQatarBBAN(iban string) (BBAN, error) {
 	if len(iban) != 29 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 29: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 29, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:29], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: "", AccountNumber: iban[12:29]}, nil
 }

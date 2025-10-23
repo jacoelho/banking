@@ -3,28 +3,25 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateTimorLesteIBAN validates Timor Leste IBAN
 func validateTimorLesteIBAN(iban string) error {
 	if len(iban) != 23 {
-		return fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 23, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "TL" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: TL, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "TL", Actual: subject}
 	}
 	if subject := iban[2:23]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 21, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 21, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateTimorLesteIBAN generates Timor Leste IBAN
 func generateTimorLesteIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -33,11 +30,10 @@ func generateTimorLesteIBAN() (string, error) {
 	ascii.Digits(sb, 21)
 	return ReplaceChecksum(sb.String())
 }
-
 // getTimorLesteBBAN retrieves BBAN structure from Timor Leste IBAN
 func getTimorLesteBBAN(iban string) (BBAN, error) {
 	if len(iban) != 23 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 23: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 23, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:23], BankCode: iban[4:8], BranchCode: iban[8:11], NationalChecksum: iban[21:23], AccountNumber: iban[11:21]}, nil
 }

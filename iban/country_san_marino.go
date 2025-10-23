@@ -3,37 +3,34 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateSanMarinoIBAN validates San Marino IBAN
 func validateSanMarinoIBAN(iban string) error {
 	if len(iban) != 27 {
-		return fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "SM" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: SM, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "SM", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[4:5]; !ascii.IsUpperCase(subject) {
-		return fmt.Errorf("range rule, start pos: 4, length: 1, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 4, Length: 1, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
 	if subject := iban[5:15]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 5, length: 10, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 5, Length: 10, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[15:27]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 15, length: 12, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 15, Length: 12, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateSanMarinoIBAN generates San Marino IBAN
 func generateSanMarinoIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -45,11 +42,10 @@ func generateSanMarinoIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 12)
 	return ReplaceChecksum(sb.String())
 }
-
 // getSanMarinoBBAN retrieves BBAN structure from San Marino IBAN
 func getSanMarinoBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 27: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:27], BankCode: iban[5:10], BranchCode: iban[10:15], NationalChecksum: iban[4:5], AccountNumber: iban[15:26]}, nil
 }

@@ -3,37 +3,34 @@
 package iban
 
 import (
-	"fmt"
-	"github.com/jacoelho/banking/ascii"
 	"github.com/jacoelho/banking/pool"
+	"github.com/jacoelho/banking/ascii"
 )
-
 // validateYemenIBAN validates Yemen IBAN
 func validateYemenIBAN(iban string) error {
 	if len(iban) != 30 {
-		return fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
+		return &ErrValidationLength{Expected: 30, Actual: len(iban)}
 	}
 	if subject := iban[0:2]; subject != "YE" {
-		return fmt.Errorf("static value rule, pos: 0, expected value: YE, found %s: %w", subject, ErrValidation)
+		return &ErrValidationStaticValue{Position: 0, Expected: "YE", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 2, length: 2, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[4:8]; !ascii.IsUpperCase(subject) {
-		return fmt.Errorf("range rule, start pos: 4, length: 4, expected type UpperCaseLetters, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 4, Length: 4, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
 	if subject := iban[8:12]; !ascii.IsDigit(subject) {
-		return fmt.Errorf("range rule, start pos: 8, length: 4, expected type Digit, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 8, Length: 4, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if subject := iban[12:30]; !ascii.IsAlphaNumeric(subject) {
-		return fmt.Errorf("range rule, start pos: 12, length: 18, expected type AlphaNumeric, found %s: %w", subject, ErrValidation)
+		return &ErrValidationRange{Position: 12, Length: 18, Expected: CharacterTypeAlphaNumeric, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
-		return fmt.Errorf("incorrect checksum: %w", ErrValidation)
+		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-
 // generateYemenIBAN generates Yemen IBAN
 func generateYemenIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -45,11 +42,10 @@ func generateYemenIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 18)
 	return ReplaceChecksum(sb.String())
 }
-
 // getYemenBBAN retrieves BBAN structure from Yemen IBAN
 func getYemenBBAN(iban string) (BBAN, error) {
 	if len(iban) != 30 {
-		return BBAN{}, fmt.Errorf("unexpected length, want: 30: %w", ErrValidation)
+		return BBAN{}, &ErrValidationLength{Expected: 30, Actual: len(iban)}
 	}
 	return BBAN{BBAN: iban[4:30], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: "", AccountNumber: iban[12:30]}, nil
 }
