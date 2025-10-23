@@ -14,11 +14,51 @@ go get -u github.com/jacoelho/banking
 
 Supports IBAN validation based on [swift rules](https://www.swift.com/node/11971).
 
+[Test IBANs online](https://www.jacoelho.com/banking/)
+
 ### Usage
 
 #### Validation
 ```go
 err := iban.Validate("SOME IBAN")
+```
+
+#### Error Handling
+
+The library provides structured error types for detailed validation feedback:
+
+```go
+import "errors"
+
+err := iban.Validate("GB99INVALID")
+if err != nil {
+    var lengthErr *iban.ErrValidationLength
+    if errors.As(err, &lengthErr) {
+        fmt.Printf("Invalid length: expected %d, got %d\n", lengthErr.Expected, lengthErr.Actual)
+    }
+
+    var checksumErr *iban.ErrValidationChecksum
+    if errors.As(err, &checksumErr) {
+        fmt.Printf("Invalid checksum: expected %s, got %s\n", checksumErr.Expected, checksumErr.Actual)
+    }
+
+    var rangeErr *iban.ErrValidationRange
+    if errors.As(err, &rangeErr) {
+        fmt.Printf("Invalid characters at position %d (length %d): expected %s\n",
+            rangeErr.Position, rangeErr.Length, rangeErr.Expected)
+    }
+
+    var staticErr *iban.ErrValidationStaticValue
+    if errors.As(err, &staticErr) {
+        fmt.Printf("Invalid value at position %d: expected %s, got %s\n",
+            staticErr.Position, staticErr.Expected, staticErr.Actual)
+    }
+
+    var unsupportedErr *iban.ErrUnsupportedCountry
+    if errors.As(err, &unsupportedErr) {
+        fmt.Printf("Country code '%s' is not supported\n", unsupportedErr.CountryCode)
+    }
+}
 ```
 
 #### Replace check digits
@@ -28,12 +68,14 @@ result, err := iban.ReplaceChecksum("GB99NWBK60161331926819")
 ```
 
 #### Generation
-```
+
+```go
 iban, err := iban.Generate("GB")
 // Output: GB29NWBK60161331926819
 ```
 
 #### Printing
+
 ```go
 iban.PaperFormat("GB29NWBK60161331926819"))
 // Output: GB29 NWBK 6016 1331 9268 19
@@ -64,11 +106,10 @@ Mod-97-10 implemented.
 
 ## Generate
 
-```
-cd registry
-go install -v ./...
-cd ..
-./bin/generator  -registry-file ./docs/registry.yml
+To regenerate IBAN validation code from the registry:
+
+```bash
+make generate
 ```
 
 ## Roadmap
