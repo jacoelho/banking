@@ -32,19 +32,16 @@ func humanizeError(err error) string {
 		return ""
 	}
 
-	// Check for length errors
 	var lengthErr *iban.ErrValidationLength
 	if errors.As(err, &lengthErr) {
 		return fmt.Sprintf("Invalid length (expected %d characters)", lengthErr.Expected)
 	}
 
-	// Check for checksum errors
 	var checksumErr *iban.ErrValidationChecksum
 	if errors.As(err, &checksumErr) {
 		return "Invalid checksum"
 	}
 
-	// Check for range errors
 	var rangeErr *iban.ErrValidationRange
 	if errors.As(err, &rangeErr) {
 		endPos := rangeErr.Position + rangeErr.Length - 1
@@ -65,7 +62,6 @@ func humanizeError(err error) string {
 			rangeErr.Position, endPos, typeDesc)
 	}
 
-	// Check for static value errors (e.g., country code)
 	var staticErr *iban.ErrValidationStaticValue
 	if errors.As(err, &staticErr) {
 		if staticErr.Position == 0 {
@@ -74,13 +70,11 @@ func humanizeError(err error) string {
 		return "Invalid format - expected specific value"
 	}
 
-	// Check for unsupported country
 	var unsupportedErr *iban.ErrUnsupportedCountry
 	if errors.As(err, &unsupportedErr) {
 		return fmt.Sprintf("Country code '%s' is not supported", unsupportedErr.CountryCode)
 	}
 
-	// Fallback for unknown errors
 	return err.Error()
 }
 
