@@ -23,9 +23,16 @@ Supports IBAN validation based on [swift rules](https://www.swift.com/node/11971
 err := iban.Validate("SOME IBAN")
 ```
 
+For simple validation error detection:
+```go
+if iban.IsValidationError(err) {
+    // Handle validation errors
+}
+```
+
 #### Error Handling
 
-The library provides structured error types for detailed validation feedback:
+For detailed validation feedback, the library provides structured error types:
 
 ```go
 import "errors"

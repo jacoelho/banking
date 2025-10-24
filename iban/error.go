@@ -1,6 +1,7 @@
 package iban
 
 import (
+	"errors"
 	"fmt"
 )
 
@@ -79,4 +80,23 @@ type ErrUnsupportedCountry struct {
 
 func (e *ErrUnsupportedCountry) Error() string {
 	return fmt.Sprintf("country code %s is not supported", e.CountryCode)
+}
+
+// IsValidationError reports whether err is any validation error from this library
+func IsValidationError(err error) bool {
+	if err == nil {
+		return false
+	}
+
+	var lengthErr *ErrValidationLength
+	var checksumErr *ErrValidationChecksum
+	var rangeErr *ErrValidationRange
+	var staticErr *ErrValidationStaticValue
+	var unsupportedErr *ErrUnsupportedCountry
+
+	return errors.As(err, &lengthErr) ||
+		errors.As(err, &checksumErr) ||
+		errors.As(err, &rangeErr) ||
+		errors.As(err, &staticErr) ||
+		errors.As(err, &unsupportedErr)
 }
