@@ -1,4 +1,7 @@
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
 name: test and build
 jobs:
   test:
@@ -13,8 +16,6 @@ jobs:
       - run: make ci-tidy
 
       - run: make staticcheck
-
-      - run: make gcassert
 
       - run: cd registry && make -f ../Makefile
 

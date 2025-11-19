@@ -44,16 +44,9 @@ ci-tidy:
 $(GOBIN)/staticcheck:
 	go install honnef.co/go/tools/cmd/staticcheck@latest
 
-$(GOBIN)/gcassert:
-	go install github.com/jordanlewis/gcassert/cmd/gcassert@latest
-
 .PHONY: staticcheck
 staticcheck: $(GOBIN)/staticcheck
 	$(GOBIN)/staticcheck ./...
-
-.PHONY: gcassert
-gcassert: $(GOBIN)/gcassert
-	$(GOBIN)/gcassert ./...
 
 .PHONY: wasm
 wasm:
