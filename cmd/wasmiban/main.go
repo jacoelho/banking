@@ -18,13 +18,12 @@ type Response struct {
 }
 
 type ValidationData struct {
-	CountryCode      string `json:"countryCode,omitempty"`
-	FormattedIBAN    string `json:"formattedIban,omitempty"`
-	CorrectedIBAN    string `json:"correctedIban,omitempty"`
-	BankCode         string `json:"bankCode,omitempty"`
-	BranchCode       string `json:"branchCode,omitempty"`
-	AccountNumber    string `json:"accountNumber,omitempty"`
-	NationalChecksum string `json:"nationalChecksum,omitempty"`
+	CountryCode   string `json:"countryCode,omitempty"`
+	FormattedIBAN string `json:"formattedIban,omitempty"`
+	CorrectedIBAN string `json:"correctedIban,omitempty"`
+	BankCode      string `json:"bankCode,omitempty"`
+	BranchCode    string `json:"branchCode,omitempty"`
+	AccountNumber string `json:"accountNumber,omitempty"`
 }
 
 func humanizeError(err error) string {
@@ -128,7 +127,6 @@ func validateIBAN(this js.Value, args []js.Value) any {
 		data.BankCode = bban.BankCode
 		data.BranchCode = bban.BranchCode
 		data.AccountNumber = bban.AccountNumber
-		data.NationalChecksum = bban.NationalChecksum
 	}
 
 	return marshalResponse("", data)

@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateCostaRicaIBAN validates Costa Rica IBAN
 func validateCostaRicaIBAN(iban string) error {
 	if len(iban) != 22 {
@@ -22,6 +23,7 @@ func validateCostaRicaIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateCostaRicaIBAN generates Costa Rica IBAN
 func generateCostaRicaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -30,10 +32,11 @@ func generateCostaRicaIBAN() (string, error) {
 	ascii.Digits(sb, 20)
 	return ReplaceChecksum(sb.String())
 }
+
 // getCostaRicaBBAN retrieves BBAN structure from Costa Rica IBAN
 func getCostaRicaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:22], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:22]}, nil
+	return BBAN{BBAN: iban[4:22], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:22]}, nil
 }

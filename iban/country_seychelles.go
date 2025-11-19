@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateSeychellesIBAN validates Seychelles IBAN
 func validateSeychellesIBAN(iban string) error {
 	if len(iban) != 31 {
@@ -31,6 +32,7 @@ func validateSeychellesIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateSeychellesIBAN generates Seychelles IBAN
 func generateSeychellesIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -42,10 +44,11 @@ func generateSeychellesIBAN() (string, error) {
 	ascii.UpperCaseLetters(sb, 3)
 	return ReplaceChecksum(sb.String())
 }
+
 // getSeychellesBBAN retrieves BBAN structure from Seychelles IBAN
 func getSeychellesBBAN(iban string) (BBAN, error) {
 	if len(iban) != 31 {
 		return BBAN{}, &ErrValidationLength{Expected: 31, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:31], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: "", AccountNumber: iban[12:31]}, nil
+	return BBAN{BBAN: iban[4:31], BankCode: iban[4:10], BranchCode: iban[10:12], AccountNumber: iban[12:31]}, nil
 }

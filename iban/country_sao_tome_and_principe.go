@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateSaoTomeAndPrincipeIBAN validates Sao Tome And Principe IBAN
-func validateSaoTomeAndPrincipeIBAN(iban string) error {
+
+// validateSaoTomeandPrincipeIBAN validates Sao Tome and Principe IBAN
+func validateSaoTomeandPrincipeIBAN(iban string) error {
 	if len(iban) != 25 {
 		return &ErrValidationLength{Expected: 25, Actual: len(iban)}
 	}
@@ -22,18 +23,20 @@ func validateSaoTomeAndPrincipeIBAN(iban string) error {
 	}
 	return nil
 }
-// generateSaoTomeAndPrincipeIBAN generates Sao Tome And Principe IBAN
-func generateSaoTomeAndPrincipeIBAN() (string, error) {
+
+// generateSaoTomeandPrincipeIBAN generates Sao Tome and Principe IBAN
+func generateSaoTomeandPrincipeIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("ST")
 	ascii.Digits(sb, 23)
 	return ReplaceChecksum(sb.String())
 }
-// getSaoTomeAndPrincipeBBAN retrieves BBAN structure from Sao Tome And Principe IBAN
-func getSaoTomeAndPrincipeBBAN(iban string) (BBAN, error) {
+
+// getSaoTomeandPrincipeBBAN retrieves BBAN structure from Sao Tome and Principe IBAN
+func getSaoTomeandPrincipeBBAN(iban string) (BBAN, error) {
 	if len(iban) != 25 {
 		return BBAN{}, &ErrValidationLength{Expected: 25, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:25], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: "", AccountNumber: iban[12:25]}, nil
+	return BBAN{BBAN: iban[4:25], BankCode: iban[4:8], BranchCode: iban[8:12], AccountNumber: iban[12:25]}, nil
 }

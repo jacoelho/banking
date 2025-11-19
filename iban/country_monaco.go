@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateMonacoIBAN validates Monaco IBAN
 func validateMonacoIBAN(iban string) error {
 	if len(iban) != 27 {
@@ -28,6 +29,7 @@ func validateMonacoIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateMonacoIBAN generates Monaco IBAN
 func generateMonacoIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -38,10 +40,11 @@ func generateMonacoIBAN() (string, error) {
 	ascii.Digits(sb, 2)
 	return ReplaceChecksum(sb.String())
 }
+
 // getMonacoBBAN retrieves BBAN structure from Monaco IBAN
 func getMonacoBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: iban[9:14], NationalChecksum: iban[25:27], AccountNumber: iban[14:25]}, nil
+	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: iban[9:14], AccountNumber: iban[14:27]}, nil
 }

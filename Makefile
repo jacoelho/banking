@@ -1,7 +1,7 @@
 # disable default rules
 .SUFFIXES:
 MAKEFLAGS+=-r -R
-GOBIN = $(shell go env GOPATH)/bin
+GOBIN = $(shell go env GOBIN)
 DATE  = $(shell date +%Y%m%d%H%M%S)
 
 default: build
@@ -12,6 +12,9 @@ build: test
 
 $(GOBIN)/banking-registry:
 	cd registry; go install ./cmd/banking-registry
+
+$(GOBIN)/tsv-to-yaml:
+	cd registry; go install ./cmd/tsv-to-yaml
 
 .PHONY: generate
 generate: $(GOBIN)/banking-registry

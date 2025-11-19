@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validatePortugalIBAN validates Portugal IBAN
 func validatePortugalIBAN(iban string) error {
 	if len(iban) != 25 {
@@ -22,6 +23,7 @@ func validatePortugalIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generatePortugalIBAN generates Portugal IBAN
 func generatePortugalIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -30,10 +32,11 @@ func generatePortugalIBAN() (string, error) {
 	ascii.Digits(sb, 23)
 	return ReplaceChecksum(sb.String())
 }
+
 // getPortugalBBAN retrieves BBAN structure from Portugal IBAN
 func getPortugalBBAN(iban string) (BBAN, error) {
 	if len(iban) != 25 {
 		return BBAN{}, &ErrValidationLength{Expected: 25, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:25], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: iban[23:25], AccountNumber: iban[12:23]}, nil
+	return BBAN{BBAN: iban[4:25], BankCode: iban[4:8], BranchCode: iban[8:12], AccountNumber: iban[12:25]}, nil
 }

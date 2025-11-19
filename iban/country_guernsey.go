@@ -3,16 +3,17 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateKingdomOfBahrainIBAN validates Kingdom Of Bahrain IBAN
-func validateKingdomOfBahrainIBAN(iban string) error {
+
+// validateGuernseyIBAN validates Guernsey IBAN
+func validateGuernseyIBAN(iban string) error {
 	if len(iban) != 22 {
 		return &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
-	if subject := iban[0:2]; subject != "BH" {
-		return &ErrValidationStaticValue{Position: 0, Expected: "BH", Actual: subject}
+	if subject := iban[0:2]; subject != "GG" {
+		return &ErrValidationStaticValue{Position: 0, Expected: "GG", Actual: subject}
 	}
 	if subject := iban[2:4]; !ascii.IsDigit(subject) {
 		return &ErrValidationRange{Position: 2, Length: 2, Expected: CharacterTypeDigit, Actual: subject}
@@ -20,28 +21,30 @@ func validateKingdomOfBahrainIBAN(iban string) error {
 	if subject := iban[4:8]; !ascii.IsUpperCase(subject) {
 		return &ErrValidationRange{Position: 4, Length: 4, Expected: CharacterTypeUpperCase, Actual: subject}
 	}
-	if subject := iban[8:22]; !ascii.IsAlphaNumeric(subject) {
-		return &ErrValidationRange{Position: 8, Length: 14, Expected: CharacterTypeAlphaNumeric, Actual: subject}
+	if subject := iban[8:22]; !ascii.IsDigit(subject) {
+		return &ErrValidationRange{Position: 8, Length: 14, Expected: CharacterTypeDigit, Actual: subject}
 	}
 	if c := checksum(iban); c != iban[2:4] {
 		return &ErrValidationChecksum{Expected: c, Actual: iban[2:4]}
 	}
 	return nil
 }
-// generateKingdomOfBahrainIBAN generates Kingdom Of Bahrain IBAN
-func generateKingdomOfBahrainIBAN() (string, error) {
+
+// generateGuernseyIBAN generates Guernsey IBAN
+func generateGuernseyIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-	sb.WriteString("BH")
+	sb.WriteString("GG")
 	ascii.Digits(sb, 2)
 	ascii.UpperCaseLetters(sb, 4)
-	ascii.AlphaNumeric(sb, 14)
+	ascii.Digits(sb, 14)
 	return ReplaceChecksum(sb.String())
 }
-// getKingdomOfBahrainBBAN retrieves BBAN structure from Kingdom Of Bahrain IBAN
-func getKingdomOfBahrainBBAN(iban string) (BBAN, error) {
+
+// getGuernseyBBAN retrieves BBAN structure from Guernsey IBAN
+func getGuernseyBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:22], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:22]}, nil
+	return BBAN{BBAN: iban[4:22], BankCode: iban[4:8], BranchCode: iban[8:14], AccountNumber: iban[14:22]}, nil
 }

@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateQatarIBAN validates Qatar IBAN
 func validateQatarIBAN(iban string) error {
 	if len(iban) != 29 {
@@ -28,6 +29,7 @@ func validateQatarIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateQatarIBAN generates Qatar IBAN
 func generateQatarIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -38,10 +40,11 @@ func generateQatarIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 21)
 	return ReplaceChecksum(sb.String())
 }
+
 // getQatarBBAN retrieves BBAN structure from Qatar IBAN
 func getQatarBBAN(iban string) (BBAN, error) {
 	if len(iban) != 29 {
 		return BBAN{}, &ErrValidationLength{Expected: 29, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:29], BankCode: iban[4:8], BranchCode: iban[8:12], NationalChecksum: "", AccountNumber: iban[12:29]}, nil
+	return BBAN{BBAN: iban[4:29], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:29]}, nil
 }

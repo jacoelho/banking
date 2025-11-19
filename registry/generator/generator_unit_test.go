@@ -21,7 +21,6 @@ func TestGenerateCodeForCountry_Internal(t *testing.T) {
 		BBAN:             "8!n16!c",
 		BankCode:         "0:3",
 		BranchCode:       "3:7",
-		NationalChecksum: "7:8",
 		AccountNumber:    "8:24",
 		IsSEPA:           false,
 	}

@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateBritishVirginIslandsIBAN validates British Virgin Islands IBAN
-func validateBritishVirginIslandsIBAN(iban string) error {
+
+// validateVirginIslandsIBAN validates Virgin Islands IBAN
+func validateVirginIslandsIBAN(iban string) error {
 	if len(iban) != 24 {
 		return &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
@@ -28,8 +29,9 @@ func validateBritishVirginIslandsIBAN(iban string) error {
 	}
 	return nil
 }
-// generateBritishVirginIslandsIBAN generates British Virgin Islands IBAN
-func generateBritishVirginIslandsIBAN() (string, error) {
+
+// generateVirginIslandsIBAN generates Virgin Islands IBAN
+func generateVirginIslandsIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("VG")
@@ -38,10 +40,11 @@ func generateBritishVirginIslandsIBAN() (string, error) {
 	ascii.Digits(sb, 16)
 	return ReplaceChecksum(sb.String())
 }
-// getBritishVirginIslandsBBAN retrieves BBAN structure from British Virgin Islands IBAN
-func getBritishVirginIslandsBBAN(iban string) (BBAN, error) {
+
+// getVirginIslandsBBAN retrieves BBAN structure from Virgin Islands IBAN
+func getVirginIslandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:24], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:24]}, nil
+	return BBAN{BBAN: iban[4:24], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:24]}, nil
 }

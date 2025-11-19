@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateMauritiusIBAN validates Mauritius IBAN
 func validateMauritiusIBAN(iban string) error {
 	if len(iban) != 30 {
@@ -31,6 +32,7 @@ func validateMauritiusIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateMauritiusIBAN generates Mauritius IBAN
 func generateMauritiusIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -42,10 +44,11 @@ func generateMauritiusIBAN() (string, error) {
 	ascii.UpperCaseLetters(sb, 3)
 	return ReplaceChecksum(sb.String())
 }
+
 // getMauritiusBBAN retrieves BBAN structure from Mauritius IBAN
 func getMauritiusBBAN(iban string) (BBAN, error) {
 	if len(iban) != 30 {
 		return BBAN{}, &ErrValidationLength{Expected: 30, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:30], BankCode: iban[4:10], BranchCode: iban[10:12], NationalChecksum: "", AccountNumber: iban[12:30]}, nil
+	return BBAN{BBAN: iban[4:30], BankCode: iban[4:10], BranchCode: iban[10:12], AccountNumber: iban[12:30]}, nil
 }

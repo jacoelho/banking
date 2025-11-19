@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateTheNetherlandsIBAN validates The Netherlands IBAN
-func validateTheNetherlandsIBAN(iban string) error {
+
+// validateNetherlandsIBAN validates Netherlands IBAN
+func validateNetherlandsIBAN(iban string) error {
 	if len(iban) != 18 {
 		return &ErrValidationLength{Expected: 18, Actual: len(iban)}
 	}
@@ -28,8 +29,9 @@ func validateTheNetherlandsIBAN(iban string) error {
 	}
 	return nil
 }
-// generateTheNetherlandsIBAN generates The Netherlands IBAN
-func generateTheNetherlandsIBAN() (string, error) {
+
+// generateNetherlandsIBAN generates Netherlands IBAN
+func generateNetherlandsIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("NL")
@@ -38,10 +40,11 @@ func generateTheNetherlandsIBAN() (string, error) {
 	ascii.Digits(sb, 10)
 	return ReplaceChecksum(sb.String())
 }
-// getTheNetherlandsBBAN retrieves BBAN structure from The Netherlands IBAN
-func getTheNetherlandsBBAN(iban string) (BBAN, error) {
+
+// getNetherlandsBBAN retrieves BBAN structure from Netherlands IBAN
+func getNetherlandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 18 {
 		return BBAN{}, &ErrValidationLength{Expected: 18, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:18], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:18]}, nil
+	return BBAN{BBAN: iban[4:18], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:18]}, nil
 }

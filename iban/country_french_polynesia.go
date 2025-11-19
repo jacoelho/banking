@@ -3,16 +3,17 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateFrenchPolynesiaIBAN validates French Polynesia IBAN
 func validateFrenchPolynesiaIBAN(iban string) error {
 	if len(iban) != 27 {
 		return &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
-	if subject := iban[0:2]; subject != "FP" {
-		return &ErrValidationStaticValue{Position: 0, Expected: "FP", Actual: subject}
+	if subject := iban[0:2]; subject != "PF" {
+		return &ErrValidationStaticValue{Position: 0, Expected: "PF", Actual: subject}
 	}
 	if subject := iban[2:14]; !ascii.IsDigit(subject) {
 		return &ErrValidationRange{Position: 2, Length: 12, Expected: CharacterTypeDigit, Actual: subject}
@@ -28,20 +29,22 @@ func validateFrenchPolynesiaIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateFrenchPolynesiaIBAN generates French Polynesia IBAN
 func generateFrenchPolynesiaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-	sb.WriteString("FP")
+	sb.WriteString("PF")
 	ascii.Digits(sb, 12)
 	ascii.AlphaNumeric(sb, 11)
 	ascii.Digits(sb, 2)
 	return ReplaceChecksum(sb.String())
 }
+
 // getFrenchPolynesiaBBAN retrieves BBAN structure from French Polynesia IBAN
 func getFrenchPolynesiaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: iban[9:14], NationalChecksum: iban[25:27], AccountNumber: iban[14:25]}, nil
+	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: "", AccountNumber: iban[9:27]}, nil
 }

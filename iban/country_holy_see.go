@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateVaticanCityStateIBAN validates Vatican City State IBAN
-func validateVaticanCityStateIBAN(iban string) error {
+
+// validateHolySeeIBAN validates Holy See IBAN
+func validateHolySeeIBAN(iban string) error {
 	if len(iban) != 22 {
 		return &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
@@ -22,18 +23,20 @@ func validateVaticanCityStateIBAN(iban string) error {
 	}
 	return nil
 }
-// generateVaticanCityStateIBAN generates Vatican City State IBAN
-func generateVaticanCityStateIBAN() (string, error) {
+
+// generateHolySeeIBAN generates Holy See IBAN
+func generateHolySeeIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("VA")
 	ascii.Digits(sb, 20)
 	return ReplaceChecksum(sb.String())
 }
-// getVaticanCityStateBBAN retrieves BBAN structure from Vatican City State IBAN
-func getVaticanCityStateBBAN(iban string) (BBAN, error) {
+
+// getHolySeeBBAN retrieves BBAN structure from Holy See IBAN
+func getHolySeeBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:22], BankCode: iban[4:7], BranchCode: "", NationalChecksum: "", AccountNumber: iban[7:22]}, nil
+	return BBAN{BBAN: iban[4:22], BankCode: iban[4:7], BranchCode: "", AccountNumber: iban[7:22]}, nil
 }

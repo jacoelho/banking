@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateRussiaIBAN validates Russia IBAN
-func validateRussiaIBAN(iban string) error {
+
+// validateRussianFederationIBAN validates Russian Federation IBAN
+func validateRussianFederationIBAN(iban string) error {
 	if len(iban) != 33 {
 		return &ErrValidationLength{Expected: 33, Actual: len(iban)}
 	}
@@ -25,8 +26,9 @@ func validateRussiaIBAN(iban string) error {
 	}
 	return nil
 }
-// generateRussiaIBAN generates Russia IBAN
-func generateRussiaIBAN() (string, error) {
+
+// generateRussianFederationIBAN generates Russian Federation IBAN
+func generateRussianFederationIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("RU")
@@ -34,10 +36,11 @@ func generateRussiaIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 15)
 	return ReplaceChecksum(sb.String())
 }
-// getRussiaBBAN retrieves BBAN structure from Russia IBAN
-func getRussiaBBAN(iban string) (BBAN, error) {
+
+// getRussianFederationBBAN retrieves BBAN structure from Russian Federation IBAN
+func getRussianFederationBBAN(iban string) (BBAN, error) {
 	if len(iban) != 33 {
 		return BBAN{}, &ErrValidationLength{Expected: 33, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:33], BankCode: iban[4:13], BranchCode: iban[13:18], NationalChecksum: "", AccountNumber: iban[18:33]}, nil
+	return BBAN{BBAN: iban[4:33], BankCode: iban[4:13], BranchCode: iban[13:18], AccountNumber: iban[18:33]}, nil
 }

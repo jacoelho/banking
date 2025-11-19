@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateOmanIBAN validates Oman IBAN
 func validateOmanIBAN(iban string) error {
 	if len(iban) != 23 {
@@ -25,6 +26,7 @@ func validateOmanIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateOmanIBAN generates Oman IBAN
 func generateOmanIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -34,10 +36,11 @@ func generateOmanIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 16)
 	return ReplaceChecksum(sb.String())
 }
+
 // getOmanBBAN retrieves BBAN structure from Oman IBAN
 func getOmanBBAN(iban string) (BBAN, error) {
 	if len(iban) != 23 {
 		return BBAN{}, &ErrValidationLength{Expected: 23, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:23], BankCode: iban[4:7], BranchCode: "", NationalChecksum: "", AccountNumber: iban[7:23]}, nil
+	return BBAN{BBAN: iban[4:23], BankCode: iban[4:7], BranchCode: "", AccountNumber: iban[7:23]}, nil
 }
