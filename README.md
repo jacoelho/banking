@@ -119,11 +119,6 @@ To regenerate IBAN validation code from the registry:
 make generate
 ```
 
-## Roadmap
-
-* generator with specific values
-* country bban verifier
-
 ## License
 
 MIT License

@@ -43,5 +43,5 @@ func getUnitedKingdomBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:22], BankCode: iban[4:8], BranchCode: iban[8:14], NationalChecksum: "", AccountNumber: iban[14:22]}, nil
+	return BBAN{BBAN: iban[4:22], BankCode: iban[4:8], BranchCode: iban[8:14], AccountNumber: iban[14:22]}, nil
 }

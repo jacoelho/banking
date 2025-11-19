@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateNewCaledoniaIBAN validates New Caledonia IBAN
 func validateNewCaledoniaIBAN(iban string) error {
 	if len(iban) != 27 {
@@ -28,6 +29,7 @@ func validateNewCaledoniaIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateNewCaledoniaIBAN generates New Caledonia IBAN
 func generateNewCaledoniaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -38,10 +40,11 @@ func generateNewCaledoniaIBAN() (string, error) {
 	ascii.Digits(sb, 2)
 	return ReplaceChecksum(sb.String())
 }
+
 // getNewCaledoniaBBAN retrieves BBAN structure from New Caledonia IBAN
 func getNewCaledoniaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: iban[9:14], NationalChecksum: iban[25:27], AccountNumber: iban[14:25]}, nil
+	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: "", AccountNumber: iban[9:27]}, nil
 }

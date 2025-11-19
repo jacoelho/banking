@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateSanMarinoIBAN validates San Marino IBAN
 func validateSanMarinoIBAN(iban string) error {
 	if len(iban) != 27 {
@@ -31,6 +32,7 @@ func validateSanMarinoIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateSanMarinoIBAN generates San Marino IBAN
 func generateSanMarinoIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -42,10 +44,11 @@ func generateSanMarinoIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 12)
 	return ReplaceChecksum(sb.String())
 }
+
 // getSanMarinoBBAN retrieves BBAN structure from San Marino IBAN
 func getSanMarinoBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:27], BankCode: iban[5:10], BranchCode: iban[10:15], NationalChecksum: iban[4:5], AccountNumber: iban[15:26]}, nil
+	return BBAN{BBAN: iban[4:27], BankCode: iban[5:10], BranchCode: iban[10:15], AccountNumber: iban[15:27]}, nil
 }

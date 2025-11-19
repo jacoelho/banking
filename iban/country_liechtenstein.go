@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validatePrincipalityOfLiechtensteinIBAN validates Principality Of Liechtenstein IBAN
-func validatePrincipalityOfLiechtensteinIBAN(iban string) error {
+
+// validateLiechtensteinIBAN validates Liechtenstein IBAN
+func validateLiechtensteinIBAN(iban string) error {
 	if len(iban) != 21 {
 		return &ErrValidationLength{Expected: 21, Actual: len(iban)}
 	}
@@ -25,8 +26,9 @@ func validatePrincipalityOfLiechtensteinIBAN(iban string) error {
 	}
 	return nil
 }
-// generatePrincipalityOfLiechtensteinIBAN generates Principality Of Liechtenstein IBAN
-func generatePrincipalityOfLiechtensteinIBAN() (string, error) {
+
+// generateLiechtensteinIBAN generates Liechtenstein IBAN
+func generateLiechtensteinIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("LI")
@@ -34,10 +36,11 @@ func generatePrincipalityOfLiechtensteinIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 12)
 	return ReplaceChecksum(sb.String())
 }
-// getPrincipalityOfLiechtensteinBBAN retrieves BBAN structure from Principality Of Liechtenstein IBAN
-func getPrincipalityOfLiechtensteinBBAN(iban string) (BBAN, error) {
+
+// getLiechtensteinBBAN retrieves BBAN structure from Liechtenstein IBAN
+func getLiechtensteinBBAN(iban string) (BBAN, error) {
 	if len(iban) != 21 {
 		return BBAN{}, &ErrValidationLength{Expected: 21, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:21], BankCode: iban[4:9], BranchCode: "", NationalChecksum: "", AccountNumber: iban[9:21]}, nil
+	return BBAN{BBAN: iban[4:21], BankCode: iban[4:9], BranchCode: "", AccountNumber: iban[9:21]}, nil
 }

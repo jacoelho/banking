@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateMacedoniaIBAN validates Macedonia IBAN
-func validateMacedoniaIBAN(iban string) error {
+
+// validateNorthMacedoniaIBAN validates North Macedonia IBAN
+func validateNorthMacedoniaIBAN(iban string) error {
 	if len(iban) != 19 {
 		return &ErrValidationLength{Expected: 19, Actual: len(iban)}
 	}
@@ -28,8 +29,9 @@ func validateMacedoniaIBAN(iban string) error {
 	}
 	return nil
 }
-// generateMacedoniaIBAN generates Macedonia IBAN
-func generateMacedoniaIBAN() (string, error) {
+
+// generateNorthMacedoniaIBAN generates North Macedonia IBAN
+func generateNorthMacedoniaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("MK")
@@ -38,10 +40,11 @@ func generateMacedoniaIBAN() (string, error) {
 	ascii.Digits(sb, 2)
 	return ReplaceChecksum(sb.String())
 }
-// getMacedoniaBBAN retrieves BBAN structure from Macedonia IBAN
-func getMacedoniaBBAN(iban string) (BBAN, error) {
+
+// getNorthMacedoniaBBAN retrieves BBAN structure from North Macedonia IBAN
+func getNorthMacedoniaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 19 {
 		return BBAN{}, &ErrValidationLength{Expected: 19, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:19], BankCode: iban[4:7], BranchCode: "", NationalChecksum: iban[17:19], AccountNumber: iban[7:17]}, nil
+	return BBAN{BBAN: iban[4:19], BankCode: iban[4:7], BranchCode: "", AccountNumber: iban[7:19]}, nil
 }

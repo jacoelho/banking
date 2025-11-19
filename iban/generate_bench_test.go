@@ -7,7 +7,7 @@ import (
 )
 
 func benchmarkGenerate(b *testing.B, input string) {
-	for i := 0; i < b.N; i++ {
+	for b.Loop() {
 		if _, err := iban.Generate(input); err != nil {
 			b.Fatal(err)
 		}

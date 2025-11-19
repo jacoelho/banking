@@ -3,16 +3,17 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateCzechRepublicIBAN validates Czech Republic IBAN
-func validateCzechRepublicIBAN(iban string) error {
+
+// validateSlovakiaIBAN validates Slovakia IBAN
+func validateSlovakiaIBAN(iban string) error {
 	if len(iban) != 24 {
 		return &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
-	if subject := iban[0:2]; subject != "CZ" {
-		return &ErrValidationStaticValue{Position: 0, Expected: "CZ", Actual: subject}
+	if subject := iban[0:2]; subject != "SK" {
+		return &ErrValidationStaticValue{Position: 0, Expected: "SK", Actual: subject}
 	}
 	if subject := iban[2:24]; !ascii.IsDigit(subject) {
 		return &ErrValidationRange{Position: 2, Length: 22, Expected: CharacterTypeDigit, Actual: subject}
@@ -22,18 +23,20 @@ func validateCzechRepublicIBAN(iban string) error {
 	}
 	return nil
 }
-// generateCzechRepublicIBAN generates Czech Republic IBAN
-func generateCzechRepublicIBAN() (string, error) {
+
+// generateSlovakiaIBAN generates Slovakia IBAN
+func generateSlovakiaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
-	sb.WriteString("CZ")
+	sb.WriteString("SK")
 	ascii.Digits(sb, 22)
 	return ReplaceChecksum(sb.String())
 }
-// getCzechRepublicBBAN retrieves BBAN structure from Czech Republic IBAN
-func getCzechRepublicBBAN(iban string) (BBAN, error) {
+
+// getSlovakiaBBAN retrieves BBAN structure from Slovakia IBAN
+func getSlovakiaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:24], BankCode: iban[4:8], BranchCode: iban[8:14], NationalChecksum: "", AccountNumber: iban[14:24]}, nil
+	return BBAN{BBAN: iban[4:24], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:24]}, nil
 }

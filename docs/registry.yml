@@ -1,10 +1,11 @@
-# hand edited to fix issues
-# release 96
+# Generated from iban-registry-100.txt using tsv-to-yaml
+# Do not edit manually - regenerate from TSV source
 
 countries:
   - code: AD
     name: Andorra
     IBAN: AD2!n4!n4!n12!c
+    BBAN: 4!n4!n12!c
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:20
@@ -21,9 +22,9 @@ countries:
   - code: AL
     name: Albania
     IBAN: AL2!n8!n16!c
+    BBAN: 8!n16!c
     bank_code: 0:3
-    branch_code: 3:7
-    national_checksum: 7:8
+    branch_code: 3:8
     account_number: 8:24
     sepa: false
 
@@ -36,7 +37,7 @@ countries:
     sepa: true
 
   - code: AZ
-    name: Republic Of Azerbaijan
+    name: Azerbaijan
     IBAN: AZ2!n4!a20!c
     BBAN: 4!a20!c
     bank_code: 0:4
@@ -44,13 +45,12 @@ countries:
     sepa: false
 
   - code: BA
-    name: Bosnia And Herzegovina
+    name: Bosnia and Herzegovina
     IBAN: BA2!n3!n3!n8!n2!n
     BBAN: 3!n3!n8!n2!n
     bank_code: 0:3
     branch_code: 3:6
-    national_checksum: 14:16
-    account_number: 6:14
+    account_number: 6:16
     sepa: false
 
   - code: BE
@@ -58,8 +58,7 @@ countries:
     IBAN: BE2!n3!n7!n2!n
     BBAN: 3!n7!n2!n
     bank_code: 0:3
-    national_checksum: 10:12
-    account_number: 3:10
+    account_number: 3:12
     sepa: true
 
   - code: BG
@@ -72,7 +71,7 @@ countries:
     sepa: true
 
   - code: BH
-    name: Kingdom Of Bahrain
+    name: Bahrain
     IBAN: BH2!n4!a14!c
     BBAN: 4!a14!c
     bank_code: 0:4
@@ -116,7 +115,7 @@ countries:
   - code: CR
     name: Costa Rica
     IBAN: CR2!n4!n14!n
-    BBAN: 3!n14!n
+    BBAN: 4!n14!n
     bank_code: 0:4
     account_number: 4:18
     sepa: false
@@ -131,17 +130,17 @@ countries:
     sepa: true
 
   - code: CZ
-    name: Czech Republic
+    name: Czechia
     IBAN: CZ2!n4!n6!n10!n
-    BBAN: 4!n6!n10!n
+    BBAN: 4!n16!n
     bank_code: 0:4
-    branch_code: 4:10
-    account_number: 10:20
+    account_number: 4:20
     sepa: true
 
   - code: DE
     name: Germany
     IBAN: DE2!n8!n10!n
+    BBAN: 8!n10!n
     bank_code: 0:8
     account_number: 8:18
     sepa: true
@@ -176,8 +175,7 @@ countries:
     IBAN: EE2!n2!n14!n
     BBAN: 2!n14!n
     bank_code: 0:2
-    national_checksum: 15:16
-    account_number: 2:15
+    account_number: 2:16
     sepa: true
 
   - code: EG
@@ -195,8 +193,7 @@ countries:
     BBAN: 4!n4!n1!n1!n10!n
     bank_code: 0:4
     branch_code: 4:8
-    national_checksum: 8:10
-    account_number: 10:20
+    account_number: 8:20
     sepa: true
 
   - code: FI
@@ -204,8 +201,7 @@ countries:
     IBAN: FI2!n3!n11!n
     BBAN: 3!n11!n
     bank_code: 0:3
-    national_checksum: 13:14
-    account_number: 3:13
+    account_number: 3:14
     sepa: true
 
   - code: FK
@@ -221,8 +217,7 @@ countries:
     IBAN: FO2!n4!n9!n1!n
     BBAN: 4!n9!n1!n
     bank_code: 0:4
-    national_checksum: 13:14
-    account_number: 4:13
+    account_number: 4:14
     sepa: false
 
   - code: FR
@@ -230,9 +225,7 @@ countries:
     IBAN: FR2!n5!n5!n11!c2!n
     BBAN: 5!n5!n11!c2!n
     bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
+    account_number: 5:23
     sepa: true
 
   - code: GB
@@ -306,9 +299,8 @@ countries:
     IBAN: HU2!n3!n4!n1!n15!n1!n
     BBAN: 3!n4!n1!n15!n1!n
     bank_code: 0:3
-    branch_code: 3:8
-    national_checksum: 23:24
-    account_number: 8:23
+    branch_code: 3:7
+    account_number: 7:24
     sepa: true
 
   - code: IE
@@ -342,9 +334,9 @@ countries:
     name: Iceland
     IBAN: IS2!n4!n2!n6!n10!n
     BBAN: 4!n2!n6!n10!n
-    bank_code: 0:4
-    branch_code: 6:12
-    account_number: 12:22
+    bank_code: 0:2
+    branch_code: 2:4
+    account_number: 4:22
     sepa: true
 
   - code: IT
@@ -353,7 +345,6 @@ countries:
     BBAN: 1!a5!n5!n12!c
     bank_code: 1:6
     branch_code: 6:11
-    national_checksum: 0:1
     account_number: 11:23
     sepa: true
 
@@ -399,7 +390,7 @@ countries:
     sepa: false
 
   - code: LI
-    name: Principality Of Liechtenstein
+    name: Liechtenstein
     IBAN: LI2!n5!n12!c
     BBAN: 5!n12!c
     bank_code: 0:5
@@ -419,8 +410,7 @@ countries:
     IBAN: LU2!n3!n13!c
     BBAN: 3!n13!c
     bank_code: 0:3
-    national_checksum: 14:16
-    account_number: 3:14
+    account_number: 3:16
     sepa: true
 
   - code: LV
@@ -446,8 +436,7 @@ countries:
     BBAN: 5!n5!n11!c2!n
     bank_code: 0:5
     branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
+    account_number: 10:23
     sepa: true
 
   - code: MD
@@ -463,17 +452,15 @@ countries:
     IBAN: ME2!n3!n13!n2!n
     BBAN: 3!n13!n2!n
     bank_code: 0:3
-    national_checksum: 16:18
-    account_number: 3:16
+    account_number: 3:18
     sepa: false
 
   - code: MK
-    name: Macedonia
+    name: North Macedonia
     IBAN: MK2!n3!n10!c2!n
     BBAN: 3!n10!c2!n
     bank_code: 0:3
-    national_checksum: 13:15
-    account_number: 3:13
+    account_number: 3:15
     sepa: false
 
   - code: MN
@@ -490,8 +477,7 @@ countries:
     BBAN: 5!n5!n11!n2!n
     bank_code: 0:5
     branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
+    account_number: 10:23
     sepa: false
 
   - code: MT
@@ -521,7 +507,7 @@ countries:
     sepa: false
 
   - code: NL
-    name: The Netherlands
+    name: Netherlands
     IBAN: NL2!n4!a10!n
     BBAN: 4!a10!n
     bank_code: 0:4
@@ -533,8 +519,7 @@ countries:
     IBAN: NO2!n4!n6!n1!n
     BBAN: 4!n6!n1!n
     bank_code: 0:4
-    national_checksum: 10:11
-    account_number: 4:10
+    account_number: 4:11
     sepa: true
 
   - code: OM
@@ -557,14 +542,12 @@ countries:
     name: Poland
     IBAN: PL2!n8!n16!n
     BBAN: 8!n16!n
-    bank_code: 0:3
-    branch_code: 3:7
-    national_checksum: 7:8
+    bank_code: 0:8
     account_number: 8:24
     sepa: true
 
   - code: PS
-    name: State Of Palestine
+    name: Palestine
     IBAN: PS2!n4!a21!c
     BBAN: 4!a21!c
     bank_code: 0:4
@@ -577,8 +560,7 @@ countries:
     BBAN: 4!n4!n11!n2!n
     bank_code: 0:4
     branch_code: 4:8
-    national_checksum: 19:21
-    account_number: 8:19
+    account_number: 8:21
     sepa: true
 
   - code: QA
@@ -586,8 +568,7 @@ countries:
     IBAN: QA2!n4!a21!c
     BBAN: 4!a21!c
     bank_code: 0:4
-    branch_code: 4:8
-    account_number: 8:25
+    account_number: 4:25
     sepa: false
 
   - code: RO
@@ -603,12 +584,11 @@ countries:
     IBAN: RS2!n3!n13!n2!n
     BBAN: 3!n13!n2!n
     bank_code: 0:3
-    national_checksum: 16:18
-    account_number: 3:16
+    account_number: 3:18
     sepa: false
 
   - code: RU
-    name: Russia
+    name: Russian Federation
     IBAN: RU2!n9!n5!n15!c
     BBAN: 9!n5!n15!c
     bank_code: 0:9
@@ -628,8 +608,8 @@ countries:
     name: Seychelles
     IBAN: SC2!n4!a2!n2!n16!n3!a
     BBAN: 4!a2!n2!n16!n3!a
-    bank_code: 0:4
-    branch_code: 4:8
+    bank_code: 0:6
+    branch_code: 6:8
     account_number: 8:27
     sepa: false
 
@@ -646,28 +626,23 @@ countries:
     IBAN: SE2!n3!n16!n1!n
     BBAN: 3!n16!n1!n
     bank_code: 0:3
-    national_checksum: 19:20
-    account_number: 3:19
+    account_number: 3:20
     sepa: true
 
   - code: SI
     name: Slovenia
     IBAN: SI2!n5!n8!n2!n
     BBAN: 5!n8!n2!n
-    bank_code: 0:2
-    branch_code: 2:5
-    national_checksum: 11:15
-    account_number: 5:11
+    bank_code: 0:5
+    account_number: 5:15
     sepa: true
 
   - code: SK
-    name: Slovak Republic
+    name: Slovakia
     IBAN: SK2!n4!n6!n10!n
     BBAN: 4!n6!n10!n
     bank_code: 0:4
-    branch_code: 4:10
-    national_checksum: 17:20
-    account_number: 10:17
+    account_number: 4:20
     sepa: true
 
   - code: SM
@@ -676,8 +651,7 @@ countries:
     BBAN: 1!a5!n5!n12!c
     bank_code: 1:6
     branch_code: 6:11
-    national_checksum: 0:1
-    account_number: 11:22
+    account_number: 11:23
     sepa: true
 
   - code: SO
@@ -690,9 +664,9 @@ countries:
     sepa: false
 
   - code: ST
-    name: Sao Tome And Principe
+    name: Sao Tome and Principe
     IBAN: ST2!n4!n4!n11!n2!n
-    BBAN: 8!n11!n2!n
+    BBAN: 4!n4!n11!n2!n
     bank_code: 0:4
     branch_code: 4:8
     account_number: 8:21
@@ -709,11 +683,9 @@ countries:
   - code: TL
     name: Timor Leste
     IBAN: TL2!n3!n14!n2!n
-    BBAN: 3!n 14!n 2!n
-    bank_code: 0:4
-    branch_code: 4:7
-    national_checksum: 17:19
-    account_number: 7:17
+    BBAN: 3!n14!n2!n
+    bank_code: 0:3
+    account_number: 3:19
     sepa: false
 
   - code: TN
@@ -722,17 +694,15 @@ countries:
     BBAN: 2!n3!n13!n2!n
     bank_code: 0:2
     branch_code: 2:5
-    national_checksum: 18:20
-    account_number: 5:18
+    account_number: 5:20
     sepa: false
 
   - code: TR
-    name: Turkey
+    name: Turkiye
     IBAN: TR2!n5!n1!n16!c
     BBAN: 5!n1!n16!c
     bank_code: 0:5
-    national_checksum: 5:6
-    account_number: 6:22
+    account_number: 5:22
     sepa: false
 
   - code: UA
@@ -744,7 +714,7 @@ countries:
     sepa: false
 
   - code: VA
-    name: Vatican City State
+    name: Holy See
     IBAN: VA2!n3!n15!n
     BBAN: 3!n15!n
     bank_code: 0:3
@@ -752,7 +722,7 @@ countries:
     sepa: true
 
   - code: VG
-    name: British Virgin Islands
+    name: Virgin Islands
     IBAN: VG2!n4!a16!n
     BBAN: 4!a16!n
     bank_code: 0:4
@@ -760,132 +730,12 @@ countries:
     sepa: false
 
   - code: XK
-    name: Republic Of Kosovo
+    name: Kosovo
     IBAN: XK2!n4!n10!n2!n
     BBAN: 4!n10!n2!n
     bank_code: 0:2
     branch_code: 2:4
     account_number: 4:16
-    sepa: false
-
-  - code: GF
-    name: French Guyana
-    IBAN: GF2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: true
-
-  - code: GP
-    name: Guadeloupe
-    IBAN: GP2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: true
-
-  - code: MQ
-    name: Martinique
-    IBAN: MQ2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: true
-
-  - code: RE
-    name: Reunion
-    IBAN: RE2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: true
-
-  - code: FP
-    name: French Polynesia
-    IBAN: FP2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: false
-
-  - code: TF
-    name: French Southern Territories
-    IBAN: TF2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: false
-
-  - code: YT
-    name: Mayotte
-    IBAN: YT2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: true
-
-  - code: NC
-    name: New Caledonia
-    IBAN: NC2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: false
-
-  - code: BL
-    name: Saint Barthelemy
-    IBAN: BL2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: true
-
-  - code: MF
-    name: Saint Martin
-    IBAN: MF2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: true
-
-  - code: PM
-    name: Saint Pierre Et Miquelon
-    IBAN: PM2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
-    sepa: false
-
-  - code: WF
-    name: Wallis And Futuna Islands
-    IBAN: WF2!n5!n5!n11!c2!n
-    BBAN: 5!n5!n11!c2!n
-    bank_code: 0:5
-    branch_code: 5:10
-    national_checksum: 21:23
-    account_number: 10:21
     sepa: false
 
   - code: YE
@@ -896,3 +746,135 @@ countries:
     branch_code: 4:8
     account_number: 8:26
     sepa: false
+
+  - code: AX
+    name: Aland Islands
+    IBAN: AX2!n3!n11!n
+    BBAN: 3!n11!n
+    bank_code: 0:3
+    account_number: 3:14
+    sepa: true
+
+  - code: GF
+    name: French Guyana
+    IBAN: GF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: GP
+    name: Guadeloupe
+    IBAN: GP2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: MQ
+    name: Martinique
+    IBAN: MQ2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: RE
+    name: Reunion
+    IBAN: RE2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: PF
+    name: French Polynesia
+    IBAN: PF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: TF
+    name: French Southern Territories
+    IBAN: TF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: YT
+    name: Mayotte
+    IBAN: YT2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: NC
+    name: New Caledonia
+    IBAN: NC2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: BL
+    name: Saint Barthelemy
+    IBAN: BL2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: MF
+    name: Saint Martin
+    IBAN: MF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: PM
+    name: Saint Pierre Et Miquelon
+    IBAN: PM2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: WF
+    name: Wallis And Futuna Islands
+    IBAN: WF2!n5!n5!n11!c2!n
+    BBAN: 5!n5!n11!c2!n
+    bank_code: 0:5
+    account_number: 5:23
+    sepa: true
+
+  - code: IM
+    name: Isle Of Man
+    IBAN: IM2!n4!a6!n8!n
+    BBAN: 4!a6!n8!n
+    bank_code: 0:4
+    branch_code: 4:10
+    account_number: 10:18
+    sepa: true
+
+  - code: JE
+    name: Jersey
+    IBAN: JE2!n4!a6!n8!n
+    BBAN: 4!a6!n8!n
+    bank_code: 0:4
+    branch_code: 4:10
+    account_number: 10:18
+    sepa: true
+
+  - code: GG
+    name: Guernsey
+    IBAN: GG2!n4!a6!n8!n
+    BBAN: 4!a6!n8!n
+    bank_code: 0:4
+    branch_code: 4:10
+    account_number: 10:18
+    sepa: true
+

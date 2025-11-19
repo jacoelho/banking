@@ -543,10 +543,6 @@ func generateBBANFunction(countryName, funcName string, country registry.Country
 			Value: generateBBANField(country.BranchCode, "iban"),
 		},
 		&ast.KeyValueExpr{
-			Key:   ast.NewIdent("NationalChecksum"),
-			Value: generateBBANField(country.NationalChecksum, "iban"),
-		},
-		&ast.KeyValueExpr{
 			Key:   ast.NewIdent("AccountNumber"),
 			Value: generateBBANField(country.AccountNumber, "iban"),
 		},

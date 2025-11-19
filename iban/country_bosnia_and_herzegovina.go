@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateBosniaAndHerzegovinaIBAN validates Bosnia And Herzegovina IBAN
-func validateBosniaAndHerzegovinaIBAN(iban string) error {
+
+// validateBosniaandHerzegovinaIBAN validates Bosnia and Herzegovina IBAN
+func validateBosniaandHerzegovinaIBAN(iban string) error {
 	if len(iban) != 20 {
 		return &ErrValidationLength{Expected: 20, Actual: len(iban)}
 	}
@@ -22,18 +23,20 @@ func validateBosniaAndHerzegovinaIBAN(iban string) error {
 	}
 	return nil
 }
-// generateBosniaAndHerzegovinaIBAN generates Bosnia And Herzegovina IBAN
-func generateBosniaAndHerzegovinaIBAN() (string, error) {
+
+// generateBosniaandHerzegovinaIBAN generates Bosnia and Herzegovina IBAN
+func generateBosniaandHerzegovinaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("BA")
 	ascii.Digits(sb, 18)
 	return ReplaceChecksum(sb.String())
 }
-// getBosniaAndHerzegovinaBBAN retrieves BBAN structure from Bosnia And Herzegovina IBAN
-func getBosniaAndHerzegovinaBBAN(iban string) (BBAN, error) {
+
+// getBosniaandHerzegovinaBBAN retrieves BBAN structure from Bosnia and Herzegovina IBAN
+func getBosniaandHerzegovinaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
 		return BBAN{}, &ErrValidationLength{Expected: 20, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:20], BankCode: iban[4:7], BranchCode: iban[7:10], NationalChecksum: iban[18:20], AccountNumber: iban[10:18]}, nil
+	return BBAN{BBAN: iban[4:20], BankCode: iban[4:7], BranchCode: iban[7:10], AccountNumber: iban[10:20]}, nil
 }

@@ -21,11 +21,11 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Republic Of Azerbaijan",
-			fn:   generateRepublicOfAzerbaijanIBAN,
+			fn:   generateAzerbaijanIBAN,
 		},
 		{
 			name: "Kingdom Of Bahrain",
-			fn:   generateKingdomOfBahrainIBAN,
+			fn:   generateBahrainIBAN,
 		},
 		{
 			name: "Belgium",
@@ -33,7 +33,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Bosnia And Herzegovina",
-			fn:   generateBosniaAndHerzegovinaIBAN,
+			fn:   generateBosniaandHerzegovinaIBAN,
 		},
 		{
 			name: "Brazil",
@@ -57,7 +57,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Czech Republic",
-			fn:   generateCzechRepublicIBAN,
+			fn:   generateCzechiaIBAN,
 		},
 		{
 			name: "Denmark",
@@ -185,7 +185,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Republic Of Kosovo",
-			fn:   generateRepublicOfKosovoIBAN,
+			fn:   generateKosovoIBAN,
 		},
 		{
 			name: "Kuwait",
@@ -201,7 +201,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Principality Of Liechtenstein",
-			fn:   generatePrincipalityOfLiechtensteinIBAN,
+			fn:   generateLiechtensteinIBAN,
 		},
 		{
 			name: "Lithuania",
@@ -213,7 +213,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Macedonia",
-			fn:   generateMacedoniaIBAN,
+			fn:   generateNorthMacedoniaIBAN,
 		},
 		{
 			name: "Malta",
@@ -241,7 +241,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "The Netherlands",
-			fn:   generateTheNetherlandsIBAN,
+			fn:   generateNetherlandsIBAN,
 		},
 		{
 			name: "Norway",
@@ -253,7 +253,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "State Of Palestine",
-			fn:   generateStateOfPalestineIBAN,
+			fn:   generatePalestineIBAN,
 		},
 		{
 			name: "Poland",
@@ -281,7 +281,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Sao Tome And Principe",
-			fn:   generateSaoTomeAndPrincipeIBAN,
+			fn:   generateSaoTomeandPrincipeIBAN,
 		},
 		{
 			name: "Saudi Arabia",
@@ -293,7 +293,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Slovak Republic",
-			fn:   generateSlovakRepublicIBAN,
+			fn:   generateSlovakiaIBAN,
 		},
 		{
 			name: "Slovenia",
@@ -321,7 +321,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "Turkey",
-			fn:   generateTurkeyIBAN,
+			fn:   generateTurkiyeIBAN,
 		},
 		{
 			name: "United Arab Emirates",
@@ -333,7 +333,7 @@ func TestGenerate(t *testing.T) {
 		},
 		{
 			name: "British Virgin Islands",
-			fn:   generateBritishVirginIslandsIBAN,
+			fn:   generateVirginIslandsIBAN,
 		},
 		{
 			name: "Seychelles",

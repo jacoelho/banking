@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateUnitedArabEmiratesIBAN validates United Arab Emirates IBAN
 func validateUnitedArabEmiratesIBAN(iban string) error {
 	if len(iban) != 23 {
@@ -22,6 +23,7 @@ func validateUnitedArabEmiratesIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateUnitedArabEmiratesIBAN generates United Arab Emirates IBAN
 func generateUnitedArabEmiratesIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -30,10 +32,11 @@ func generateUnitedArabEmiratesIBAN() (string, error) {
 	ascii.Digits(sb, 21)
 	return ReplaceChecksum(sb.String())
 }
+
 // getUnitedArabEmiratesBBAN retrieves BBAN structure from United Arab Emirates IBAN
 func getUnitedArabEmiratesBBAN(iban string) (BBAN, error) {
 	if len(iban) != 23 {
 		return BBAN{}, &ErrValidationLength{Expected: 23, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:23], BankCode: iban[4:7], BranchCode: "", NationalChecksum: "", AccountNumber: iban[7:23]}, nil
+	return BBAN{BBAN: iban[4:23], BankCode: iban[4:7], BranchCode: "", AccountNumber: iban[7:23]}, nil
 }

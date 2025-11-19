@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateFaroeIslandsIBAN validates Faroe Islands IBAN
 func validateFaroeIslandsIBAN(iban string) error {
 	if len(iban) != 18 {
@@ -22,6 +23,7 @@ func validateFaroeIslandsIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateFaroeIslandsIBAN generates Faroe Islands IBAN
 func generateFaroeIslandsIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -30,10 +32,11 @@ func generateFaroeIslandsIBAN() (string, error) {
 	ascii.Digits(sb, 16)
 	return ReplaceChecksum(sb.String())
 }
+
 // getFaroeIslandsBBAN retrieves BBAN structure from Faroe Islands IBAN
 func getFaroeIslandsBBAN(iban string) (BBAN, error) {
 	if len(iban) != 18 {
 		return BBAN{}, &ErrValidationLength{Expected: 18, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:18], BankCode: iban[4:8], BranchCode: "", NationalChecksum: iban[17:18], AccountNumber: iban[8:17]}, nil
+	return BBAN{BBAN: iban[4:18], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:18]}, nil
 }

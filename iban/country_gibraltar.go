@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateGibraltarIBAN validates Gibraltar IBAN
 func validateGibraltarIBAN(iban string) error {
 	if len(iban) != 23 {
@@ -28,6 +29,7 @@ func validateGibraltarIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateGibraltarIBAN generates Gibraltar IBAN
 func generateGibraltarIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -38,10 +40,11 @@ func generateGibraltarIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 15)
 	return ReplaceChecksum(sb.String())
 }
+
 // getGibraltarBBAN retrieves BBAN structure from Gibraltar IBAN
 func getGibraltarBBAN(iban string) (BBAN, error) {
 	if len(iban) != 23 {
 		return BBAN{}, &ErrValidationLength{Expected: 23, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:23], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:23]}, nil
+	return BBAN{BBAN: iban[4:23], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:23]}, nil
 }

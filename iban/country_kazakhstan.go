@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateKazakhstanIBAN validates Kazakhstan IBAN
 func validateKazakhstanIBAN(iban string) error {
 	if len(iban) != 20 {
@@ -25,6 +26,7 @@ func validateKazakhstanIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateKazakhstanIBAN generates Kazakhstan IBAN
 func generateKazakhstanIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -34,10 +36,11 @@ func generateKazakhstanIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 13)
 	return ReplaceChecksum(sb.String())
 }
+
 // getKazakhstanBBAN retrieves BBAN structure from Kazakhstan IBAN
 func getKazakhstanBBAN(iban string) (BBAN, error) {
 	if len(iban) != 20 {
 		return BBAN{}, &ErrValidationLength{Expected: 20, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:20], BankCode: iban[4:7], BranchCode: "", NationalChecksum: "", AccountNumber: iban[7:20]}, nil
+	return BBAN{BBAN: iban[4:20], BankCode: iban[4:7], BranchCode: "", AccountNumber: iban[7:20]}, nil
 }

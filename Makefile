@@ -1,8 +1,8 @@
 # disable default rules
 .SUFFIXES:
 MAKEFLAGS+=-r -R
-GOBIN = $(shell go env GOPATH)/bin
 DATE  = $(shell date +%Y%m%d%H%M%S)
+export GOBIN = $(CURDIR)/bin
 
 default: build
 
@@ -12,6 +12,9 @@ build: test
 
 $(GOBIN)/banking-registry:
 	cd registry; go install ./cmd/banking-registry
+
+$(GOBIN)/tsv-to-yaml:
+	cd registry; go install ./cmd/tsv-to-yaml
 
 .PHONY: generate
 generate: $(GOBIN)/banking-registry
@@ -41,16 +44,9 @@ ci-tidy:
 $(GOBIN)/staticcheck:
 	go install honnef.co/go/tools/cmd/staticcheck@latest
 
-$(GOBIN)/gcassert:
-	go install github.com/jordanlewis/gcassert/cmd/gcassert@latest
-
 .PHONY: staticcheck
 staticcheck: $(GOBIN)/staticcheck
 	$(GOBIN)/staticcheck ./...
-
-.PHONY: gcassert
-gcassert: $(GOBIN)/gcassert
-	$(GOBIN)/gcassert ./...
 
 .PHONY: wasm
 wasm:

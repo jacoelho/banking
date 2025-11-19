@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateSaintPierreEtMiquelonIBAN validates Saint Pierre Et Miquelon IBAN
 func validateSaintPierreEtMiquelonIBAN(iban string) error {
 	if len(iban) != 27 {
@@ -28,6 +29,7 @@ func validateSaintPierreEtMiquelonIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateSaintPierreEtMiquelonIBAN generates Saint Pierre Et Miquelon IBAN
 func generateSaintPierreEtMiquelonIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -38,10 +40,11 @@ func generateSaintPierreEtMiquelonIBAN() (string, error) {
 	ascii.Digits(sb, 2)
 	return ReplaceChecksum(sb.String())
 }
+
 // getSaintPierreEtMiquelonBBAN retrieves BBAN structure from Saint Pierre Et Miquelon IBAN
 func getSaintPierreEtMiquelonBBAN(iban string) (BBAN, error) {
 	if len(iban) != 27 {
 		return BBAN{}, &ErrValidationLength{Expected: 27, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: iban[9:14], NationalChecksum: iban[25:27], AccountNumber: iban[14:25]}, nil
+	return BBAN{BBAN: iban[4:27], BankCode: iban[4:9], BranchCode: "", AccountNumber: iban[9:27]}, nil
 }

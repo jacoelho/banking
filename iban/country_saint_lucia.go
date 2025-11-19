@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateSaintLuciaIBAN validates Saint Lucia IBAN
 func validateSaintLuciaIBAN(iban string) error {
 	if len(iban) != 32 {
@@ -28,6 +29,7 @@ func validateSaintLuciaIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateSaintLuciaIBAN generates Saint Lucia IBAN
 func generateSaintLuciaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -38,10 +40,11 @@ func generateSaintLuciaIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 24)
 	return ReplaceChecksum(sb.String())
 }
+
 // getSaintLuciaBBAN retrieves BBAN structure from Saint Lucia IBAN
 func getSaintLuciaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 32 {
 		return BBAN{}, &ErrValidationLength{Expected: 32, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:32], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:32]}, nil
+	return BBAN{BBAN: iban[4:32], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:32]}, nil
 }

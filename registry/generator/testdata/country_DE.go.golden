@@ -35,5 +35,5 @@ func getGermanyBBAN(iban string) (BBAN, error) {
 	if len(iban) != 22 {
 		return BBAN{}, &ErrValidationLength{Expected: 22, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:22], BankCode: iban[4:12], BranchCode: "", NationalChecksum: "", AccountNumber: iban[12:22]}, nil
+	return BBAN{BBAN: iban[4:22], BankCode: iban[4:12], BranchCode: "", AccountNumber: iban[12:22]}, nil
 }

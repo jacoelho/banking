@@ -20,7 +20,6 @@ func TestGeneratedCodeCompilation(t *testing.T) {
 		BBAN:             "4!a6!n8!n",
 		BankCode:         "0:4",
 		BranchCode:       "4:10",
-		NationalChecksum: "",
 		AccountNumber:    "10:18",
 		IsSEPA:           false,
 	}
@@ -187,7 +186,6 @@ func TestGenerateCodeForCountryEdgeCases(t *testing.T) {
 			IBAN:             "XX2!n8!n",
 			BankCode:         "",
 			BranchCode:       "",
-			NationalChecksum: "",
 			AccountNumber:    "",
 			IsSEPA:           false,
 		}

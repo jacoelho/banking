@@ -3,11 +3,12 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
-// validateStateOfPalestineIBAN validates State Of Palestine IBAN
-func validateStateOfPalestineIBAN(iban string) error {
+
+// validatePalestineIBAN validates Palestine IBAN
+func validatePalestineIBAN(iban string) error {
 	if len(iban) != 29 {
 		return &ErrValidationLength{Expected: 29, Actual: len(iban)}
 	}
@@ -28,8 +29,9 @@ func validateStateOfPalestineIBAN(iban string) error {
 	}
 	return nil
 }
-// generateStateOfPalestineIBAN generates State Of Palestine IBAN
-func generateStateOfPalestineIBAN() (string, error) {
+
+// generatePalestineIBAN generates Palestine IBAN
+func generatePalestineIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
 	defer sb.Free()
 	sb.WriteString("PS")
@@ -38,10 +40,11 @@ func generateStateOfPalestineIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 21)
 	return ReplaceChecksum(sb.String())
 }
-// getStateOfPalestineBBAN retrieves BBAN structure from State Of Palestine IBAN
-func getStateOfPalestineBBAN(iban string) (BBAN, error) {
+
+// getPalestineBBAN retrieves BBAN structure from Palestine IBAN
+func getPalestineBBAN(iban string) (BBAN, error) {
 	if len(iban) != 29 {
 		return BBAN{}, &ErrValidationLength{Expected: 29, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:29], BankCode: iban[4:8], BranchCode: "", NationalChecksum: "", AccountNumber: iban[8:29]}, nil
+	return BBAN{BBAN: iban[4:29], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:29]}, nil
 }

@@ -29,15 +29,14 @@ type Entry struct {
 
 // Country represents a country's IBAN configuration
 type Country struct {
-	Code             string `yaml:"code"`
-	Name             string `yaml:"name"`
-	IBAN             string `yaml:"IBAN"`
-	BBAN             string `yaml:"BBAN"`
-	BankCode         string `yaml:"bank_code"`
-	BranchCode       string `yaml:"branch_code"`
-	NationalChecksum string `yaml:"national_checksum"`
-	AccountNumber    string `yaml:"account_number"`
-	IsSEPA           bool   `yaml:"sepa"`
+	Code          string `yaml:"code"`
+	Name          string `yaml:"name"`
+	IBAN          string `yaml:"IBAN"`
+	BBAN          string `yaml:"BBAN"`
+	BankCode      string `yaml:"bank_code"`
+	BranchCode    string `yaml:"branch_code"`
+	AccountNumber string `yaml:"account_number"`
+	IsSEPA        bool   `yaml:"sepa"`
 }
 
 // Countries represents a collection of country IBAN configurations

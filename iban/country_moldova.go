@@ -3,9 +3,10 @@
 package iban
 
 import (
-	"github.com/jacoelho/banking/pool"
 	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/pool"
 )
+
 // validateMoldovaIBAN validates Moldova IBAN
 func validateMoldovaIBAN(iban string) error {
 	if len(iban) != 24 {
@@ -25,6 +26,7 @@ func validateMoldovaIBAN(iban string) error {
 	}
 	return nil
 }
+
 // generateMoldovaIBAN generates Moldova IBAN
 func generateMoldovaIBAN() (string, error) {
 	sb := pool.BytesPool.Get()
@@ -34,10 +36,11 @@ func generateMoldovaIBAN() (string, error) {
 	ascii.AlphaNumeric(sb, 20)
 	return ReplaceChecksum(sb.String())
 }
+
 // getMoldovaBBAN retrieves BBAN structure from Moldova IBAN
 func getMoldovaBBAN(iban string) (BBAN, error) {
 	if len(iban) != 24 {
 		return BBAN{}, &ErrValidationLength{Expected: 24, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:24], BankCode: iban[4:6], BranchCode: "", NationalChecksum: "", AccountNumber: iban[6:24]}, nil
+	return BBAN{BBAN: iban[4:24], BankCode: iban[4:6], BranchCode: "", AccountNumber: iban[6:24]}, nil
 }
