@@ -1,8 +1,8 @@
 # disable default rules
 .SUFFIXES:
 MAKEFLAGS+=-r -R
-GOBIN = $(shell go env GOBIN)
 DATE  = $(shell date +%Y%m%d%H%M%S)
+export GOBIN = $(CURDIR)/bin
 
 default: build
 
