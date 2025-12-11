@@ -495,8 +495,8 @@ func TestBBAN(t *testing.T) {
 			bban: iban.BBAN{
 				BBAN:          "000201231234567890154",
 				BankCode:      "0002",
-				BranchCode:    "0123",
-				AccountNumber: "1234567890154"},
+				BranchCode:    "",
+				AccountNumber: "01231234567890154"},
 		},
 		{
 			iban:    "QA58DOHB00001234567890ABCDEFG",

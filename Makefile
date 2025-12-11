@@ -20,6 +20,15 @@ $(GOBIN)/tsv-to-yaml:
 generate: $(GOBIN)/banking-registry
 	go generate -v ./...
 
+.PHONY: update-registry
+update-registry: $(GOBIN)/tsv-to-yaml
+	@if [ -z "$(REGISTRY)" ]; then \
+		echo "Error: REGISTRY variable is required. Usage: make update-registry REGISTRY=filename"; \
+		exit 1; \
+	fi
+	$(GOBIN)/tsv-to-yaml -input $(REGISTRY) -output docs/registry.yml
+	$(MAKE) generate fmt
+
 .PHONY: test
 test:
 	go test -race -shuffle=on -v ./...
