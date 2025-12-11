@@ -27,7 +27,7 @@ update-registry: $(GOBIN)/tsv-to-yaml
 		exit 1; \
 	fi
 	$(GOBIN)/tsv-to-yaml -input $(REGISTRY) -output docs/registry.yml
-	$(MAKE) generate fmt
+	$(MAKE) generate fmt wasm
 
 .PHONY: test
 test:
@@ -39,7 +39,7 @@ bench:
 
 .PHONY: fmt
 fmt:
-	go fmt ./...
+	gofmt -s -w $$(go list -f '{{.Dir}}' ./... | grep -v vendor)
 
 .PHONY: vendor
 vendor:
