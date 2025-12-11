@@ -38,5 +38,5 @@ func getPortugalBBAN(iban string) (BBAN, error) {
 	if len(iban) != 25 {
 		return BBAN{}, &ErrValidationLength{Expected: 25, Actual: len(iban)}
 	}
-	return BBAN{BBAN: iban[4:25], BankCode: iban[4:8], BranchCode: iban[8:12], AccountNumber: iban[12:25]}, nil
+	return BBAN{BBAN: iban[4:25], BankCode: iban[4:8], BranchCode: "", AccountNumber: iban[8:25]}, nil
 }

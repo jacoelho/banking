@@ -1,4 +1,4 @@
-# Generated from iban-registry-100.txt using tsv-to-yaml
+# Generated from iban-registry-v101.txt using tsv-to-yaml
 # Do not edit manually - regenerate from TSV source
 
 countries:
@@ -559,8 +559,7 @@ countries:
     IBAN: PT2!n4!n4!n11!n2!n
     BBAN: 4!n4!n11!n2!n
     bank_code: 0:4
-    branch_code: 4:8
-    account_number: 8:21
+    account_number: 4:21
     sepa: true
 
   - code: QA

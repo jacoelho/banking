@@ -113,10 +113,10 @@ Mod-97-10 implemented.
 
 ## Generate
 
-To regenerate IBAN validation code from the registry:
+To update the registry from a TSV file and regenerate IBAN validation code:
 
 ```bash
-make generate
+make update-registry REGISTRY=iban-registry-v101.txt
 ```
 
 ## License
