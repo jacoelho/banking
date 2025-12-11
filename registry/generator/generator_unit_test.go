@@ -15,14 +15,14 @@ import (
 
 func TestGenerateCodeForCountry_Internal(t *testing.T) {
 	country := registry.Country{
-		Code:             "AL",
-		Name:             "Albania",
-		IBAN:             "AL2!n8!n16!c",
-		BBAN:             "8!n16!c",
-		BankCode:         "0:3",
-		BranchCode:       "3:7",
-		AccountNumber:    "8:24",
-		IsSEPA:           false,
+		Code:          "AL",
+		Name:          "Albania",
+		IBAN:          "AL2!n8!n16!c",
+		BBAN:          "8!n16!c",
+		BankCode:      "0:3",
+		BranchCode:    "3:7",
+		AccountNumber: "8:24",
+		IsSEPA:        false,
 	}
 
 	t.Run("generated code is syntactically valid", func(t *testing.T) {

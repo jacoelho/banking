@@ -14,14 +14,14 @@ import (
 
 func TestGeneratedCodeCompilation(t *testing.T) {
 	country := registry.Country{
-		Code:             "GB",
-		Name:             "United Kingdom",
-		IBAN:             "GB2!n4!a6!n8!n",
-		BBAN:             "4!a6!n8!n",
-		BankCode:         "0:4",
-		BranchCode:       "4:10",
-		AccountNumber:    "10:18",
-		IsSEPA:           false,
+		Code:          "GB",
+		Name:          "United Kingdom",
+		IBAN:          "GB2!n4!a6!n8!n",
+		BBAN:          "4!a6!n8!n",
+		BankCode:      "0:4",
+		BranchCode:    "4:10",
+		AccountNumber: "10:18",
+		IsSEPA:        false,
 	}
 
 	t.Run("country code generation", func(t *testing.T) {
@@ -181,13 +181,13 @@ func TestGenerateCodeForCountryEdgeCases(t *testing.T) {
 
 	t.Run("empty BBAN fields", func(t *testing.T) {
 		country := registry.Country{
-			Code:             "XX",
-			Name:             "Test",
-			IBAN:             "XX2!n8!n",
-			BankCode:         "",
-			BranchCode:       "",
-			AccountNumber:    "",
-			IsSEPA:           false,
+			Code:          "XX",
+			Name:          "Test",
+			IBAN:          "XX2!n8!n",
+			BankCode:      "",
+			BranchCode:    "",
+			AccountNumber: "",
+			IsSEPA:        false,
 		}
 
 		var buf bytes.Buffer
