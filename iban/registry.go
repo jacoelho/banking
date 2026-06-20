@@ -1,6 +1,6 @@
 package iban
 
-import "github.com/jacoelho/banking/ascii"
+import "github.com/jacoelho/banking/internal/ascii"
 
 type ibanRuleKind uint8
 
@@ -108,11 +108,11 @@ func (c *countrySpec) generate() string {
 		case ibanRuleStatic:
 			buf = append(buf, rule.value...)
 		case ibanRuleDigit:
-			buf = ascii.AppendRandomDigits(buf, int(rule.length))
+			buf = ascii.AppendRandomDigits(buf, rule.length)
 		case ibanRuleUpperCase:
-			buf = ascii.AppendRandomUpperCaseLetters(buf, int(rule.length))
+			buf = ascii.AppendRandomUpperCaseLetters(buf, rule.length)
 		case ibanRuleAlphaNumeric:
-			buf = ascii.AppendRandomAlphaNumeric(buf, int(rule.length))
+			buf = ascii.AppendRandomAlphaNumeric(buf, rule.length)
 		}
 	}
 	return replaceChecksumBytes(buf)

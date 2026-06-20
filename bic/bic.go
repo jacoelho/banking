@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/jacoelho/banking/ascii"
+	"github.com/jacoelho/banking/internal/ascii"
 	"github.com/jacoelho/banking/iso3166"
 )
 
