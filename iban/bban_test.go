@@ -1,6 +1,7 @@
 package iban_test
 
 import (
+	"errors"
 	"reflect"
 	"testing"
 
@@ -834,5 +835,54 @@ func TestBBAN(t *testing.T) {
 				}
 			})
 	}
+}
 
+func TestGetBBANRejectsInvalidIBAN(t *testing.T) {
+	tests := []struct {
+		name string
+		iban string
+		want any
+	}{
+		{
+			name: "invalid checksum",
+			iban: "GB00NWBK60161331926819",
+			want: (*iban.ErrValidationChecksum)(nil),
+		},
+		{
+			name: "invalid range",
+			iban: "GB29NWBK6016133192681X",
+			want: (*iban.ErrValidationRange)(nil),
+		},
+		{
+			name: "unsupported country",
+			iban: "ZZ29NWBK60161331926819",
+			want: (*iban.ErrUnsupportedCountry)(nil),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := iban.GetBBAN(tt.iban)
+			if err == nil {
+				t.Fatalf("GetBBAN() error = nil, got BBAN %+v", got)
+			}
+			switch tt.want.(type) {
+			case *iban.ErrValidationChecksum:
+				var target *iban.ErrValidationChecksum
+				if !errors.As(err, &target) {
+					t.Fatalf("GetBBAN() error = %T, want ErrValidationChecksum", err)
+				}
+			case *iban.ErrValidationRange:
+				var target *iban.ErrValidationRange
+				if !errors.As(err, &target) {
+					t.Fatalf("GetBBAN() error = %T, want ErrValidationRange", err)
+				}
+			case *iban.ErrUnsupportedCountry:
+				var target *iban.ErrUnsupportedCountry
+				if !errors.As(err, &target) {
+					t.Fatalf("GetBBAN() error = %T, want ErrUnsupportedCountry", err)
+				}
+			}
+		})
+	}
 }

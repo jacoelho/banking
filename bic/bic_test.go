@@ -170,6 +170,14 @@ func TestIsValid(t *testing.T) {
 			BranchCode:          "XXXX",
 			want:                false,
 		},
+		{
+			name:                "wrong field boundaries with total length 11",
+			BusinessPartyPrefix: "ABCDE",
+			CountryCode:         "BE",
+			BusinessPartySuffix: "1",
+			BranchCode:          "XXX",
+			want:                false,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

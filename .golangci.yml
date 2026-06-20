@@ -1,0 +1,251 @@
+version: "2"
+
+run:
+  timeout: 5m
+  tests: true
+  modules-download-mode: readonly
+
+linters:
+  default: none
+  enable:
+    - govet
+    - staticcheck
+    - revive
+    - errcheck
+    - ineffassign
+    - unused
+    - iface
+    - dupl
+    - dogsled
+    - funlen
+    - gocritic
+    - goconst
+    - gocognit
+    - cyclop
+    - nestif
+    - maintidx
+    - unparam
+    - errorlint
+    - nilerr
+    - nilnil
+    - nilnesserr
+    - wastedassign
+    - forcetypeassert
+    - bodyclose
+    - nolintlint
+    - exhaustive
+    - gosec
+    - ireturn
+    - interfacebloat
+    - copyloopvar
+    - predeclared
+    - nakedret
+    - contextcheck
+    - reassign
+    - makezero
+    - modernize
+    - noctx
+    - recvcheck
+    - unconvert
+    - asciicheck
+    - bidichk
+    - depguard
+    - dupword
+    - durationcheck
+    - errchkjson
+    - errname
+    - gocheckcompilerdirectives
+    - gochecknoinits
+    - godoclint
+    - gomoddirectives
+    - goprintffuncname
+    - inamedparam
+    - intrange
+    - iotamixing
+    - mirror
+    - misspell
+    - musttag
+    - nosprintfhostport
+    - testableexamples
+    - thelper
+    - tparallel
+    - usestdlibvars
+    - usetesting
+
+  settings:
+    govet:
+      enable-all: true
+
+    errcheck:
+      check-blank: true
+      check-type-assertions: true
+
+    copyloopvar:
+      check-alias: true
+
+    exhaustive:
+      default-signifies-exhaustive: true
+
+    recvcheck:
+      exclusions:
+        - "*.UnmarshalJSON"
+        - "*.UnmarshalText"
+
+    nilnil:
+      detect-opposite: true
+
+    reassign:
+      patterns:
+        - ".*"
+
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+      allow-no-explanation: []
+
+    depguard:
+      rules:
+        main:
+          list-mode: strict
+          files:
+            - $all
+          allow:
+            - $gostd
+            - github.com/BurntSushi/toml
+            - github.com/jacoelho/banking
+            - github.com/jacoelho/rvw
+            - golang.org/x/mod
+            - golang.org/x/tools
+
+    revive:
+      enable-default-rules: false
+      rules:
+        - name: blank-imports
+        - name: bool-literal-in-expr
+        - name: constant-logical-expr
+        - name: context-as-argument
+          arguments:
+            - allow-types-before: "*testing.T"
+        - name: context-keys-type
+        - name: dot-imports
+        - name: empty-lines
+        - name: error-return
+        - name: error-strings
+        - name: identical-branches
+        - name: identical-ifelseif-branches
+        - name: identical-ifelseif-conditions
+        - name: identical-switch-branches
+        - name: identical-switch-conditions
+        - name: if-return
+        - name: increment-decrement
+        - name: modifies-value-receiver
+        - name: redefines-builtin-id
+        - name: superfluous-else
+          arguments:
+            - preserve-scope
+        - name: time-naming
+        - name: unchecked-type-assertion
+        - name: unexported-return
+        - name: unnecessary-if
+        - name: var-declaration
+        - name: var-naming
+
+    iface:
+      enable:
+        - identical
+        - unused
+        - opaque
+        - unexported
+
+    dupl:
+      threshold: 120
+
+    dogsled:
+      max-blank-identifiers: 1
+
+    gocognit:
+      min-complexity: 50
+
+    cyclop:
+      max-complexity: 35
+
+    gocritic:
+      enabled-checks:
+        - boolExprSimplify
+        - commentedOutImport
+        - deferUnlambda
+        - dupImport
+        - emptyFallthrough
+        - emptyStringTest
+        - exposedSyncMutex
+        - hexLiteral
+        - httpNoBody
+        - methodExprCall
+        - octalLiteral
+        - preferFilepathJoin
+        - redundantSprint
+        - regexpSimplify
+        - stringConcatSimplify
+        - stringsCompare
+        - timeExprSimplify
+        - typeAssertChain
+        - typeUnparen
+        - unlabelStmt
+        - unnecessaryBlock
+        - whyNoLint
+        - yodaStyleExpr
+
+    funlen:
+      lines: 120
+      statements: 70
+      ignore-comments: true
+
+    nestif:
+      min-complexity: 15
+
+    maintidx:
+      under: 25
+
+  exclusions:
+    rules:
+      - path: ascii/generator\.go
+        linters:
+          - gosec
+      - path: cmd/banking-registry/main\.go
+        linters:
+          - gosec
+      - path: internal/ibangen/generator\.go
+        linters:
+          - gosec
+      - path: internal/ibanregistry/source\.go
+        linters:
+          - gosec
+      - path: internal/ibanregistry/tsv_test\.go
+        linters:
+          - dupword
+      - path: iban/error\.go
+        linters:
+          - errname
+      - path: _test\.go
+        linters:
+          - cyclop
+          - gocognit
+          - goconst
+          - funlen
+          - nestif
+          - dupl
+          - maintidx
+      - path: _test\.go
+        text: "unused-parameter:"
+        linters:
+          - revive
+      - path: _test\.go
+        linters:
+          - govet
+        text: "fieldalignment"
+      - linters:
+          - govet
+        text: "fieldalignment"
+      - path: _test\.go
+        linters:
+          - gosec

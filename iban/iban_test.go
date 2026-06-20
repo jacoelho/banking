@@ -6,7 +6,7 @@ func Test_chunkString(t *testing.T) {
 	tests := []struct {
 		input     string
 		chunkSize int
-		sep       rune
+		sep       byte
 		want      string
 	}{
 		{

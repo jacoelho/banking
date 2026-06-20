@@ -3,6 +3,7 @@
 MAKEFLAGS+=-r -R
 DATE  = $(shell date +%Y%m%d%H%M%S)
 export GOBIN = $(CURDIR)/bin
+SOURCE_ENCODING ?= auto
 
 default: build
 
@@ -10,24 +11,16 @@ default: build
 build: test
 	go install -v ./...
 
-$(GOBIN)/banking-registry:
-	cd registry; go install ./cmd/banking-registry
-
-$(GOBIN)/tsv-to-yaml:
-	cd registry; go install ./cmd/tsv-to-yaml
-
 .PHONY: generate
-generate: $(GOBIN)/banking-registry
-	go generate -v ./...
-
-.PHONY: update-registry
-update-registry: $(GOBIN)/tsv-to-yaml
-	@if [ -z "$(REGISTRY)" ]; then \
-		echo "Error: REGISTRY variable is required. Usage: make update-registry REGISTRY=filename"; \
+generate:
+	@if [ -z "$(SOURCE_REGISTRY)" ]; then \
+		echo "Error: SOURCE_REGISTRY variable is required. Usage: make generate SOURCE_REGISTRY=filename"; \
 		exit 1; \
 	fi
-	$(GOBIN)/tsv-to-yaml -input $(REGISTRY) -output docs/registry.yml
-	$(MAKE) generate fmt wasm
+	go run ./cmd/banking-registry -registry-file "$(SOURCE_REGISTRY)" -encoding "$(SOURCE_ENCODING)" -dst-directory iban
+
+.PHONY: update-registry
+update-registry: generate fmt wasm
 
 .PHONY: test
 test:
@@ -39,7 +32,11 @@ bench:
 
 .PHONY: fmt
 fmt:
-	gofmt -s -w $$(go list -f '{{.Dir}}' ./... | grep -v vendor)
+	gofmt -s -w $$(go list -f '{{.Dir}}' ./...)
+
+.PHONY: check-registry-tools
+check-registry-tools:
+	go test ./internal/... ./cmd/banking-registry
 
 .PHONY: vendor
 vendor:
@@ -61,4 +58,3 @@ staticcheck: $(GOBIN)/staticcheck
 wasm:
 	GOOS=js GOARCH=wasm go build -ldflags="-s -w" -o docs/iban.wasm ./cmd/wasmiban
 	cp $$(go env GOROOT)/lib/wasm/wasm_exec.js docs/
-
