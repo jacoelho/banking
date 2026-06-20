@@ -2,16 +2,13 @@ package iban
 
 // IsSEPACountryCode reports whether a country code is a SEPA member.
 func IsSEPACountryCode(countryCode string) (bool, error) {
-	if len(countryCode) != 2 {
-		return false, &ErrValidationLength{Expected: 2, Actual: len(countryCode)}
+	if !validCountryCode(countryCode) {
+		return false, invalidCountryCode(countryCode)
 	}
-	slot, ok := countryIndexSlot(countryCode)
-	if !ok {
-		return false, &ErrUnsupportedCountry{CountryCode: countryCode}
-	}
+	slot, _ := countryIndexSlot(countryCode)
 	entry := countryCodeIndex[slot]
 	if entry&countryIndexMask == 0 {
-		return false, &ErrUnsupportedCountry{CountryCode: countryCode}
+		return false, unsupportedCountry(countryCode)
 	}
 	return entry&countrySEPAFlag != 0, nil
 }

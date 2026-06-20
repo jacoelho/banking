@@ -31,47 +31,47 @@ func humanizeError(err error) string {
 		return ""
 	}
 
-	var lengthErr *iban.ErrValidationLength
-	if errors.As(err, &lengthErr) {
-		return fmt.Sprintf("Invalid length (expected %d characters)", lengthErr.Expected)
-	}
+	var validationErr *iban.ValidationError
+	if errors.As(err, &validationErr) {
+		switch validationErr.Reason {
+		case iban.ReasonInvalidLength:
+			return fmt.Sprintf("Invalid length (expected %d characters)", validationErr.ExpectedLength)
+		case iban.ReasonInvalidChecksum:
+			return "Invalid checksum"
+		case iban.ReasonInvalidCharacters:
+			if validationErr.ExpectedValue != "" {
+				if validationErr.Position == 0 {
+					return fmt.Sprintf("Invalid country code (expected %s)", validationErr.ExpectedValue)
+				}
+				return "Invalid format - expected specific value"
+			}
+			endPos := validationErr.Position + validationErr.Length - 1
 
-	var checksumErr *iban.ErrValidationChecksum
-	if errors.As(err, &checksumErr) {
-		return "Invalid checksum"
-	}
+			var typeDesc string
+			switch validationErr.Expected {
+			case iban.CharClassDigit:
+				typeDesc = "only digits"
+			case iban.CharClassUpperAlpha:
+				typeDesc = "only letters"
+			case iban.CharClassUpperAlphaNumeric:
+				typeDesc = "letters and digits"
+			default:
+				typeDesc = validationErr.Expected.String()
+			}
 
-	var rangeErr *iban.ErrValidationRange
-	if errors.As(err, &rangeErr) {
-		endPos := rangeErr.Position + rangeErr.Length - 1
-
-		var typeDesc string
-		switch rangeErr.Expected {
-		case iban.CharacterTypeDigit:
-			typeDesc = "only digits"
-		case iban.CharacterTypeUpperCase:
-			typeDesc = "only letters"
-		case iban.CharacterTypeAlphaNumeric:
-			typeDesc = "letters and digits"
-		default:
-			typeDesc = rangeErr.Expected.String()
+			return fmt.Sprintf("Invalid characters between position %d and %d - %s allowed",
+				validationErr.Position, endPos, typeDesc)
+		case iban.ReasonUnsupportedCountry:
+			return fmt.Sprintf("Country code '%s' is not supported", validationErr.Actual)
 		}
-
-		return fmt.Sprintf("Invalid characters between position %d and %d - %s allowed",
-			rangeErr.Position, endPos, typeDesc)
 	}
 
-	var staticErr *iban.ErrValidationStaticValue
-	if errors.As(err, &staticErr) {
-		if staticErr.Position == 0 {
-			return fmt.Sprintf("Invalid country code (expected %s)", staticErr.Expected)
+	var countryCodeErr *iban.CountryCodeError
+	if errors.As(err, &countryCodeErr) {
+		if errors.Is(err, iban.ErrUnsupportedCountry) {
+			return fmt.Sprintf("Country code '%s' is not supported", countryCodeErr.CountryCode)
 		}
-		return "Invalid format - expected specific value"
-	}
-
-	var unsupportedErr *iban.ErrUnsupportedCountry
-	if errors.As(err, &unsupportedErr) {
-		return fmt.Sprintf("Country code '%s' is not supported", unsupportedErr.CountryCode)
+		return fmt.Sprintf("Country code '%s' is invalid", countryCodeErr.CountryCode)
 	}
 
 	return err.Error()
@@ -111,8 +111,8 @@ func validateIBAN(this js.Value, args []js.Value) any {
 	if err != nil {
 		data.FormattedIBAN = iban.PaperFormat(ibanStr)
 
-		var checksumErr *iban.ErrValidationChecksum
-		if errors.As(err, &checksumErr) {
+		var validationErr *iban.ValidationError
+		if errors.As(err, &validationErr) && validationErr.Reason == iban.ReasonInvalidChecksum {
 			if corrected, corrErr := iban.ReplaceChecksum(ibanStr); corrErr == nil {
 				data.CorrectedIBAN = iban.PaperFormat(corrected)
 			}

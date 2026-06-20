@@ -8,65 +8,107 @@ import (
 	"github.com/jacoelho/banking/iban"
 )
 
-func TestIsValidationError(t *testing.T) {
+func TestValidationErrorMatchesInvalidIBAN(t *testing.T) {
+	err := &iban.ValidationError{
+		Reason:   iban.ReasonInvalidCharacters,
+		Position: 4,
+		Length:   3,
+		Expected: iban.CharClassUpperAlpha,
+		Actual:   "123",
+	}
+
+	if !errors.Is(err, iban.ErrInvalidIBAN) {
+		t.Fatalf("errors.Is(err, ErrInvalidIBAN) = false, want true")
+	}
+	if errors.Is(err, iban.ErrUnsupportedCountry) {
+		t.Fatalf("errors.Is(err, ErrUnsupportedCountry) = true, want false")
+	}
+
+	wrapped := fmt.Errorf("wrapped: %w", err)
+	var got *iban.ValidationError
+	if !errors.As(wrapped, &got) {
+		t.Fatalf("errors.As(wrapped, *ValidationError) = false, want true")
+	}
+	if got.Reason != iban.ReasonInvalidCharacters ||
+		got.Position != 4 ||
+		got.Length != 3 ||
+		got.Expected != iban.CharClassUpperAlpha ||
+		got.Actual != "123" {
+		t.Fatalf("ValidationError = %+v", got)
+	}
+}
+
+func TestValidationErrorMatchesUnsupportedCountry(t *testing.T) {
+	err := &iban.ValidationError{
+		Reason:   iban.ReasonUnsupportedCountry,
+		Position: 0,
+		Length:   2,
+		Expected: iban.CharClassUpperAlpha,
+		Actual:   "ZZ",
+	}
+
+	if !errors.Is(err, iban.ErrInvalidIBAN) {
+		t.Fatalf("errors.Is(err, ErrInvalidIBAN) = false, want true")
+	}
+	if !errors.Is(err, iban.ErrUnsupportedCountry) {
+		t.Fatalf("errors.Is(err, ErrUnsupportedCountry) = false, want true")
+	}
+}
+
+func TestCountryCodeErrorMatching(t *testing.T) {
 	tests := []struct {
 		name string
 		err  error
-		want bool
+		want error
 	}{
 		{
-			name: "nil error",
-			err:  nil,
-			want: false,
+			name: "invalid country code",
+			err: &iban.CountryCodeError{
+				CountryCode: "G",
+				Err:         iban.ErrInvalidCountryCode,
+			},
+			want: iban.ErrInvalidCountryCode,
 		},
 		{
-			name: "non-validation error",
-			err:  fmt.Errorf("some other error"),
-			want: false,
-		},
-		{
-			name: "ErrValidationLength",
-			err:  &iban.ErrValidationLength{Expected: 22, Actual: 20},
-			want: true,
-		},
-		{
-			name: "ErrValidationChecksum",
-			err:  &iban.ErrValidationChecksum{Expected: "97", Actual: "00"},
-			want: true,
-		},
-		{
-			name: "ErrValidationRange",
-			err:  &iban.ErrValidationRange{Position: 4, Length: 8, Expected: iban.CharacterTypeDigit, Actual: "ABC12345"},
-			want: true,
-		},
-		{
-			name: "ErrValidationStaticValue",
-			err:  &iban.ErrValidationStaticValue{Position: 0, Expected: "GB", Actual: "XX"},
-			want: true,
-		},
-		{
-			name: "ErrUnsupportedCountry",
-			err:  &iban.ErrUnsupportedCountry{CountryCode: "XX"},
-			want: true,
-		},
-		{
-			name: "wrapped validation error",
-			err:  fmt.Errorf("wrapper: %w", &iban.ErrValidationLength{Expected: 22, Actual: 20}),
-			want: true,
-		},
-		{
-			name: "wrapped non-validation error",
-			err:  fmt.Errorf("wrapper: %w", errors.New("not validation")),
-			want: false,
+			name: "unsupported country",
+			err: &iban.CountryCodeError{
+				CountryCode: "ZZ",
+				Err:         iban.ErrUnsupportedCountry,
+			},
+			want: iban.ErrUnsupportedCountry,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := iban.IsValidationError(tt.err)
-			if got != tt.want {
-				t.Errorf("IsValidationError() = %v, want %v", got, tt.want)
+			wrapped := fmt.Errorf("wrapped: %w", tt.err)
+			if !errors.Is(wrapped, tt.want) {
+				t.Fatalf("errors.Is(wrapped, %v) = false, want true", tt.want)
+			}
+
+			var got *iban.CountryCodeError
+			if !errors.As(wrapped, &got) {
+				t.Fatalf("errors.As(wrapped, *CountryCodeError) = false, want true")
 			}
 		})
+	}
+}
+
+func TestValidateReturnsStructuredCharacterError(t *testing.T) {
+	err := iban.Validate("GB29NWBK6016133192681X")
+	if err == nil {
+		t.Fatalf("Validate() error = nil, want error")
+	}
+
+	var got *iban.ValidationError
+	if !errors.As(err, &got) {
+		t.Fatalf("errors.As(err, *ValidationError) = false, want true")
+	}
+	if got.Reason != iban.ReasonInvalidCharacters ||
+		got.Position != 8 ||
+		got.Length != 14 ||
+		got.Expected != iban.CharClassDigit ||
+		got.Actual != "6016133192681X" {
+		t.Fatalf("ValidationError = %+v", got)
 	}
 }

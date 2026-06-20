@@ -5,7 +5,7 @@ const decimalDigits = "0123456789"
 // ReplaceChecksum returns the IBAN with corrected check digits.
 func ReplaceChecksum(iban string) (string, error) {
 	if len(iban) < 4 {
-		return "", &ErrValidationLength{Expected: 4, Actual: len(iban)}
+		return "", invalidIBANLength(4, len(iban))
 	}
 	if err := validateIBANStructure(iban); err != nil {
 		return "", err
@@ -24,7 +24,7 @@ func validateChecksum(iban string) error {
 	if expected[0] == iban[2] && expected[1] == iban[3] {
 		return nil
 	}
-	return &ErrValidationChecksum{Expected: string(expected[:]), Actual: iban[2:4]}
+	return invalidIBANChecksum(string(expected[:]), iban[2:4])
 }
 
 // calculateCheckDigits calculates IBAN check digits and writes them to checkBuf.

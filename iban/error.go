@@ -5,98 +5,202 @@ import (
 	"fmt"
 )
 
-// CharacterType represents the expected character type in IBAN range validation
-type CharacterType int
+var (
+	// ErrInvalidIBAN reports an invalid IBAN.
+	ErrInvalidIBAN = errors.New("invalid IBAN")
 
-const (
-	CharacterTypeDigit CharacterType = iota
-	CharacterTypeUpperCase
-	CharacterTypeAlphaNumeric
+	// ErrInvalidCountryCode reports an invalid ISO 3166-1 alpha-2 country code.
+	ErrInvalidCountryCode = errors.New("invalid country code")
+
+	// ErrUnsupportedCountry reports a syntactically valid country code that this
+	// registry does not support.
+	ErrUnsupportedCountry = errors.New("unsupported country")
 )
 
-// String returns the string representation of CharacterType
-func (ct CharacterType) String() string {
-	switch ct {
-	case CharacterTypeDigit:
-		return "Digit"
-	case CharacterTypeUpperCase:
-		return "UpperCase"
-	case CharacterTypeAlphaNumeric:
-		return "AlphaNumeric"
+// ValidationReason identifies why IBAN validation failed.
+type ValidationReason uint8
+
+const (
+	ReasonInvalidLength ValidationReason = iota + 1
+	ReasonInvalidChecksum
+	ReasonInvalidCharacters
+	ReasonUnsupportedCountry
+)
+
+func (r ValidationReason) String() string {
+	switch r {
+	case ReasonInvalidLength:
+		return "invalid length"
+	case ReasonInvalidChecksum:
+		return "invalid checksum"
+	case ReasonInvalidCharacters:
+		return "invalid characters"
+	case ReasonUnsupportedCountry:
+		return "unsupported country"
 	default:
-		return "Unknown"
+		return "unknown"
 	}
 }
 
-// ErrValidationLength represents an IBAN length validation error
-type ErrValidationLength struct {
-	Expected int
-	Actual   int
+// CharClass identifies the expected character class for an IBAN span.
+type CharClass uint8
+
+const (
+	CharClassDigit CharClass = iota + 1
+	CharClassUpperAlpha
+	CharClassUpperAlphaNumeric
+)
+
+func (c CharClass) String() string {
+	switch c {
+	case CharClassDigit:
+		return "digit"
+	case CharClassUpperAlpha:
+		return "uppercase letter"
+	case CharClassUpperAlphaNumeric:
+		return "uppercase letter or digit"
+	default:
+		return "unknown"
+	}
 }
 
-func (e *ErrValidationLength) Error() string {
-	return fmt.Sprintf("unexpected length, want: %d, got: %d", e.Expected, e.Actual)
-}
+// ValidationError contains machine-readable IBAN validation diagnostics.
+type ValidationError struct {
+	Reason ValidationReason
 
-// ErrValidationChecksum represents an IBAN checksum validation error
-type ErrValidationChecksum struct {
-	Expected string
-	Actual   string
-}
-
-func (e *ErrValidationChecksum) Error() string {
-	return fmt.Sprintf("incorrect checksum, expected: %s, got: %s", e.Expected, e.Actual)
-}
-
-// ErrValidationRange represents an IBAN range validation error
-type ErrValidationRange struct {
+	// Position and Length identify the invalid IBAN span when applicable.
 	Position int
 	Length   int
-	Expected CharacterType
+
+	// Expected identifies the required character class for ReasonInvalidCharacters.
+	Expected CharClass
 	Actual   string
+
+	// ExpectedValue is set when a precise expected value exists, such as
+	// checksum digits or registry static values.
+	ExpectedValue string
+
+	// ExpectedLength and ActualLength are set for ReasonInvalidLength.
+	ExpectedLength int
+	ActualLength   int
 }
 
-func (e *ErrValidationRange) Error() string {
-	return fmt.Sprintf("range rule, start pos: %d, length: %d, expected type: %s, found: %s",
-		e.Position, e.Length, e.Expected.String(), e.Actual)
+func (e *ValidationError) Error() string {
+	if e == nil {
+		return ErrInvalidIBAN.Error()
+	}
+	switch e.Reason {
+	case ReasonInvalidLength:
+		return fmt.Sprintf("invalid IBAN length: want %d, got %d", e.ExpectedLength, e.ActualLength)
+	case ReasonInvalidChecksum:
+		return fmt.Sprintf("invalid IBAN checksum: want %s, got %s", e.ExpectedValue, e.Actual)
+	case ReasonInvalidCharacters:
+		if e.ExpectedValue != "" {
+			return fmt.Sprintf("invalid IBAN value at position %d: want %s, got %s", e.Position, e.ExpectedValue, e.Actual)
+		}
+		return fmt.Sprintf("invalid IBAN characters at position %d: want %s, got %s", e.Position, e.Expected, e.Actual)
+	case ReasonUnsupportedCountry:
+		return fmt.Sprintf("unsupported IBAN country %s", e.Actual)
+	default:
+		return ErrInvalidIBAN.Error()
+	}
 }
 
-// ErrValidationStaticValue represents an IBAN static value validation error
-type ErrValidationStaticValue struct {
-	Position int
-	Expected string
-	Actual   string
-}
-
-func (e *ErrValidationStaticValue) Error() string {
-	return fmt.Sprintf("static value rule, pos: %d, expected value: %s, found: %s",
-		e.Position, e.Expected, e.Actual)
-}
-
-// ErrUnsupportedCountry represents an error for unsupported country codes
-type ErrUnsupportedCountry struct {
-	CountryCode string
-}
-
-func (e *ErrUnsupportedCountry) Error() string {
-	return fmt.Sprintf("country code %s is not supported", e.CountryCode)
-}
-
-// IsValidationError reports whether err is any validation error from this library
-func IsValidationError(err error) bool {
-	if err == nil {
+func (e *ValidationError) Is(target error) bool {
+	if e == nil {
 		return false
 	}
+	return target == ErrInvalidIBAN ||
+		target == ErrUnsupportedCountry && e.Reason == ReasonUnsupportedCountry
+}
 
-	var lengthErr *ErrValidationLength
-	var checksumErr *ErrValidationChecksum
-	var rangeErr *ErrValidationRange
-	var staticErr *ErrValidationStaticValue
-	var unsupportedErr *ErrUnsupportedCountry
+// CountryCodeError contains machine-readable country-code diagnostics.
+type CountryCodeError struct {
+	CountryCode string
+	Err         error
+}
 
-	return errors.As(err, &lengthErr) ||
-		errors.As(err, &checksumErr) ||
-		errors.As(err, &rangeErr) ||
-		errors.As(err, &staticErr) ||
-		errors.As(err, &unsupportedErr)
+func (e *CountryCodeError) Error() string {
+	if e == nil || e.Err == nil {
+		return ErrInvalidCountryCode.Error()
+	}
+	switch {
+	case errors.Is(e.Err, ErrUnsupportedCountry):
+		return fmt.Sprintf("unsupported country code %s", e.CountryCode)
+	case errors.Is(e.Err, ErrInvalidCountryCode):
+		return fmt.Sprintf("invalid country code %s", e.CountryCode)
+	default:
+		return e.Err.Error()
+	}
+}
+
+func (e *CountryCodeError) Unwrap() error {
+	if e == nil {
+		return nil
+	}
+	return e.Err
+}
+
+func invalidIBANLength(expected, actual int) error {
+	return &ValidationError{
+		Reason:         ReasonInvalidLength,
+		Length:         expected,
+		ExpectedLength: expected,
+		ActualLength:   actual,
+	}
+}
+
+func invalidIBANChecksum(expected, actual string) error {
+	return &ValidationError{
+		Reason:        ReasonInvalidChecksum,
+		Position:      2,
+		Length:        2,
+		Expected:      CharClassDigit,
+		Actual:        actual,
+		ExpectedValue: expected,
+	}
+}
+
+func invalidIBANCharacters(position, length int, expected CharClass, actual string) error {
+	return &ValidationError{
+		Reason:   ReasonInvalidCharacters,
+		Position: position,
+		Length:   length,
+		Expected: expected,
+		Actual:   actual,
+	}
+}
+
+func invalidIBANValue(position int, expected, actual string) error {
+	return &ValidationError{
+		Reason:        ReasonInvalidCharacters,
+		Position:      position,
+		Length:        len(expected),
+		Actual:        actual,
+		ExpectedValue: expected,
+	}
+}
+
+func unsupportedIBANCountry(countryCode string) error {
+	return &ValidationError{
+		Reason:   ReasonUnsupportedCountry,
+		Position: 0,
+		Length:   len(countryCode),
+		Expected: CharClassUpperAlpha,
+		Actual:   countryCode,
+	}
+}
+
+func invalidCountryCode(countryCode string) error {
+	return &CountryCodeError{
+		CountryCode: countryCode,
+		Err:         ErrInvalidCountryCode,
+	}
+}
+
+func unsupportedCountry(countryCode string) error {
+	return &CountryCodeError{
+		CountryCode: countryCode,
+		Err:         ErrUnsupportedCountry,
+	}
 }

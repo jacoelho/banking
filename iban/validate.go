@@ -3,12 +3,15 @@ package iban
 // validateIBANStructure validates an IBAN without comparing checksum.
 func validateIBANStructure(iban string) error {
 	if len(iban) < 2 {
-		return &ErrValidationLength{Expected: 2, Actual: len(iban)}
+		return invalidIBANLength(2, len(iban))
 	}
 	code := iban[0:2]
+	if !validCountryCode(code) {
+		return invalidIBANCharacters(0, 2, CharClassUpperAlpha, code)
+	}
 	country, ok := lookupCountry(code)
 	if !ok {
-		return &ErrUnsupportedCountry{CountryCode: code}
+		return unsupportedIBANCountry(code)
 	}
 	return country.validate(iban)
 }

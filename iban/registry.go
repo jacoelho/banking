@@ -54,6 +54,14 @@ func lookupCountry(code string) (*countrySpec, bool) {
 	return &countrySpecs[int(index)-1], true
 }
 
+func validCountryCode(code string) bool {
+	if len(code) != 2 {
+		return false
+	}
+	_, ok := countryIndexSlot(code)
+	return ok
+}
+
 // countryIndexSlot requires a two-byte country code. Public callers validate
 // length before slicing or calling lookupCountry.
 func countryIndexSlot(code string) (int, bool) {
@@ -65,7 +73,7 @@ func countryIndexSlot(code string) (int, bool) {
 
 func (c *countrySpec) validate(iban string) error {
 	if len(iban) != c.length {
-		return &ErrValidationLength{Expected: c.length, Actual: len(iban)}
+		return invalidIBANLength(c.length, len(iban))
 	}
 	for _, rule := range c.rules {
 		start := int(rule.start)
@@ -75,32 +83,27 @@ func (c *countrySpec) validate(iban string) error {
 		switch rule.kind {
 		case ibanRuleStatic:
 			if subject != rule.value {
-				return &ErrValidationStaticValue{Position: start, Expected: rule.value, Actual: subject}
+				return invalidIBANValue(start, rule.value, subject)
 			}
 		case ibanRuleDigit:
 			if !ascii.IsDigit(subject) {
-				return validationRangeError(rule, subject, CharacterTypeDigit)
+				return validationCharacterError(rule, subject, CharClassDigit)
 			}
 		case ibanRuleUpperCase:
 			if !ascii.IsUpperCase(subject) {
-				return validationRangeError(rule, subject, CharacterTypeUpperCase)
+				return validationCharacterError(rule, subject, CharClassUpperAlpha)
 			}
 		case ibanRuleAlphaNumeric:
 			if !ascii.IsAlphaNumeric(subject) {
-				return validationRangeError(rule, subject, CharacterTypeAlphaNumeric)
+				return validationCharacterError(rule, subject, CharClassUpperAlphaNumeric)
 			}
 		}
 	}
 	return nil
 }
 
-func validationRangeError(rule ibanRule, actual string, expected CharacterType) error {
-	return &ErrValidationRange{
-		Position: int(rule.start),
-		Length:   int(rule.length),
-		Expected: expected,
-		Actual:   actual,
-	}
+func validationCharacterError(rule ibanRule, actual string, expected CharClass) error {
+	return invalidIBANCharacters(int(rule.start), int(rule.length), expected, actual)
 }
 
 func (c *countrySpec) generate() string {
