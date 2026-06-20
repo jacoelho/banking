@@ -841,22 +841,41 @@ func TestGetBBANRejectsInvalidIBAN(t *testing.T) {
 	tests := []struct {
 		name string
 		iban string
-		want any
+		want iban.ValidationError
 	}{
 		{
 			name: "invalid checksum",
 			iban: "GB00NWBK60161331926819",
-			want: (*iban.ErrValidationChecksum)(nil),
+			want: iban.ValidationError{
+				Reason:        iban.ReasonInvalidChecksum,
+				Position:      2,
+				Length:        2,
+				Expected:      iban.CharClassDigit,
+				Actual:        "00",
+				ExpectedValue: "29",
+			},
 		},
 		{
 			name: "invalid range",
 			iban: "GB29NWBK6016133192681X",
-			want: (*iban.ErrValidationRange)(nil),
+			want: iban.ValidationError{
+				Reason:   iban.ReasonInvalidCharacters,
+				Position: 8,
+				Length:   14,
+				Expected: iban.CharClassDigit,
+				Actual:   "6016133192681X",
+			},
 		},
 		{
 			name: "unsupported country",
 			iban: "ZZ29NWBK60161331926819",
-			want: (*iban.ErrUnsupportedCountry)(nil),
+			want: iban.ValidationError{
+				Reason:   iban.ReasonUnsupportedCountry,
+				Position: 0,
+				Length:   2,
+				Expected: iban.CharClassUpperAlpha,
+				Actual:   "ZZ",
+			},
 		},
 	}
 
@@ -866,23 +885,31 @@ func TestGetBBANRejectsInvalidIBAN(t *testing.T) {
 			if err == nil {
 				t.Fatalf("GetBBAN() error = nil, got BBAN %+v", got)
 			}
-			switch tt.want.(type) {
-			case *iban.ErrValidationChecksum:
-				var target *iban.ErrValidationChecksum
-				if !errors.As(err, &target) {
-					t.Fatalf("GetBBAN() error = %T, want ErrValidationChecksum", err)
-				}
-			case *iban.ErrValidationRange:
-				var target *iban.ErrValidationRange
-				if !errors.As(err, &target) {
-					t.Fatalf("GetBBAN() error = %T, want ErrValidationRange", err)
-				}
-			case *iban.ErrUnsupportedCountry:
-				var target *iban.ErrUnsupportedCountry
-				if !errors.As(err, &target) {
-					t.Fatalf("GetBBAN() error = %T, want ErrUnsupportedCountry", err)
-				}
-			}
+			assertValidationError(t, err, tt.want)
 		})
+	}
+}
+
+func assertValidationError(t *testing.T, err error, want iban.ValidationError) {
+	t.Helper()
+
+	if !errors.Is(err, iban.ErrInvalidIBAN) {
+		t.Fatalf("errors.Is(err, ErrInvalidIBAN) = false, want true")
+	}
+
+	var got *iban.ValidationError
+	if !errors.As(err, &got) {
+		t.Fatalf("errors.As(err, *ValidationError) = false, want true")
+	}
+
+	if got.Reason != want.Reason ||
+		got.Position != want.Position ||
+		got.Length != want.Length ||
+		got.Expected != want.Expected ||
+		got.Actual != want.Actual ||
+		got.ExpectedValue != want.ExpectedValue ||
+		got.ExpectedLength != want.ExpectedLength ||
+		got.ActualLength != want.ActualLength {
+		t.Fatalf("ValidationError = %+v, want %+v", got, want)
 	}
 }

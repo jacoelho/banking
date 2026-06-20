@@ -107,27 +107,50 @@ func TestReplaceChecksumRejectsInvalidStructure(t *testing.T) {
 	tests := []struct {
 		name string
 		iban string
-		want any
+		want ValidationError
 	}{
 		{
 			name: "too short",
 			iban: "GB1",
-			want: (*ErrValidationLength)(nil),
+			want: ValidationError{
+				Reason:         ReasonInvalidLength,
+				Length:         4,
+				ExpectedLength: 4,
+				ActualLength:   3,
+			},
 		},
 		{
 			name: "non-digit check digits",
 			iban: "GBXXNWBK60161331926819",
-			want: (*ErrValidationRange)(nil),
+			want: ValidationError{
+				Reason:   ReasonInvalidCharacters,
+				Position: 2,
+				Length:   2,
+				Expected: CharClassDigit,
+				Actual:   "XX",
+			},
 		},
 		{
 			name: "invalid BBAN character",
 			iban: "GB29NWBK6016133192681X",
-			want: (*ErrValidationRange)(nil),
+			want: ValidationError{
+				Reason:   ReasonInvalidCharacters,
+				Position: 8,
+				Length:   14,
+				Expected: CharClassDigit,
+				Actual:   "6016133192681X",
+			},
 		},
 		{
 			name: "unsupported country",
 			iban: "ZZ29NWBK60161331926819",
-			want: (*ErrUnsupportedCountry)(nil),
+			want: ValidationError{
+				Reason:   ReasonUnsupportedCountry,
+				Position: 0,
+				Length:   2,
+				Expected: CharClassUpperAlpha,
+				Actual:   "ZZ",
+			},
 		},
 	}
 
@@ -136,25 +159,33 @@ func TestReplaceChecksumRejectsInvalidStructure(t *testing.T) {
 			if got, err := ReplaceChecksum(tt.iban); err == nil {
 				t.Fatalf("ReplaceChecksum() error = nil, got %q", got)
 			} else {
-				switch tt.want.(type) {
-				case *ErrValidationLength:
-					var target *ErrValidationLength
-					if !errors.As(err, &target) {
-						t.Fatalf("ReplaceChecksum() error = %T, want ErrValidationLength", err)
-					}
-				case *ErrValidationRange:
-					var target *ErrValidationRange
-					if !errors.As(err, &target) {
-						t.Fatalf("ReplaceChecksum() error = %T, want ErrValidationRange", err)
-					}
-				case *ErrUnsupportedCountry:
-					var target *ErrUnsupportedCountry
-					if !errors.As(err, &target) {
-						t.Fatalf("ReplaceChecksum() error = %T, want ErrUnsupportedCountry", err)
-					}
-				}
+				assertValidationError(t, err, tt.want)
 			}
 		})
+	}
+}
+
+func assertValidationError(t *testing.T, err error, want ValidationError) {
+	t.Helper()
+
+	if !errors.Is(err, ErrInvalidIBAN) {
+		t.Fatalf("errors.Is(err, ErrInvalidIBAN) = false, want true")
+	}
+
+	var got *ValidationError
+	if !errors.As(err, &got) {
+		t.Fatalf("errors.As(err, *ValidationError) = false, want true")
+	}
+
+	if got.Reason != want.Reason ||
+		got.Position != want.Position ||
+		got.Length != want.Length ||
+		got.Expected != want.Expected ||
+		got.Actual != want.Actual ||
+		got.ExpectedValue != want.ExpectedValue ||
+		got.ExpectedLength != want.ExpectedLength ||
+		got.ActualLength != want.ActualLength {
+		t.Fatalf("ValidationError = %+v, want %+v", got, want)
 	}
 }
 

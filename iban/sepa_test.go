@@ -313,3 +313,40 @@ func TestIsSEPAValidatesIBAN(t *testing.T) {
 		t.Fatalf("IsSEPA() = false, want true")
 	}
 }
+
+func TestIsSEPACountryCodeRejectsInvalidCountryCode(t *testing.T) {
+	tests := []struct {
+		name        string
+		countryCode string
+		want        error
+	}{
+		{
+			name:        "too short",
+			countryCode: "G",
+			want:        ErrInvalidCountryCode,
+		},
+		{
+			name:        "lowercase",
+			countryCode: "gb",
+			want:        ErrInvalidCountryCode,
+		},
+		{
+			name:        "unsupported",
+			countryCode: "ZZ",
+			want:        ErrUnsupportedCountry,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := IsSEPACountryCode(tt.countryCode)
+			if err == nil {
+				t.Fatalf("IsSEPACountryCode() error = nil, got %v", got)
+			}
+			if got {
+				t.Fatalf("IsSEPACountryCode() = true, want false")
+			}
+			assertCountryCodeError(t, err, tt.countryCode, tt.want)
+		})
+	}
+}

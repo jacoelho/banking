@@ -81,7 +81,7 @@ true
 
 ### Validation Errors
 
-Validation returns structured errors that work with `errors.As`.
+Validation returns structured errors that work with `errors.Is` and `errors.As`.
 
 ```go
 package main
@@ -96,28 +96,34 @@ import (
 func main() {
 	err := iban.Validate("GB99INVALID")
 
-	var lengthErr *iban.ErrValidationLength
-	if errors.As(err, &lengthErr) {
-		fmt.Printf("invalid length: expected %d, got %d\n", lengthErr.Expected, lengthErr.Actual)
+	if errors.Is(err, iban.ErrInvalidIBAN) {
+		fmt.Println("invalid IBAN")
 	}
 
-	fmt.Println(iban.IsValidationError(err))
+	var validationErr *iban.ValidationError
+	if errors.As(err, &validationErr) && validationErr.Reason == iban.ReasonInvalidLength {
+		fmt.Printf("invalid length: expected %d, got %d\n",
+			validationErr.ExpectedLength,
+			validationErr.ActualLength)
+	}
 }
 ```
 
 Output:
 
 ```text
+invalid IBAN
 invalid length: expected 22, got 11
-true
 ```
 
-Other validation error types:
+Validation reasons:
 
-- `*iban.ErrValidationChecksum`
-- `*iban.ErrValidationRange`
-- `*iban.ErrValidationStaticValue`
-- `*iban.ErrUnsupportedCountry`
+- `iban.ReasonInvalidLength`
+- `iban.ReasonInvalidChecksum`
+- `iban.ReasonInvalidCharacters`
+- `iban.ReasonUnsupportedCountry`
+
+Country-code APIs such as `Generate` and `IsSEPACountryCode` return `*iban.CountryCodeError`.
 
 ## BIC
 
