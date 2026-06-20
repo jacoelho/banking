@@ -9,14 +9,11 @@ func IsSEPACountryCode(countryCode string) (bool, error) {
 	if !ok {
 		return false, &ErrUnsupportedCountry{CountryCode: countryCode}
 	}
-	switch countrySEPAIndex[slot] {
-	case sepaCountry:
-		return true, nil
-	case nonSEPACountry:
-		return false, nil
-	default:
+	entry := countryCodeIndex[slot]
+	if entry&countryIndexMask == 0 {
 		return false, &ErrUnsupportedCountry{CountryCode: countryCode}
 	}
+	return entry&countrySEPAFlag != 0, nil
 }
 
 // IsSEPA reports whether a valid IBAN belongs to a SEPA member country.

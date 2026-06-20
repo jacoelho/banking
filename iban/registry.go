@@ -12,8 +12,9 @@ const (
 )
 
 const (
-	nonSEPACountry uint8 = 1
-	sepaCountry    uint8 = 2
+	countryIndexBits       = 7
+	countryIndexMask uint8 = (1 << countryIndexBits) - 1
+	countrySEPAFlag  uint8 = 1 << countryIndexBits
 )
 
 type ibanRule struct {
@@ -38,12 +39,15 @@ type countrySpec struct {
 	accountNumber bbanSpan
 }
 
+// countryCodeIndex stores packed entries: the low countryIndexBits bits are the
+// 1-based countrySpecs index, and the high bit reports SEPA membership. If the
+// registry grows past countryIndexMask countries, widen the entry type.
 func lookupCountry(code string) (*countrySpec, bool) {
 	slot, ok := countryIndexSlot(code)
 	if !ok {
 		return nil, false
 	}
-	index := countryCodeIndex[slot]
+	index := countryCodeIndex[slot] & countryIndexMask
 	if index == 0 {
 		return nil, false
 	}

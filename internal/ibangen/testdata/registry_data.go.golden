@@ -2,12 +2,10 @@
 
 package iban
 
-var countryCodeIndex = [26 * 26]uint16{
-	157: 1,
-}
-
-var countrySEPAIndex = [26 * 26]uint8{
-	157: sepaCountry,
+// countryCodeIndex stores packed entries: low bits are the 1-based countrySpecs index,
+// and countrySEPAFlag reports SEPA membership. Zero means unsupported.
+var countryCodeIndex = [26 * 26]uint8{
+	157: countrySEPAFlag | 1,
 }
 
 var countrySpecs = []countrySpec{
