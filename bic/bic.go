@@ -55,8 +55,7 @@ func (b BIC) BIC8() string {
 	return sb.String()
 }
 
-// Implements fmt.Stringer
-// returns the bic in bic 11 format.
+// String returns the BIC in BIC11 format.
 func (b BIC) String() string {
 	var sb strings.Builder
 	sb.Grow(11)
@@ -69,19 +68,17 @@ func (b BIC) String() string {
 
 // IsValid returns if a bic is valid.
 func (b BIC) IsValid() bool {
-	length := len(b.BusinessPartyPrefix) +
-		len(b.CountryCode) +
-		len(b.BusinessPartySuffix) +
-		len(b.BranchCode)
-
-	if length != 11 {
+	if len(b.BusinessPartyPrefix) != 4 ||
+		len(b.CountryCode) != 2 ||
+		len(b.BusinessPartySuffix) != 2 ||
+		len(b.BranchCode) != 3 {
 		return false
 	}
 
-	if !(iso3166.IsCountryCode(b.CountryCode) &&
-		ascii.IsUpperCase(b.BusinessPartyPrefix) &&
-		ascii.IsUpperAlphaNumeric(b.BusinessPartySuffix) &&
-		ascii.IsUpperAlphaNumeric(b.BranchCode)) {
+	if !iso3166.IsCountryCode(b.CountryCode) ||
+		!ascii.IsUpperCase(b.BusinessPartyPrefix) ||
+		!ascii.IsUpperAlphaNumeric(b.BusinessPartySuffix) ||
+		!ascii.IsUpperAlphaNumeric(b.BranchCode) {
 		return false
 	}
 

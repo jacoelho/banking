@@ -2,6 +2,7 @@ package iban_test
 
 import (
 	"fmt"
+
 	"github.com/jacoelho/banking/iban"
 )
 
@@ -13,7 +14,10 @@ func ExampleValidate() {
 
 func ExampleReplaceChecksum() {
 	// Replace an iban checksum
-	result, _ := iban.ReplaceChecksum("GB99NWBK60161331926819")
+	result, err := iban.ReplaceChecksum("GB99NWBK60161331926819")
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println(result)
 	// Output: GB29NWBK60161331926819
@@ -21,14 +25,21 @@ func ExampleReplaceChecksum() {
 
 func ExampleGenerate() {
 	// Validate an iban using country specific validate function
-	result, _ := iban.Generate("GB")
+	result, err := iban.Generate("GB")
+	if err != nil {
+		panic(err)
+	}
 
-	fmt.Println(result)
+	fmt.Println(len(result), result[:2])
+	// Output: 22 GB
 }
 
 func ExampleGetBBAN() {
 	// Get BBAN from IBAN
-	result, _ := iban.GetBBAN("GB29NWBK60161331926819")
+	result, err := iban.GetBBAN("GB29NWBK60161331926819")
+	if err != nil {
+		panic(err)
+	}
 
 	fmt.Println(result.BBAN, result.BankCode, result.BranchCode, result.AccountNumber)
 	// Output: NWBK60161331926819 NWBK 601613 31926819
@@ -42,14 +53,20 @@ func ExamplePaperFormat() {
 
 func ExampleIsSEPA() {
 	// IsSEPA returns if an iban country is a SEPA member
-	result, _ := iban.IsSEPA("GB29NWBK60161331926819")
+	result, err := iban.IsSEPA("GB29NWBK60161331926819")
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(result)
 	// Output: true
 }
 
 func ExampleIsSEPACountryCode() {
 	// IsSEPACountry returns if a country is a SEPA member
-	result, _ := iban.IsSEPACountryCode("AE")
+	result, err := iban.IsSEPACountryCode("AE")
+	if err != nil {
+		panic(err)
+	}
 	fmt.Println(result)
 	// Output: false
 }

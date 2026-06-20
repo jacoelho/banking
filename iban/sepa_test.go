@@ -186,6 +186,26 @@ func TestIsSEPACountry(t *testing.T) {
 			wantErr:     false,
 		},
 		{
+			countryCode: "PF",
+			want:        false,
+			wantErr:     false,
+		},
+		{
+			countryCode: "TF",
+			want:        false,
+			wantErr:     false,
+		},
+		{
+			countryCode: "NC",
+			want:        false,
+			wantErr:     false,
+		},
+		{
+			countryCode: "WF",
+			want:        false,
+			wantErr:     false,
+		},
+		{
 			countryCode: "SM",
 			want:        true,
 			wantErr:     false,
@@ -221,6 +241,21 @@ func TestIsSEPACountry(t *testing.T) {
 			wantErr:     false,
 		},
 		{
+			countryCode: "IM",
+			want:        true,
+			wantErr:     false,
+		},
+		{
+			countryCode: "JE",
+			want:        true,
+			wantErr:     false,
+		},
+		{
+			countryCode: "GG",
+			want:        true,
+			wantErr:     false,
+		},
+		{
 			countryCode: "VA",
 			want:        true,
 			wantErr:     false,
@@ -252,7 +287,6 @@ func TestIsSEPACountry(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-
 		t.Run(tt.countryCode, func(t *testing.T) {
 			got, err := IsSEPACountryCode(tt.countryCode)
 			if (err != nil) != tt.wantErr {
@@ -263,5 +297,19 @@ func TestIsSEPACountry(t *testing.T) {
 				t.Errorf("IsSEPACountryCode() got = %v, want %v", got, tt.want)
 			}
 		})
+	}
+}
+
+func TestIsSEPAValidatesIBAN(t *testing.T) {
+	if got, err := IsSEPA("GB00NWBK60161331926819"); err == nil {
+		t.Fatalf("IsSEPA() error = nil, got %v", got)
+	}
+
+	got, err := IsSEPA("GB29NWBK60161331926819")
+	if err != nil {
+		t.Fatalf("IsSEPA() error = %v", err)
+	}
+	if !got {
+		t.Fatalf("IsSEPA() = false, want true")
 	}
 }

@@ -49,7 +49,7 @@ func mergeTables(tables ...[256]bool) [256]bool {
 
 // every tests that every byte in s is present in table.
 func every(s string, table *[256]bool) bool {
-	for i := 0; i < len(s); i++ {
+	for i := range len(s) {
 		if !table[s[i]] {
 			return false
 		}

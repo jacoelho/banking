@@ -113,11 +113,13 @@ Mod-97-10 implemented.
 
 ## Generate
 
-To update the registry from a TSV file and regenerate IBAN validation code:
+To regenerate IBAN validation code from an external SWIFT TSV registry file:
 
 ```bash
-make update-registry REGISTRY=iban-registry-v101.txt
+make update-registry SOURCE_REGISTRY=iban-registry-v102.txt
 ```
+
+The full registry TSV source is not committed to this repository; generated Go files under `iban/` are the committed registry artifact.
 
 ## License
 

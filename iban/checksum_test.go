@@ -1,76 +1,13 @@
 package iban
 
 import (
-	"math/big"
-	"math/rand"
-	"reflect"
-	"strings"
+	"errors"
 	"testing"
-	"testing/quick"
-	"time"
 )
 
-func BenchmarkBigIntMod9710(b *testing.B) {
-	b.ReportAllocs()
-
-	for i := 0; i < b.N; i++ {
-		v := bigIntMod9710("105000997603123456789123")
-		_ = v
-	}
-}
-
-func BenchmarkMod9710(b *testing.B) {
-	b.ReportAllocs()
-	digits := []byte("105000997603123456789123")
-
-	for i := 0; i < b.N; i++ {
-		v := mod9710(digits, len(digits))
-		_ = v
-	}
-}
-
-func bigIntMod9710(s string) int {
-	n, ok := (&big.Int{}).SetString(s, 10)
-	if !ok {
-		panic("setString failed")
-	}
-	modulo := (&big.Int{}).SetInt64(97)
-	res := (&big.Int{}).Rem(n, modulo)
-
-	return int(res.Int64())
-}
-
-func randomString(r *rand.Rand, size int, alphabet string) string {
-	sb := new(strings.Builder)
-
-	for range size {
-		index := r.Intn(len(alphabet))
-		sb.WriteString(string(alphabet[index]))
-	}
-
-	return sb.String()
-}
-
-func TestModuloFunctions(t *testing.T) {
-	cfg := &quick.Config{
-		MaxCount: 1000,
-		Rand:     rand.New(rand.NewSource(time.Now().Unix())),
-		Values: func(values []reflect.Value, rand *rand.Rand) {
-			values[0] = reflect.ValueOf(randomString(rand, 50, "0123456789"))
-		},
-	}
-
-	mod9710Wrapper := func(s string) int {
-		return mod9710([]byte(s), len(s))
-	}
-
-	if err := quick.CheckEqual(bigIntMod9710, mod9710Wrapper, cfg); err != nil {
-		t.Errorf("mod9710 test failed %v", err)
-	}
-
-}
-
 func TestChecksum(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		iban string
 		want string
@@ -97,6 +34,8 @@ func TestChecksum(t *testing.T) {
 }
 
 func TestReplaceChecksum(t *testing.T) {
+	t.Parallel()
+
 	tests := []struct {
 		iban string
 		want string
@@ -117,15 +56,112 @@ func TestReplaceChecksum(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.iban, func(t *testing.T) {
 			t.Parallel()
-			if got, _ := ReplaceChecksum(tt.iban); got != tt.want {
+			got, err := ReplaceChecksum(tt.iban)
+			if err != nil {
+				t.Fatalf("ReplaceChecksum() error = %v", err)
+			}
+			if got != tt.want {
 				t.Errorf("Checksum() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
+func TestReplaceChecksumBytesMutatesInput(t *testing.T) {
+	iban := []byte("GB00BUKB20201555555555")
+
+	got := replaceChecksumBytes(iban)
+
+	if got != "GB33BUKB20201555555555" {
+		t.Fatalf("replaceChecksumBytes() = %q, want GB33BUKB20201555555555", got)
+	}
+	if string(iban) != got {
+		t.Fatalf("replaceChecksumBytes() did not mutate input: %q", iban)
+	}
+}
+
+func TestFormatCheckDigits(t *testing.T) {
+	tests := []struct {
+		name        string
+		checkDigits int
+		want        string
+	}{
+		{name: "zero", checkDigits: 0, want: "99"},
+		{name: "one", checkDigits: 1, want: "98"},
+		{name: "single digit", checkDigits: 7, want: "07"},
+		{name: "two digits", checkDigits: 42, want: "42"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			var got [2]byte
+			formatCheckDigits(tt.checkDigits, got[:])
+			if string(got[:]) != tt.want {
+				t.Fatalf("formatCheckDigits(%d) = %q, want %q", tt.checkDigits, got, tt.want)
+			}
+		})
+	}
+}
+
+func TestReplaceChecksumRejectsInvalidStructure(t *testing.T) {
+	tests := []struct {
+		name string
+		iban string
+		want any
+	}{
+		{
+			name: "too short",
+			iban: "GB1",
+			want: (*ErrValidationLength)(nil),
+		},
+		{
+			name: "non-digit check digits",
+			iban: "GBXXNWBK60161331926819",
+			want: (*ErrValidationRange)(nil),
+		},
+		{
+			name: "invalid BBAN character",
+			iban: "GB29NWBK6016133192681X",
+			want: (*ErrValidationRange)(nil),
+		},
+		{
+			name: "unsupported country",
+			iban: "ZZ29NWBK60161331926819",
+			want: (*ErrUnsupportedCountry)(nil),
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got, err := ReplaceChecksum(tt.iban); err == nil {
+				t.Fatalf("ReplaceChecksum() error = nil, got %q", got)
+			} else {
+				switch tt.want.(type) {
+				case *ErrValidationLength:
+					var target *ErrValidationLength
+					if !errors.As(err, &target) {
+						t.Fatalf("ReplaceChecksum() error = %T, want ErrValidationLength", err)
+					}
+				case *ErrValidationRange:
+					var target *ErrValidationRange
+					if !errors.As(err, &target) {
+						t.Fatalf("ReplaceChecksum() error = %T, want ErrValidationRange", err)
+					}
+				case *ErrUnsupportedCountry:
+					var target *ErrUnsupportedCountry
+					if !errors.As(err, &target) {
+						t.Fatalf("ReplaceChecksum() error = %T, want ErrUnsupportedCountry", err)
+					}
+				}
+			}
+		})
+	}
+}
+
 func benchmarkIBANChecksum(b *testing.B, input string) {
-	for i := 0; i < b.N; i++ {
+	b.Helper()
+
+	for b.Loop() {
 		checksum(input)
 	}
 }
@@ -133,9 +169,41 @@ func benchmarkIBANChecksum(b *testing.B, input string) {
 func BenchmarkIBANChecksumAL(b *testing.B) { benchmarkIBANChecksum(b, "AL47212110090000000235698741") }
 func BenchmarkIBANChecksumGB(b *testing.B) { benchmarkIBANChecksum(b, "GB26MIDL40051512345674") }
 
+func benchmarkCalculateCheckDigits(b *testing.B, input string) {
+	b.Helper()
+	var checkBuf [2]byte
+
+	b.ReportAllocs()
+	for b.Loop() {
+		calculateCheckDigits(input, checkBuf[:])
+	}
+}
+
+func BenchmarkCalculateCheckDigitsAL(b *testing.B) {
+	benchmarkCalculateCheckDigits(b, "AL47212110090000000235698741")
+}
+
+func BenchmarkCalculateCheckDigitsBR(b *testing.B) {
+	benchmarkCalculateCheckDigits(b, "BR9700360305000010009795493P1")
+}
+
+func BenchmarkCalculateCheckDigitsGB(b *testing.B) {
+	benchmarkCalculateCheckDigits(b, "GB26MIDL40051512345674")
+}
+
+func BenchmarkCalculateCheckDigitsMaxLetters(b *testing.B) {
+	benchmarkCalculateCheckDigits(b, "ZZ00ABCDEFGHIJKLMNOPQRSTUVWXYZABCD")
+}
+
+func BenchmarkCalculateCheckDigitsLetters(b *testing.B) {
+	benchmarkCalculateCheckDigits(b, "MT84MALT011000012345MTLCAST001S")
+}
+
 func BenchmarkReplaceChecksum(b *testing.B) {
 	b.ReportAllocs()
-	for i := 0; i < b.N; i++ {
-		_, _ = ReplaceChecksum("GB00BUKB20201555555555")
+	for b.Loop() {
+		if _, err := ReplaceChecksum("GB00BUKB20201555555555"); err != nil {
+			b.Fatal(err)
+		}
 	}
 }

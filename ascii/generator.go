@@ -1,38 +1,44 @@
 package ascii
 
-import (
-	"math/rand"
-)
+import "math/rand/v2"
 
 const (
 	digits            = "0123456789"
-	lowerCaseLetters  = "abcdefghijklmnopqrstuvwxyz"
 	upperCaseLetters  = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	alphaUpperNumeric = digits + upperCaseLetters
 )
 
-type RuneWriter interface {
-	WriteRune(r rune) (int, error)
+func AppendRandomDigits(dst []byte, length int) []byte {
+	return appendRandomWithCharset(dst, digits, length)
 }
 
-func Digits(sb RuneWriter, length int) {
-	stringWithCharset(sb, digits, length)
+func AppendRandomUpperCaseLetters(dst []byte, length int) []byte {
+	return appendRandomWithCharset(dst, upperCaseLetters, length)
 }
 
-func LowerCaseLetters(sb RuneWriter, length int) {
-	stringWithCharset(sb, lowerCaseLetters, length)
+func AppendRandomAlphaNumeric(dst []byte, length int) []byte {
+	return appendRandomWithCharset(dst, alphaUpperNumeric, length)
 }
 
-func UpperCaseLetters(sb RuneWriter, length int) {
-	stringWithCharset(sb, upperCaseLetters, length)
+func RandomDigits(length int) string {
+	return randomStringWithCharset(digits, length)
 }
 
-func AlphaNumeric(sb RuneWriter, length int) {
-	stringWithCharset(sb, alphaUpperNumeric, length)
+func RandomUpperCaseLetters(length int) string {
+	return randomStringWithCharset(upperCaseLetters, length)
 }
 
-func stringWithCharset(sb RuneWriter, charset string, length int) {
+func RandomAlphaNumeric(length int) string {
+	return randomStringWithCharset(alphaUpperNumeric, length)
+}
+
+func randomStringWithCharset(charset string, length int) string {
+	return string(appendRandomWithCharset(make([]byte, 0, max(0, length)), charset, length))
+}
+
+func appendRandomWithCharset(dst []byte, charset string, length int) []byte {
 	for range length {
-		_, _ = sb.WriteRune(rune(charset[rand.Intn(len(charset))]))
+		dst = append(dst, charset[rand.IntN(len(charset))])
 	}
+	return dst
 }

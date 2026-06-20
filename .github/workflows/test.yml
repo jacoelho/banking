@@ -17,7 +17,6 @@ jobs:
 
       - run: make staticcheck
 
-      - run: cd registry && make -f ../Makefile
+      - run: make check-registry-tools
 
       - run: make test
-

@@ -365,7 +365,6 @@ func TestValidateIBAN(t *testing.T) {
 		},
 	}
 	for _, tt := range tests {
-
 		t.Run(tt.iban, func(t *testing.T) {
 			if err := iban.Validate(tt.iban); (err != nil) != tt.wantErr {
 				t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
