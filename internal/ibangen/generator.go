@@ -153,13 +153,13 @@ func ruleKindLiteral(format ibanregistry.Format) string {
 
 func optionalSpanLiteral(span ibanregistry.OptionalSpan) string {
 	if !span.Present {
-		return "bbanSpan{}"
+		return "bbanComponent{}"
 	}
 	return spanLiteral(span.Span)
 }
 
 func spanLiteral(span ibanregistry.Span) string {
-	return fmt.Sprintf("bbanSpan{start: %d, end: %d, present: true}", span.Start, span.End)
+	return fmt.Sprintf("bbanComponent{start: %d, end: %d}", span.Start, span.End)
 }
 
 func writeFormatted(path, source string) error {

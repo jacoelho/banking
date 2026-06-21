@@ -112,3 +112,22 @@ func TestValidateReturnsStructuredCharacterError(t *testing.T) {
 		t.Fatalf("ValidationError = %+v", got)
 	}
 }
+
+func TestValidateRejectsLowercaseAlphaNumericSpan(t *testing.T) {
+	err := iban.Validate("FR1420041010050500013m02606")
+	if err == nil {
+		t.Fatalf("Validate() error = nil, want error")
+	}
+
+	var got *iban.ValidationError
+	if !errors.As(err, &got) {
+		t.Fatalf("errors.As(err, *ValidationError) = false, want true")
+	}
+	if got.Reason != iban.ReasonInvalidCharacters ||
+		got.Position != 14 ||
+		got.Length != 11 ||
+		got.Expected != iban.CharClassUpperAlphaNumeric ||
+		got.Actual != "0500013m026" {
+		t.Fatalf("ValidationError = %+v", got)
+	}
+}

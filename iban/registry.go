@@ -15,6 +15,7 @@ const (
 	countryIndexBits       = 7
 	countryIndexMask uint8 = (1 << countryIndexBits) - 1
 	countrySEPAFlag  uint8 = 1 << countryIndexBits
+	ibanBBANOffset         = 4
 )
 
 type ibanRule struct {
@@ -24,19 +25,26 @@ type ibanRule struct {
 	value  string
 }
 
-type bbanSpan struct {
-	start   uint8
-	end     uint8
-	present bool
+type ibanRuleViolation struct {
+	offset        int
+	length        int
+	expected      CharClass
+	expectedValue string
+	actual        string
+}
+
+type bbanComponent struct {
+	start uint8
+	end   uint8
 }
 
 type countrySpec struct {
 	code          string
 	length        int
 	rules         []ibanRule
-	bankCode      bbanSpan
-	branchCode    bbanSpan
-	accountNumber bbanSpan
+	bankCode      bbanComponent
+	branchCode    bbanComponent
+	accountNumber bbanComponent
 }
 
 // countryCodeIndex stores packed entries: the low countryIndexBits bits are the
@@ -79,31 +87,54 @@ func (c *countrySpec) validate(iban string) error {
 		start := int(rule.start)
 		end := start + int(rule.length)
 		subject := iban[start:end]
-
-		switch rule.kind {
-		case ibanRuleStatic:
-			if subject != rule.value {
-				return invalidIBANValue(start, rule.value, subject)
-			}
-		case ibanRuleDigit:
-			if !ascii.IsDigit(subject) {
-				return validationCharacterError(rule, subject, CharClassDigit)
-			}
-		case ibanRuleUpperCase:
-			if !ascii.IsUpperCase(subject) {
-				return validationCharacterError(rule, subject, CharClassUpperAlpha)
-			}
-		case ibanRuleAlphaNumeric:
-			if !ascii.IsAlphaNumeric(subject) {
-				return validationCharacterError(rule, subject, CharClassUpperAlphaNumeric)
-			}
+		violation, ok := rule.validate(subject, 0)
+		if ok {
+			continue
 		}
+
+		if violation.expectedValue != "" {
+			return invalidIBANValue(start, violation.expectedValue, subject)
+		}
+		return validationCharacterError(rule, subject, violation.expected)
 	}
 	return nil
 }
 
 func validationCharacterError(rule ibanRule, actual string, expected CharClass) error {
 	return invalidIBANCharacters(int(rule.start), int(rule.length), expected, actual)
+}
+
+func (r ibanRule) validate(subject string, ruleOffset int) (ibanRuleViolation, bool) {
+	violation := ibanRuleViolation{
+		length: len(subject),
+		actual: subject,
+	}
+
+	switch r.kind {
+	case ibanRuleStatic:
+		expected := r.value[ruleOffset : ruleOffset+len(subject)]
+		if subject == expected {
+			return ibanRuleViolation{}, true
+		}
+		violation.expectedValue = expected
+	case ibanRuleDigit:
+		if ascii.IsDigit(subject) {
+			return ibanRuleViolation{}, true
+		}
+		violation.expected = CharClassDigit
+	case ibanRuleUpperCase:
+		if ascii.IsUpperCase(subject) {
+			return ibanRuleViolation{}, true
+		}
+		violation.expected = CharClassUpperAlpha
+	case ibanRuleAlphaNumeric:
+		if ascii.IsUpperAlphaNumeric(subject) {
+			return ibanRuleViolation{}, true
+		}
+		violation.expected = CharClassUpperAlphaNumeric
+	}
+
+	return violation, false
 }
 
 func (c *countrySpec) generate() string {
@@ -134,9 +165,13 @@ func (c *countrySpec) bban(iban string) BBAN {
 	}
 }
 
-func (s bbanSpan) slice(iban string) string {
-	if !s.present {
+func (c bbanComponent) slice(iban string) string {
+	if !c.present() {
 		return ""
 	}
-	return iban[int(s.start)+4 : int(s.end)+4]
+	return iban[int(c.start)+ibanBBANOffset : int(c.end)+ibanBBANOffset]
+}
+
+func (c bbanComponent) present() bool {
+	return c.end > c.start
 }

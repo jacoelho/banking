@@ -34,6 +34,20 @@ func ExampleGenerate() {
 	// Output: 22 GB
 }
 
+func ExampleGenerateWithBBAN() {
+	result, err := iban.GenerateWithBBAN("GB", iban.BBANParts{
+		BankCode:      "NWBK",
+		BranchCode:    "601613",
+		AccountNumber: "31926819",
+	})
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Println(result)
+	// Output: GB29NWBK60161331926819
+}
+
 func ExampleGetBBAN() {
 	// Get BBAN from IBAN
 	result, err := iban.GetBBAN("GB29NWBK60161331926819")

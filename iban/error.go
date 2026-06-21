@@ -15,6 +15,9 @@ var (
 	// ErrUnsupportedCountry reports a syntactically valid country code that this
 	// registry does not support.
 	ErrUnsupportedCountry = errors.New("unsupported country")
+
+	// ErrInvalidBBANParts reports invalid BBAN generation constraints.
+	ErrInvalidBBANParts = errors.New("invalid BBAN parts")
 )
 
 // ValidationReason identifies why IBAN validation failed.
@@ -114,6 +117,53 @@ func (e *ValidationError) Is(target error) bool {
 		target == ErrUnsupportedCountry && e.Reason == ReasonUnsupportedCountry
 }
 
+// BBANPartsError contains machine-readable BBAN generation diagnostics.
+type BBANPartsError struct {
+	CountryCode string
+	Field       string
+
+	// Position and Length identify the invalid span within Field when applicable.
+	Position int
+	Length   int
+
+	// ExpectedLength and ActualLength are set when Field has an invalid length.
+	ExpectedLength int
+	ActualLength   int
+
+	// Expected identifies the required character class for invalid characters.
+	Expected CharClass
+
+	// ExpectedValue is set when a precise expected value exists.
+	ExpectedValue string
+
+	// Actual contains the invalid span, or the full supplied field for length errors.
+	Actual string
+}
+
+func (e *BBANPartsError) Error() string {
+	if e == nil {
+		return ErrInvalidBBANParts.Error()
+	}
+	if e.ExpectedLength != e.ActualLength {
+		return fmt.Sprintf("invalid BBAN parts for %s %s: want length %d, got %d",
+			e.CountryCode, e.Field, e.ExpectedLength, e.ActualLength)
+	}
+	if e.ExpectedValue != "" {
+		return fmt.Sprintf("invalid BBAN parts for %s %s at position %d: want %s, got %s",
+			e.CountryCode, e.Field, e.Position, e.ExpectedValue, e.Actual)
+	}
+	if e.Expected != 0 {
+		return fmt.Sprintf("invalid BBAN parts for %s %s at position %d: want %s, got %s",
+			e.CountryCode, e.Field, e.Position, e.Expected, e.Actual)
+	}
+	return fmt.Sprintf("invalid BBAN parts for %s %s: got %s",
+		e.CountryCode, e.Field, e.Actual)
+}
+
+func (e *BBANPartsError) Is(target error) bool {
+	return e != nil && target == ErrInvalidBBANParts
+}
+
 // CountryCodeError contains machine-readable country-code diagnostics.
 type CountryCodeError struct {
 	CountryCode string
@@ -188,6 +238,35 @@ func unsupportedIBANCountry(countryCode string) error {
 		Length:   len(countryCode),
 		Expected: CharClassUpperAlpha,
 		Actual:   countryCode,
+	}
+}
+
+type bbanPartsErrorData struct {
+	countryCode string
+	field       string
+
+	position int
+	length   int
+
+	expectedLength int
+	actualLength   int
+
+	expected      CharClass
+	expectedValue string
+	actual        string
+}
+
+func invalidBBANParts(data bbanPartsErrorData) error {
+	return &BBANPartsError{
+		CountryCode:    data.countryCode,
+		Field:          data.field,
+		Position:       data.position,
+		Length:         data.length,
+		ExpectedLength: data.expectedLength,
+		ActualLength:   data.actualLength,
+		Expected:       data.expected,
+		ExpectedValue:  data.expectedValue,
+		Actual:         data.actual,
 	}
 }
 

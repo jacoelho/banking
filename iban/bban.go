@@ -8,3 +8,11 @@ type BBAN struct {
 	BranchCode    string
 	AccountNumber string
 }
+
+// BBANParts contains BBAN fields that constrain IBAN generation.
+// Empty fields are generated from country rules.
+type BBANParts struct {
+	BankCode      string
+	BranchCode    string
+	AccountNumber string
+}

@@ -142,6 +142,17 @@ func TestReplaceChecksumRejectsInvalidStructure(t *testing.T) {
 			},
 		},
 		{
+			name: "lowercase alphanumeric character",
+			iban: "FR0020041010050500013m02606",
+			want: ValidationError{
+				Reason:   ReasonInvalidCharacters,
+				Position: 14,
+				Length:   11,
+				Expected: CharClassUpperAlphaNumeric,
+				Actual:   "0500013m026",
+			},
+		},
+		{
 			name: "unsupported country",
 			iban: "ZZ29NWBK60161331926819",
 			want: ValidationError{
