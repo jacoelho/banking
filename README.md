@@ -46,6 +46,16 @@ func main() {
 	}
 	fmt.Println(len(generated), generated[:2])
 
+	generatedWithBBAN, err := iban.GenerateWithBBAN("GB", iban.BBANParts{
+		BankCode:      "NWBK",
+		BranchCode:    "601613",
+		AccountNumber: "31926819",
+	})
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(generatedWithBBAN)
+
 	fmt.Println(iban.PaperFormat("GB29NWBK60161331926819"))
 
 	bban, err := iban.GetBBAN("GB29NWBK60161331926819")
@@ -73,6 +83,7 @@ Output:
 ```text
 GB29NWBK60161331926819
 22 GB
+GB29NWBK60161331926819
 GB29 NWBK 6016 1331 9268 19
 NWBK60161331926819 NWBK 601613 31926819
 true
