@@ -25,6 +25,14 @@ type ibanRule struct {
 	value  string
 }
 
+type ibanRuleViolation struct {
+	offset        int
+	length        int
+	expected      CharClass
+	expectedValue string
+	actual        string
+}
+
 type bbanComponent struct {
 	start uint8
 	end   uint8
@@ -79,31 +87,54 @@ func (c *countrySpec) validate(iban string) error {
 		start := int(rule.start)
 		end := start + int(rule.length)
 		subject := iban[start:end]
-
-		switch rule.kind {
-		case ibanRuleStatic:
-			if subject != rule.value {
-				return invalidIBANValue(start, rule.value, subject)
-			}
-		case ibanRuleDigit:
-			if !ascii.IsDigit(subject) {
-				return validationCharacterError(rule, subject, CharClassDigit)
-			}
-		case ibanRuleUpperCase:
-			if !ascii.IsUpperCase(subject) {
-				return validationCharacterError(rule, subject, CharClassUpperAlpha)
-			}
-		case ibanRuleAlphaNumeric:
-			if !ascii.IsAlphaNumeric(subject) {
-				return validationCharacterError(rule, subject, CharClassUpperAlphaNumeric)
-			}
+		violation, ok := rule.validate(subject, 0)
+		if ok {
+			continue
 		}
+
+		if violation.expectedValue != "" {
+			return invalidIBANValue(start, violation.expectedValue, subject)
+		}
+		return validationCharacterError(rule, subject, violation.expected)
 	}
 	return nil
 }
 
 func validationCharacterError(rule ibanRule, actual string, expected CharClass) error {
 	return invalidIBANCharacters(int(rule.start), int(rule.length), expected, actual)
+}
+
+func (r ibanRule) validate(subject string, ruleOffset int) (ibanRuleViolation, bool) {
+	violation := ibanRuleViolation{
+		length: len(subject),
+		actual: subject,
+	}
+
+	switch r.kind {
+	case ibanRuleStatic:
+		expected := r.value[ruleOffset : ruleOffset+len(subject)]
+		if subject == expected {
+			return ibanRuleViolation{}, true
+		}
+		violation.expectedValue = expected
+	case ibanRuleDigit:
+		if ascii.IsDigit(subject) {
+			return ibanRuleViolation{}, true
+		}
+		violation.expected = CharClassDigit
+	case ibanRuleUpperCase:
+		if ascii.IsUpperCase(subject) {
+			return ibanRuleViolation{}, true
+		}
+		violation.expected = CharClassUpperAlpha
+	case ibanRuleAlphaNumeric:
+		if ascii.IsUpperAlphaNumeric(subject) {
+			return ibanRuleViolation{}, true
+		}
+		violation.expected = CharClassUpperAlphaNumeric
+	}
+
+	return violation, false
 }
 
 func (c *countrySpec) generate() string {
