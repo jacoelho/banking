@@ -15,6 +15,7 @@ const (
 	countryIndexBits       = 7
 	countryIndexMask uint8 = (1 << countryIndexBits) - 1
 	countrySEPAFlag  uint8 = 1 << countryIndexBits
+	ibanBBANOffset         = 4
 )
 
 type ibanRule struct {
@@ -24,19 +25,18 @@ type ibanRule struct {
 	value  string
 }
 
-type bbanSpan struct {
-	start   uint8
-	end     uint8
-	present bool
+type bbanComponent struct {
+	start uint8
+	end   uint8
 }
 
 type countrySpec struct {
 	code          string
 	length        int
 	rules         []ibanRule
-	bankCode      bbanSpan
-	branchCode    bbanSpan
-	accountNumber bbanSpan
+	bankCode      bbanComponent
+	branchCode    bbanComponent
+	accountNumber bbanComponent
 }
 
 // countryCodeIndex stores packed entries: the low countryIndexBits bits are the
@@ -134,9 +134,13 @@ func (c *countrySpec) bban(iban string) BBAN {
 	}
 }
 
-func (s bbanSpan) slice(iban string) string {
-	if !s.present {
+func (c bbanComponent) slice(iban string) string {
+	if !c.present() {
 		return ""
 	}
-	return iban[int(s.start)+4 : int(s.end)+4]
+	return iban[int(c.start)+ibanBBANOffset : int(c.end)+ibanBBANOffset]
+}
+
+func (c bbanComponent) present() bool {
+	return c.end > c.start
 }
