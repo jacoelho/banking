@@ -27,16 +27,50 @@ func TestGenerate(t *testing.T) {
 func TestGenerateWithBBAN(t *testing.T) {
 	t.Parallel()
 
-	got, err := GenerateWithBBAN("GB", BBANParts{
-		BankCode:      "NWBK",
-		BranchCode:    "601613",
-		AccountNumber: "31926819",
-	})
-	if err != nil {
-		t.Fatal(err)
+	tests := []struct {
+		countryCode string
+		parts       BBANParts
+		want        string
+	}{
+		{
+			countryCode: "GB",
+			parts: BBANParts{
+				BankCode:      "NWBK",
+				BranchCode:    "601613",
+				AccountNumber: "31926819",
+			},
+			want: "GB29NWBK60161331926819",
+		},
+		{
+			countryCode: "BR",
+			parts: BBANParts{
+				BankCode:      "99999A03",
+				BranchCode:    "00001",
+				AccountNumber: "0009795493C1",
+			},
+			want: "BR6699999A03000010009795493C1",
+		},
+		{
+			countryCode: "BR",
+			parts: BBANParts{
+				BankCode:      "00360305",
+				BranchCode:    "00001",
+				AccountNumber: "000979549301",
+			},
+			want: "BR240036030500001000979549301",
+		},
 	}
-	if got != "GB29NWBK60161331926819" {
-		t.Fatalf("GenerateWithBBAN() = %q, want %q", got, "GB29NWBK60161331926819")
+
+	for _, tt := range tests {
+		t.Run(tt.want, func(t *testing.T) {
+			got, err := GenerateWithBBAN(tt.countryCode, tt.parts)
+			if err != nil {
+				t.Fatal(err)
+			}
+			if got != tt.want {
+				t.Fatalf("GenerateWithBBAN() = %q, want %q", got, tt.want)
+			}
+		})
 	}
 }
 
