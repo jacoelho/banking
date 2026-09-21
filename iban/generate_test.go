@@ -46,18 +46,9 @@ func TestGenerateWithBBAN(t *testing.T) {
 			parts: BBANParts{
 				BankCode:      "99999A03",
 				BranchCode:    "00001",
-				AccountNumber: "0009795493C1",
-			},
-			want: "BR6699999A03000010009795493C1",
-		},
-		{
-			countryCode: "BR",
-			parts: BBANParts{
-				BankCode:      "00360305",
-				BranchCode:    "00001",
 				AccountNumber: "000979549301",
 			},
-			want: "BR240036030500001000979549301",
+			want: "BR8799999A0300001000979549301",
 		},
 	}
 

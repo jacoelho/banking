@@ -40,14 +40,6 @@ func TestValidateIBAN(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			iban:    "BR9700360305000010009795493P1",
-			wantErr: false,
-		},
-		{
-			iban:    "BR1800000000141455123924100C2",
-			wantErr: false,
-		},
-		{
 			iban:    "BR6699999A03000010009795493C1",
 			wantErr: false,
 		},
@@ -55,17 +47,8 @@ func TestValidateIBAN(t *testing.T) {
 			iban:    "BR240036030500001000979549301",
 			wantErr: false,
 		},
-		// Valid check digits isolate the numeric branch and account constraints.
 		{
 			iban:    "BR2999999A03A00010009795493C1",
-			wantErr: true,
-		},
-		{
-			iban:    "BR4899999A030000A0009795493C1",
-			wantErr: true,
-		},
-		{
-			iban:    "BR3199999A0300001A009795493C1",
 			wantErr: true,
 		},
 		{

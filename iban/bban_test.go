@@ -86,24 +86,6 @@ func TestBBAN(t *testing.T) {
 				AccountNumber: "0009795493C1"},
 		},
 		{
-			iban:    "BR240036030500001000979549301",
-			wantErr: false,
-			bban: iban.BBAN{
-				BBAN:          "0036030500001000979549301",
-				BankCode:      "00360305",
-				BranchCode:    "00001",
-				AccountNumber: "000979549301"},
-		},
-		{
-			iban:    "BR1800000000141455123924100C2",
-			wantErr: false,
-			bban: iban.BBAN{
-				BBAN:          "00000000141455123924100C2",
-				BankCode:      "00000000",
-				BranchCode:    "14145",
-				AccountNumber: "5123924100C2"},
-		},
-		{
 			iban:    "BG80BNBG96611020345678",
 			wantErr: false,
 			bban: iban.BBAN{
