@@ -40,12 +40,20 @@ func TestValidateIBAN(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			iban:    "BR9700360305000010009795493P1",
+			iban:    "BR6699999A03000010009795493C1",
 			wantErr: false,
 		},
 		{
-			iban:    "BR1800000000141455123924100C2",
+			iban:    "BR240036030500001000979549301",
 			wantErr: false,
+		},
+		{
+			iban:    "BR2999999A03A00010009795493C1",
+			wantErr: true,
+		},
+		{
+			iban:    "BR5399999A0300001000979549AC1",
+			wantErr: true,
 		},
 		{
 			iban:    "BG80BNBG96611020345678",

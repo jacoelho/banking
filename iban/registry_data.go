@@ -245,9 +245,9 @@ var countrySpecs = []countrySpec{
 		rules: []ibanRule{
 			{start: 0, length: 2, kind: ibanRuleStatic, value: "BR"},
 			{start: 2, length: 2, kind: ibanRuleDigit},
-			{start: 4, length: 23, kind: ibanRuleDigit},
-			{start: 27, length: 1, kind: ibanRuleUpperCase},
-			{start: 28, length: 1, kind: ibanRuleAlphaNumeric},
+			{start: 4, length: 8, kind: ibanRuleAlphaNumeric},
+			{start: 12, length: 15, kind: ibanRuleDigit},
+			{start: 27, length: 2, kind: ibanRuleAlphaNumeric},
 		},
 		bankCode:      bbanComponent{start: 0, end: 8},
 		branchCode:    bbanComponent{start: 8, end: 13},
